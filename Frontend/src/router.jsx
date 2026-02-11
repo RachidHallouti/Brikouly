@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom"
 import Home from "./elements/routes/home"
-import Profile from "./elements/routes/login"
+import Profile from "./elements/routes/profile"
 import AjouterAnnonce from "./elements/routes/ajouterAnnonce"
 import PublicLayout from "./elements/layouts/publicLayout"
 import AuthLayout from "./elements/layouts/authLayout"
@@ -54,6 +54,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/profile",
+            element: <Profile />,
           },
         ],
       },

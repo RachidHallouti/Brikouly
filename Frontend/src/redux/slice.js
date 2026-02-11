@@ -4,7 +4,7 @@ const tokenLocal = localStorage.getItem("token")
 const userLocal = localStorage.getItem("user")
 
 const initialState = {
-  token: "dsfsdf",
+  token: tokenLocal || null,
   user: userLocal ? JSON.parse(userLocal) : null,
   isAuth: tokenLocal ? true : false,
 }

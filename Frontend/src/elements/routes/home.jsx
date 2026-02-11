@@ -3,9 +3,17 @@ import getNearestCities from "../hooks/nearestCities"
 import useNearestCities from "../hooks/useNearestCities"
 import { motion } from "motion/react"
 import { useSelector } from "react-redux"
+import axios, { Axios } from "axios"
 
 export default function Home() {
   const cities = useNearestCities()
+  const [name, setName] = useState(null)
+
+  const getName = async () => {
+    await axios
+      .get("http://localhost:8000/api/user")
+      .then((data) => setName(data.data))
+  }
 
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
@@ -30,6 +38,8 @@ export default function Home() {
           </div>
         </motion.div>
       )}
+      <button onClick={getName}>get</button>
+      {name && name.map((e, index) => <h1 key={index}>{e.name}</h1>)}
     </main>
   )
 }

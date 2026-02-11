@@ -1,10 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom"
 import { AnimatePresence, color, motion } from "motion/react"
 import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { logout } from "../../redux/slice"
 export default function NavButton(props) {
   const [show, setShow] = useState(false)
   const location = useLocation().pathname
   const isActive = props.pages.includes(location)
+  const user = useSelector((state) => state.auth.user)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const navButton = {
     rest: { backgroundColor: "rgba(255, 255, 255, 0)" },
@@ -58,48 +62,104 @@ export default function NavButton(props) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: 20, opacity: 0 }}
             >
-              <motion.button
-                onClick={() => navigate("/login")}
-                className="p-3 cursor-pointer w-30 rounded-2xl font-bebas"
-                initial={{
-                  backgroundColor: "rgba(255,135,51,0)",
-                  color: "rgba(255,135,51,1)",
-                }}
-                whileHover={{
-                  backgroundColor: "rgba(255,135,51,1)",
-                  color: "rgba(255, 255, 255, 1)",
-                  scale: 1.05,
-                  y: -5,
-                }}
-                whileTap={{ scale: 0.95, y: 5 }}
-                transition={{
-                  y: { type: "spring", stiffness: 120 },
-                  scale: { type: "spring", stiffness: 120 },
-                }}
-              >
-                Se connecter
-              </motion.button>
-              <motion.button
-                onClick={() => navigate("/register")}
-                className="p-3 cursor-pointer w-30 rounded-2xl font-bebas"
-                initial={{
-                  backgroundColor: "rgba(255,135,51,0)",
-                  color: "rgba(255,135,51,1)",
-                }}
-                whileHover={{
-                  backgroundColor: "rgba(255,135,51,1)",
-                  color: "rgba(255, 255, 255, 1)",
-                  scale: 1.05,
-                  y: -5,
-                }}
-                whileTap={{ scale: 0.95, y: 5 }}
-                transition={{
-                  y: { type: "spring", stiffness: 120 },
-                  scale: { type: "spring", stiffness: 120 },
-                }}
-              >
-                S'inscrire
-              </motion.button>
+              {!user ? (
+                <>
+                  <motion.button
+                    onClick={() => navigate("/login")}
+                    className="p-3 cursor-pointer w-30 rounded-2xl font-bebas"
+                    initial={{
+                      backgroundColor: "rgba(255,135,51,0)",
+                      color: "rgba(255,135,51,1)",
+                    }}
+                    whileHover={{
+                      backgroundColor: "rgba(255,135,51,1)",
+                      color: "rgba(255, 255, 255, 1)",
+                      scale: 1.05,
+                      y: -5,
+                    }}
+                    whileTap={{ scale: 0.95, y: 5 }}
+                    transition={{
+                      y: { type: "spring", stiffness: 120 },
+                      scale: { type: "spring", stiffness: 120 },
+                    }}
+                  >
+                    Se connecter
+                  </motion.button>
+                  <motion.button
+                    onClick={() => navigate("/register")}
+                    className="p-3 cursor-pointer w-30 rounded-2xl font-bebas"
+                    initial={{
+                      backgroundColor: "rgba(255,135,51,0)",
+                      color: "rgba(255,135,51,1)",
+                    }}
+                    whileHover={{
+                      backgroundColor: "rgba(255,135,51,1)",
+                      color: "rgba(255, 255, 255, 1)",
+                      scale: 1.05,
+                      y: -5,
+                    }}
+                    whileTap={{ scale: 0.95, y: 5 }}
+                    transition={{
+                      y: { type: "spring", stiffness: 120 },
+                      scale: { type: "spring", stiffness: 120 },
+                    }}
+                  >
+                    S'inscrire
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  <motion.button
+                    onClick={() => navigate("/profile")}
+                    className="p-3 flex justify-between items-center cursor-pointer w-30 rounded-2xl font-bebas"
+                    initial={{
+                      backgroundColor: "rgba(255,105,0,0)",
+                      color: "rgba(255,105,0,1)",
+                    }}
+                    whileHover={{
+                      backgroundColor: "rgba(255,105,51,1)",
+                      color: "rgba(255, 255, 255, 1)",
+                      scale: 1.05,
+                      y: -5,
+                    }}
+                    whileTap={{ scale: 0.95, y: 5 }}
+                    transition={{
+                      y: { type: "spring", stiffness: 120 },
+                      scale: { type: "spring", stiffness: 120 },
+                    }}
+                  >
+                    <div className="h-6 w-6 rounded-full overflow-hidden">
+                      <img
+                        src={"http://localhost:8000/storage/" + user.photo}
+                        alt=""
+                        className="h-full object-cover"
+                      />
+                    </div>
+                    {user.prenom}
+                  </motion.button>
+                  <motion.button
+                    onClick={() => dispatch(logout())}
+                    className="p-3 cursor-pointer w-30 rounded-2xl font-bebas"
+                    initial={{
+                      backgroundColor: "rgba(255,40,40,0)",
+                      color: "rgba(255,40,40,1)",
+                    }}
+                    whileHover={{
+                      backgroundColor: "rgba(255,40,40,1)",
+                      color: "rgba(255, 255, 255, 1)",
+                      scale: 1.05,
+                      y: -5,
+                    }}
+                    whileTap={{ scale: 0.95, y: 5 }}
+                    transition={{
+                      y: { type: "spring", stiffness: 120 },
+                      scale: { type: "spring", stiffness: 120 },
+                    }}
+                  >
+                    Se deconnecter
+                  </motion.button>
+                </>
+              )}
             </motion.div>
           </motion.div>
         )}

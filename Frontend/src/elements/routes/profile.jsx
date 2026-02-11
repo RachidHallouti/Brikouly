@@ -1,14 +1,12 @@
 import { motion } from "motion/react"
 import { User } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
-import axios from "axios"
-import { useDispatch } from "react-redux"
-import { login } from "../../redux/slice"
-export default function Login() {
+import { useDispatch, useSelector } from "react-redux"
+import { logout } from "../../redux/slice"
+export default function Profile() {
   const navigate = useNavigate()
-  const [userLogin, setUserLogin] = useState({})
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.auth.user)
   const parentVariant = {
     hidden: {
       opacity: 0,
@@ -41,15 +39,6 @@ export default function Login() {
       },
     },
   }
-  const loginUser = async () => {
-    try {
-      const reponse = await axios.post(
-        "http://localhost:8000/api/login",
-        userLogin,
-      )
-      dispatch(login(reponse.data.userData))
-    } catch {}
-  }
   return (
     <main className=" flex justify-center items-center py-6">
       <motion.div
@@ -58,52 +47,55 @@ export default function Login() {
         animate="visible"
         className="flex max-w-155 gap-4 flex-col items-center p-8 sm:p-16 rounded-2xl border-orange-500 w-4/5 sm:w-1/2 sm:min-w-lg shadow-xl shadow-orange-500/40"
       >
-        <motion.div variants={childVariant}>
-          <User className="h-28 w-28 text-zinc-800 " />
+        <motion.div
+          variants={childVariant}
+          className="font-bebas bg-gray-400 rounded-full h-40 w-40 overflow-hidden"
+        >
+          <img
+            src={"http://127.0.0.1:8000/storage/" + user.photo}
+            alt=""
+            className="h-full w-full object-cover"
+          />
         </motion.div>
         <motion.h1
           variants={childVariant}
-          className="font-bebas mb-4 text-[40px] text-zinc-800"
+          className="font-bebas text-[40px] text-zinc-800"
         >
-          Se connecter
+          {user.prenom} {user.nom}
         </motion.h1>
-        <motion.input
+        {user.bio && (
+          <motion.h1
+            variants={childVariant}
+            className="font-bebas text-[40px] text-zinc-800"
+          >
+            {user.bio}
+          </motion.h1>
+        )}
+        <motion.h1
           variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="text"
-          placeholder=" Email"
-          onChange={(e) =>
-            setUserLogin({ ...userLogin, email: e.target.value })
-          }
-        />
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="password"
-          placeholder=" Mot de passe"
-          onChange={(e) =>
-            setUserLogin({ ...userLogin, password: e.target.value })
-          }
-        />
+          className="font-bebas text-[40px] text-zinc-800"
+        >
+          {user.ville}
+        </motion.h1>
+
         <motion.button
           variants={childVariant}
           className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold"
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.97, y: 1 }}
           transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
-          onClick={loginUser}
         >
-          Se connecter
+          Modifier
         </motion.button>
         <motion.button
-          onClick={() => navigate("/register")}
+          onClick={() => dispatch(logout())}
           variants={childVariant}
-          className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold"
+          className="h-11 w-full cursor-pointer text-red-500 border-3 rounded-2xl text-lg font-inter font-semibold"
           whileHover={{ scale: 1.05, y: -3 }}
           whileTap={{ scale: 0.97, y: 1 }}
           transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
         >
-          S'inscrire
+          Se deconnecter
         </motion.button>
       </motion.div>
     </main>
