@@ -1,14 +1,24 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import getNearestCities from "../hooks/nearestCities"
 import useNearestCities from "../hooks/useNearestCities"
-import { motion } from "motion/react"
-import { useSelector } from "react-redux"
+import { motion, useInView, useMotionValueEvent } from "motion/react"
+import { useDispatch, useSelector } from "react-redux"
 import axios, { Axios } from "axios"
+import { SquarePlus } from "lucide-react"
+import { setBar } from "../../redux/sliceElements"
+import { useNavigate } from "react-router-dom"
 
 export default function Home() {
   const cities = useNearestCities()
   const [name, setName] = useState(null)
+  const ajouter = useRef()
+  const ajouterInView = useInView(ajouter)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    dispatch(setBar(ajouterInView))
+  }, [ajouterInView])
   const getName = async () => {
     await axios
       .get("http://localhost:8000/api/user")
@@ -17,6 +27,16 @@ export default function Home() {
 
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
+      <motion.button
+        ref={ajouter}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        className="text-white text-xl p-2 rounded-xl bg-orange-500 font-changa flex gap-2 items-center cursor-pointer"
+        onClick={() => navigate("/ajouter-annonce")}
+      >
+        <SquarePlus />
+        Ajouter Annonce
+      </motion.button>
       {cities.length > 0 && (
         <motion.div
           initial={{ y: 200, opacity: 0 }}

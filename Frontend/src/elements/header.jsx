@@ -10,14 +10,15 @@ import {
   SquarePlus,
 } from "lucide-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 import NavButton from "./animatedElements/navbutton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 const color = "#ff6900"
 
 export default function Header() {
   const { token } = useSelector((state) => state.auth)
+  const barInview = useSelector((state) => state.elements.barInView)
   const navigate = useNavigate()
   const location = useLocation().pathname
   const [menu, setMenu] = useState(false)
@@ -31,17 +32,22 @@ export default function Header() {
               BRIKOULY
             </motion.div>
           </Link>
-          {location != "/ajouter-annonce" && token && (
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              className="bg-white text-xl p-2 rounded-xl text-orange-500 font-changa flex gap-2 items-center cursor-pointer"
-              onClick={() => navigate("/ajouter-annonce")}
-            >
-              <SquarePlus />
-              Ajouter Annonce
-            </motion.button>
-          )}
+          <AnimatePresence>
+            {location != "/ajouter-annonce" && !barInview && token && (
+              <motion.button
+                initial={{ scale: 0.5, opacity: 0 }}
+                exit={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-white text-xl p-2 rounded-xl text-orange-500 font-changa flex gap-2 items-center cursor-pointer"
+                onClick={() => navigate("/ajouter-annonce")}
+              >
+                <SquarePlus />
+                Ajouter Annonce
+              </motion.button>
+            )}
+          </AnimatePresence>
         </div>
         <nav className="hidden sm:h-12 sm:flex gap-3">
           <NavButton color={color} pages={["/"]}>
