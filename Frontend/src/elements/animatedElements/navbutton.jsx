@@ -37,10 +37,10 @@ export default function NavButton(props) {
       >
         {props.children}
         <motion.span
-          className="pointer-events-none absolute left-1/2 bg-white opacity-0 h-2 w-6 rounded-full"
+          className="pointer-events-none absolute left-1/2 bg-white opacity-0 h-1.5 w-4.5 rounded-full"
           style={{ x: "-50%" }}
           animate={
-            isActive ? { y: 14, opacity: 1, scaleX: 1 } : { y: 22, opacity: 0 }
+            isActive ? { y: 13, opacity: 1, scaleX: 1 } : { y: 22, opacity: 0 }
           }
         ></motion.span>
       </motion.button>

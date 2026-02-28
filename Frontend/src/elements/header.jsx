@@ -8,9 +8,15 @@ import {
   X,
   CirclePlus,
   SquarePlus,
+  Search,
 } from "lucide-react"
 import { Link, useLocation, useNavigate } from "react-router-dom"
-import { AnimatePresence, motion } from "motion/react"
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useScroll,
+} from "motion/react"
 import NavButton from "./animatedElements/navbutton"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
@@ -22,12 +28,37 @@ export default function Header() {
   const navigate = useNavigate()
   const location = useLocation().pathname
   const [menu, setMenu] = useState(false)
+  const { scrollY } = useScroll()
+  const [scrolled, setScrolled] = useState(false)
+  useMotionValueEvent(scrollY, "change", (e) => {
+    e > 0 ? setScrolled(true) : setScrolled(false)
+  })
 
   return (
     <>
-      <header className="flex z-50 top-0 sticky sm:top-4 justify-between p-6 sm:px-10 bg-orange-500 items-center sm:m-5 sm:rounded-2xl backdrop-blur-md shadow-xl shadow-orange-500/30">
+      <motion.header
+        className="flex z-50 sticky h-22 mb-5 justify-between text-white p-6 sm:px-10 bg-linear-to-tr from-orange-400/90 to-orange-600/90 items-center backdrop-blur-md shadow-xl shadow-orange-400/40"
+        variants={{
+          scrolled: {
+            marginLeft: 70,
+            marginRight: 70,
+            borderRadius: 20,
+            top: 20,
+          },
+          unscrolled: {
+            marginLeft: 0,
+            marginRight: 0,
+            borderRadius: 0,
+            top: 0,
+          },
+        }}
+        animate={scrolled ? "scrolled" : "unscrolled"}
+      >
         <div className="flex gap-5 items-center">
-          <Link to="/" className="text-white text-2xl sm:text-4xl font-bungee">
+          <Link
+            to="/"
+            className=" text-2xl sm:text-4xl font-outfit font-extrabold"
+          >
             <motion.div whileHover={{ skewX: 10, rotateY: 30, scale: 0.95 }}>
               BRIKOULY
             </motion.div>
@@ -49,28 +80,59 @@ export default function Header() {
             )}
           </AnimatePresence>
         </div>
-        <nav className="hidden sm:h-12 sm:flex gap-3">
-          <NavButton color={color} pages={["/"]}>
-            <Home className="h-8 w-8" />
-          </NavButton>
-          {token && (
-            <NavButton color={color} pages={["/favoris"]}>
-              <Heart className="h-8 w-8" />
+        <div className="flex gap-10 h-full">
+          <AnimatePresence>
+            {!barInview && (
+              <motion.div
+                initial={{ opacity: 0, width: "200px" }}
+                exit={{ opacity: 0, width: "200px" }}
+                animate={{ opacity: 1, width: "100%" }}
+                className="relative hidden md:flex items-center text-black justify-center max-w-full "
+              >
+                <motion.input
+                  type="text"
+                  className="bg-gray-50 font-outfit focus:shadow-lg pl-3 text-lg w-70 lg:w-100 h-12 rounded-xl shadow-sm"
+                  placeholder=" Rechercher des annonces"
+                  whileFocus={{
+                    width: "550px",
+                  }}
+                />
+                <motion.button
+                  className="absolute hover:shadow-md cursor-pointer right-2 rounded-xl bg-orange-500 p-1.5 text-white"
+                  whileHover={{
+                    scale: 1.1,
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Search />
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <nav className="hidden sm:h-9 sm:flex h-full gap-3 pb-10">
+            <NavButton color={color} pages={["/"]}>
+              <Home size={27} />
             </NavButton>
-          )}
-          {token && (
-            <NavButton color={color} pages={["/messages"]}>
-              <MessageCircle className="h-8 w-8" />
+            {token && (
+              <NavButton color={color} pages={["/favoris"]}>
+                <Heart size={27} />
+              </NavButton>
+            )}
+            {token && (
+              <NavButton color={color} pages={["/messages"]}>
+                <MessageCircle size={27} />
+              </NavButton>
+            )}
+            <NavButton
+              color={color}
+              drop={true}
+              pages={["/profile", "/login", "/register"]}
+            >
+              <CircleUser size={27} />
             </NavButton>
-          )}
-          <NavButton
-            color={color}
-            drop={true}
-            pages={["/profile", "/login", "/register"]}
-          >
-            <CircleUser className="h-8 w-8" />
-          </NavButton>
-        </nav>
+          </nav>
+        </div>
         <nav className="flex sm:hidden gap-3">
           <button
             className="text-white cursor-pointer"
@@ -83,7 +145,7 @@ export default function Header() {
             )}
           </button>
         </nav>
-      </header>
+      </motion.header>
       {menu && (
         <div className="h-screen flex sm:hidden flex-col w-full absolute top-0 pt-20 bg-orange-500/80">
           <motion.button
