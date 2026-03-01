@@ -24,7 +24,7 @@ export default function NavButton(props) {
       <motion.button
         onMouseEnter={() => setShow(true)}
         onMouseLeave={() => setShow(false)}
-        className="relative z-20 text-white cursor-pointer p-2 rounded-xl"
+        className={`relative z-20 text-white ${isActive && "shadow-md"} cursor-pointer p-2 rounded-xl`}
         variants={navButton}
         animate={isActive ? "active" : "rest"}
         whileHover="active"

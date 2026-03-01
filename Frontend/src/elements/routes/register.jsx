@@ -1,4 +1,4 @@
-import { motion } from "motion/react"
+import { AnimatePresence, motion } from "motion/react"
 import { Plus, User } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
@@ -13,11 +13,12 @@ export default function Register() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const cities = useNearestCities()
+  const [conti, setConti] = useState(false)
   const [preview, setPreview] = useState(null)
   const parentVariant = {
     hidden: {
       opacity: 0,
-      y: -150,
+      y: "-50%",
     },
     visible: {
       opacity: 1,
@@ -27,6 +28,13 @@ export default function Register() {
         delayChildren: 0.15,
         type: "spring",
         stiffness: 150,
+      },
+    },
+    exit: {
+      opacity: 0,
+      y: "50%",
+      transition: {
+        duration: 0.1,
       },
     },
   }
@@ -95,125 +103,203 @@ export default function Register() {
     }
   }
   return (
-    <main className=" flex justify-center items-center py-6">
-      <motion.div
-        variants={parentVariant}
-        initial="hidden"
-        animate="visible"
-        className="flex max-w-3xl gap-4 flex-col items-center p-8 sm:p-16 rounded-2xl border-orange-500 w-4/5 sm:w-3/4 sm:min-w-lg shadow-xl shadow-orange-500/40"
-      >
-        <motion.div variants={childVariant}>
-          <User className="h-28 w-28 text-zinc-800 " />
-        </motion.div>
-        <motion.h1
-          variants={childVariant}
-          className="font-bebas mb-4 text-[40px] text-zinc-800"
-        >
-          S'inscrire
-        </motion.h1>
+    <main className=" flex justify-center w-full min-h-200 items-center py-6">
+      <motion.div className="flex items-center  rounded-2xl overflow-hidden border-orange-500 w-full sm:w-3/5 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
         <motion.div
-          variants={childVariant}
-          whileHover={{ scale: 1.08 }}
-          className="relative"
+          initial={{
+            opacity: 0,
+            x: "-100%",
+          }}
+          animate={{
+            opacity: 1,
+            x: 0,
+          }}
+          className="min-h-155 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-r-4xl from-orange-400/70 to-orange-600/70 shadow-[-5px_0_30px_rgba(0,0,0,0.25)]"
         >
-          <label
-            htmlFor="file"
-            className="cursor-pointer overflow-hidden h-40 w-40 flex justify-center items-center bg-gray-300/60 rounded-xl"
-          >
-            {preview ? (
-              <img
-                src={preview}
-                className="h-full w-full object-cover"
-                alt=""
-              />
-            ) : (
-              <Plus className="" />
-            )}
-            <input
-              className="hidden"
-              onChange={photoChange}
-              type="file"
-              id="file"
-            />
-          </label>
+          <h1 className="font-space font-bold text-3xl">
+            Bienvenue sur Brikouly !
+          </h1>
+          <motion.p className="2xl:mt-6 mt-3 hidden xl:flex text-xl font-outfit">
+            Brikouly est votre plateforme pour trouver et offrir des services
+            rapidement.
+          </motion.p>
         </motion.div>
+        <div className="flex w-3/5 items-center justify-center">
+          <AnimatePresence mode="wait">
+            {!conti ? (
+              <motion.div
+                key={1}
+                variants={parentVariant}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full p-6 px-12 flex flex-col items-center h-full gap-2"
+              >
+                <motion.div variants={childVariant}>
+                  <User className="h-28 w-28 text-zinc-800 " />
+                </motion.div>
+                <motion.h1
+                  variants={childVariant}
+                  className="font-bebas mb-4 text-[40px] text-zinc-800"
+                >
+                  S'inscrire
+                </motion.h1>
+                <motion.div
+                  variants={childVariant}
+                  whileHover={{ scale: 1.08 }}
+                  className="relative"
+                >
+                  <label
+                    htmlFor="file"
+                    className="cursor-pointer overflow-hidden h-40 w-40 flex justify-center items-center bg-gray-300/60 rounded-xl"
+                  >
+                    {preview ? (
+                      <img
+                        src={preview}
+                        className="h-full w-full object-cover"
+                        alt=""
+                      />
+                    ) : (
+                      <Plus className="" />
+                    )}
+                    <input
+                      className="hidden"
+                      onChange={photoChange}
+                      type="file"
+                      id="file"
+                    />
+                  </label>
+                </motion.div>
 
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="text"
-          placeholder=" Nom"
-          onChange={(e) => setForm({ ...form, nom: e.target.value })}
-        />
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="text"
-          placeholder=" Prenom"
-          onChange={(e) => setForm({ ...form, prenom: e.target.value })}
-        />
-        <motion.textarea
-          variants={childVariant}
-          className="min-h-20 w-full px-4 pt-2 bg-gray-300/60 rounded-xl"
-          placeholder=" bio (optionnel)"
-          onChange={(e) => setForm({ ...form, bio: e.target.value })}
-        />
-        <motion.select
-          variants={childVariant}
-          className="h-11 w-full px-4 bg-gray-300/60 rounded-xl"
-          value={form && form.ville}
-          onChange={(e) => setForm({ ...form, ville: e.target.value })}
-        >
-          <option value="">pas specifié</option>
-          {cities.map((e, index) => (
-            <option key={index} value={e.name}>
-              {e.name}
-            </option>
-          ))}
-        </motion.select>
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="email"
-          placeholder=" Email"
-          onChange={(e) => setForm({ ...form, email: e.target.value })}
-        />
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="password"
-          placeholder=" Mot de passe"
-          onChange={(e) => setForm({ ...form, password: e.target.value })}
-        />
-        <motion.input
-          variants={childVariant}
-          className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
-          type="password"
-          placeholder=" Confirmer mot de passe"
-          onChange={(e) =>
-            setForm({ ...form, password_confirmation: e.target.value })
-          }
-        />
-        <motion.button
-          variants={childVariant}
-          className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold"
-          whileHover={{ scale: 1.05, y: -3 }}
-          whileTap={{ scale: 0.97, y: 1 }}
-          transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
-          onClick={registerUser}
-        >
-          S'inscrire
-        </motion.button>
-        <motion.button
-          onClick={() => navigate("/")}
-          variants={childVariant}
-          className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold"
-          whileHover={{ scale: 1.05, y: -3 }}
-          whileTap={{ scale: 0.97, y: 1 }}
-          transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
-        >
-          annuler
-        </motion.button>
+                <motion.input
+                  variants={childVariant}
+                  className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
+                  type="text"
+                  placeholder=" Nom"
+                  onChange={(e) => setForm({ ...form, nom: e.target.value })}
+                />
+                <motion.input
+                  variants={childVariant}
+                  className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
+                  type="text"
+                  placeholder=" Prenom"
+                  onChange={(e) => setForm({ ...form, prenom: e.target.value })}
+                />
+                <motion.button
+                  variants={childVariant}
+                  className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 1 }}
+                  transition={{
+                    duration: 0.15,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  onClick={(e) => setConti(true)}
+                >
+                  Continuer
+                </motion.button>
+                <motion.button
+                  onClick={() => navigate("/")}
+                  variants={childVariant}
+                  className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 1 }}
+                  transition={{
+                    duration: 0.15,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                >
+                  annuler
+                </motion.button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key={2}
+                variants={parentVariant}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+                className="w-full  p-6 px-12 flex flex-col items-center h-full gap-4"
+              >
+                <motion.textarea
+                  variants={childVariant}
+                  className="min-h-20 w-full px-4 pt-2 bg-gray-300/60 rounded-xl"
+                  placeholder=" bio (optionnel)"
+                  onChange={(e) => setForm({ ...form, bio: e.target.value })}
+                />
+
+                <motion.select
+                  variants={childVariant}
+                  className="h-11 w-full px-4 bg-gray-300/60 rounded-xl"
+                  value={form && form.ville}
+                  onChange={(e) => setForm({ ...form, ville: e.target.value })}
+                >
+                  <option value="">pas specifié</option>
+                  {cities.map((e, index) => (
+                    <option key={index} value={e.name}>
+                      {e.name}
+                    </option>
+                  ))}
+                </motion.select>
+                <motion.input
+                  variants={childVariant}
+                  className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
+                  type="email"
+                  placeholder=" Email"
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                />
+                <motion.input
+                  variants={childVariant}
+                  className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
+                  type="password"
+                  placeholder=" Mot de passe"
+                  onChange={(e) =>
+                    setForm({ ...form, password: e.target.value })
+                  }
+                />
+                <motion.input
+                  variants={childVariant}
+                  className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl"
+                  type="password"
+                  placeholder=" Confirmer mot de passe"
+                  onChange={(e) =>
+                    setForm({ ...form, password_confirmation: e.target.value })
+                  }
+                />
+                <motion.button
+                  variants={childVariant}
+                  className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 1 }}
+                  transition={{
+                    duration: 0.15,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                  onClick={registerUser}
+                >
+                  S'inscrire
+                </motion.button>
+                <motion.button
+                  onClick={() => setConti(false)}
+                  variants={childVariant}
+                  className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold"
+                  whileHover={{ scale: 1.05, y: -3 }}
+                  whileTap={{ scale: 0.97, y: 1 }}
+                  transition={{
+                    duration: 0.15,
+                    type: "spring",
+                    stiffness: 200,
+                  }}
+                >
+                  retourner
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </motion.div>
     </main>
   )
