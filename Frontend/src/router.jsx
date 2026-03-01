@@ -9,6 +9,7 @@ import Login from "./elements/routes/login"
 import NotFoundLayout from "./elements/layouts/notFoundLayout"
 import GuestLayout from "./elements/layouts/guestLayout"
 import Register from "./elements/routes/register"
+import { AnimatePresence } from "motion/react"
 const router = createBrowserRouter([
   {
     path: "/",

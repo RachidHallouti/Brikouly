@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react"
-import { Plus, User } from "lucide-react"
+import { IdCard, IdCardLanyard, Lock, Plus, User } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import axios from "axios"
@@ -54,6 +54,16 @@ export default function Register() {
       },
     },
   }
+  const childVariantP = {
+    hidden: {
+      opacity: 0,
+      x: -100,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+    },
+  }
   const registerUser = async () => {
     if (
       form.nom &&
@@ -103,8 +113,23 @@ export default function Register() {
     }
   }
   return (
-    <main className=" flex justify-center w-full min-h-200 items-center py-6">
-      <motion.div className="flex items-center  rounded-2xl overflow-hidden border-orange-500 w-full sm:w-3/5 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+    <motion.main
+      initial={{
+        opacity: 0,
+        scale: 0.8,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+
+        transition: { duration: 0.2 },
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      className=" flex justify-center w-full min-h-200 items-center py-6"
+    >
+      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full sm:w-3/5 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
         <motion.div
           initial={{
             opacity: 0,
@@ -113,16 +138,46 @@ export default function Register() {
           animate={{
             opacity: 1,
             x: 0,
+            transition: { duration: 0.2 },
           }}
-          className="min-h-155 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-r-4xl from-orange-400/70 to-orange-600/70 shadow-[-5px_0_30px_rgba(0,0,0,0.25)]"
+          className="min-h-155 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-r-4xl from-orange-400/70 to-orange-600/70 shadow-[5px_0_30px_rgba(0,0,0,0.25)]"
         >
           <h1 className="font-space font-bold text-3xl">
-            Bienvenue sur Brikouly !
+            Rejoignez Brikouly !
           </h1>
           <motion.p className="2xl:mt-6 mt-3 hidden xl:flex text-xl font-outfit">
-            Brikouly est votre plateforme pour trouver et offrir des services
-            rapidement.
+            Créez votre compte pour trouver des services près de vous ou
+            proposer vos compétences à la communauté.
           </motion.p>
+          <motion.div
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: { staggerChildren: 0.2, delayChildren: 0.2 },
+              },
+            }}
+            initial="hidden"
+            animate="visible"
+            className="text-md 2xl:mt-5 mt-2 font-outfit flex flex-col w-full"
+          >
+            <motion.p
+              variants={childVariantP}
+              className="flex items-center gap-5"
+            >
+              <IdCard className="h-40 w-40" />
+              Utilisez vos vraies informations pour construire un profil fiable
+              et inspirer confiance aux autres membres.
+            </motion.p>
+            <motion.p
+              variants={childVariantP}
+              className="flex items-center gap-5"
+            >
+              <Lock className="h-40 w-40" />
+              Choisissez un mot de passe sécurisé et assurez-vous que vos
+              informations sont correctes avant de continuer.
+            </motion.p>
+          </motion.div>
         </motion.div>
         <div className="flex w-3/5 items-center justify-center">
           <AnimatePresence mode="wait">
@@ -301,6 +356,6 @@ export default function Register() {
           </AnimatePresence>
         </div>
       </motion.div>
-    </main>
+    </motion.main>
   )
 }

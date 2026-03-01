@@ -61,7 +61,22 @@ export default function Login() {
     } catch {}
   }
   return (
-    <main className=" flex justify-center min-h-200 w-full items-center py-6">
+    <motion.main
+      initial={{
+        opacity: 0,
+        scale: 0.8,
+      }}
+      animate={{
+        opacity: 1,
+        scale: 1,
+
+        transition: { duration: 0.2 },
+      }}
+      exit={{
+        opacity: 0,
+      }}
+      className=" flex justify-center min-h-200 w-full items-center py-6"
+    >
       <div className="flex justify-center sm:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)] rounded-2xl overflow-hidden">
         <motion.div
           variants={parentVariant}
@@ -98,10 +113,9 @@ export default function Login() {
           />
           <motion.button
             variants={childVariant}
-            className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold shadow-sm"
+            className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold shadow-md hover:shadow-xl"
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.97, y: 1 }}
-            transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
             onClick={loginUser}
           >
             Se connecter
@@ -109,10 +123,9 @@ export default function Login() {
           <motion.button
             onClick={() => navigate("/register")}
             variants={childVariant}
-            className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold shadow-sm"
+            className="h-11 w-full cursor-pointer text-orange-500 border-3 rounded-2xl text-lg font-inter font-semibold shadow-md hover:shadow-xl"
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.97, y: 1 }}
-            transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
           >
             S'inscrire
           </motion.button>
@@ -126,6 +139,7 @@ export default function Login() {
           animate={{
             opacity: 1,
             x: 0,
+            transition: { duration: 0.2 },
           }}
           className="h-145 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-l-4xl from-orange-400/70 to-orange-600/70 shadow-[-5px_0_30px_rgba(0,0,0,0.25)]"
         >
@@ -187,6 +201,6 @@ export default function Login() {
           </motion.div>
         </motion.div>
       </div>
-    </main>
+    </motion.main>
   )
 }
