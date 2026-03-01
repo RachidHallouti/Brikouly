@@ -18,18 +18,6 @@ class AnnonceController extends Controller
         $annonces=Annonce::all();
         return response()->json($annonces);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $data=$request->validate([
@@ -49,10 +37,6 @@ class AnnonceController extends Controller
         Annonce::create($data);
         return response()->json(["message"=>'Votre annonce a été publiée avec succé']);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Annonce $annonce)
     {
         //
@@ -102,7 +86,7 @@ class AnnonceController extends Controller
         return response()->json(["message"=>'Votre annonce a été supprimée']); 
     }
     public function userAnnonces(User $user){
-        $userannonces=$user->annonces();
+        $userannonces=$user->annonces()->get();
         return response()->json($userannonces);
     }
 }

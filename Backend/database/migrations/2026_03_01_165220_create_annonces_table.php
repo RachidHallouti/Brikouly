@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('photo');
             $table->string('ville')->nullable();
             $table->string('categorie');
-            $table->int('prix');
+            $table->integer('prix');
             $table->string('prix_par');
             $table->foreignId('user_id')->constrained();
             $table->timestamps();
