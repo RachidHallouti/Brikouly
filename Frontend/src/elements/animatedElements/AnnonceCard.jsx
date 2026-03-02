@@ -9,7 +9,7 @@ const AnnonceCard = ({ annonce }) => {
       whileHover={{
         scale: 1.05,
       }}
-      className="relative"
+      className="relative "
     >
       <motion.button
         whileHover={{ scale: 1.07 }}
@@ -22,24 +22,30 @@ const AnnonceCard = ({ annonce }) => {
         <Heart size={28} fill="rgba(0,0,0,0.5)" strokeWidth={1.7} />
       </motion.button>
       <motion.div
-        className="shadow-[0_0_15px] hover:shadow-[0_0_30px] shadow-black/20 rounded-2xl cursor-pointer w-55 h-85 font-outfit overflow-hidden"
+        className="shadow-[0_0_15px] hover:shadow-[0_0_30px] shadow-black/20 rounded-2xl cursor-pointer w-57 h-85 font-outfit overflow-hidden"
         whileTap={{
           scale: 0.95,
         }}
       >
-        <div className="h-1/2 w-full">
+        <div className="h-1/2 w-full ">
           <img
             className="w-full h-full object-cover"
             src={`http://localhost:8000/storage/${annonce.photo}`}
             alt=""
           />
         </div>
-        <div className="flex flex-col items-start p-4 h-1/2 w-full  gap-1 relative">
-          <div
-            className={`p-1 px-1.5 ${categorie.color} rounded-lg ${categorie.accent} text-[13px]`}
+        <div className="flex flex-col bg-linear-to-tr from-white to-gray-300/50 items-start p-4 h-1/2 w-full  gap-1 relative">
+          <motion.div
+            whileTap={{
+              scale: 0.95,
+            }}
+            whileHover={{
+              scale: 1.05,
+            }}
+            className={`p-1 px-1.5 ${categorie.color} rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
           >
             {categorie.name}
-          </div>
+          </motion.div>
           <h2 className="font-semibold text-md w-full line-clamp-2 leading-snug wrap-break-word">
             {annonce.titre}
           </h2>

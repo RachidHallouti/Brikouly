@@ -4,11 +4,12 @@ import useNearestCities from "../hooks/useNearestCities"
 import { motion, useInView, useMotionValueEvent } from "motion/react"
 import { useDispatch, useSelector } from "react-redux"
 import axios, { Axios } from "axios"
-import { SquarePlus } from "lucide-react"
+import { Loader, LoaderCircle, SquarePlus } from "lucide-react"
 import { setBar } from "../../redux/sliceElements"
 import { useNavigate } from "react-router-dom"
 import Hero from "../Hero"
 import AnnonceCard from "../animatedElements/AnnonceCard"
+import BrowseCategories from "../animatedElements/browseCategorises"
 
 export default function Home() {
   const cities = useNearestCities()
@@ -17,23 +18,42 @@ export default function Home() {
   const ajouterInView = useInView(ajouter)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [loadingAnnonces, setLoading] = useState(null)
 
   useEffect(() => {
     dispatch(setBar(ajouterInView))
   }, [ajouterInView])
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/annonces")
-      .then((res) => setAnnonces(res.data))
+    const fetchAnnonces = async () => {
+      setLoading(true)
+      await axios
+        .get("http://localhost:8000/api/annonces")
+        .then((res) => setAnnonces(res.data))
+      setLoading(false)
+    }
+    fetchAnnonces()
   }, [])
 
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
       <Hero />
-      <div className=" flex flex-col w-9/10">
+      <BrowseCategories />
+      <div className=" flex flex-col w-9/10 min-h-100">
         <h1 className="text-orange-500 font-outfit font-bold text-3xl">
           Annonces :
         </h1>
+        {loadingAnnonces && (
+          <div className="w-full my-auto flex text-black items-center justify-center">
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+                transition: { repeat: Infinity, ease: "linear" },
+              }}
+            >
+              <LoaderCircle size={50} />
+            </motion.div>
+          </div>
+        )}
         <div className="flex flex-wrap gap-5 mt-5 w-full">
           {annonces.length > 0 &&
             annonces.map((annonce, index) => (
