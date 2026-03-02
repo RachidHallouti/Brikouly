@@ -12,7 +12,7 @@ const BrowseCategories = () => {
         {categories.map((cat) => (
           <motion.div
             whileHover={{
-              scale: 1.05,
+              scale: 1.07,
               borderRadius: "7px",
             }}
             whileTap={{

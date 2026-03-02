@@ -37,7 +37,7 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
       <Hero />
-      <BrowseCategories />
+
       <div className=" flex flex-col w-9/10 min-h-100">
         <h1 className="text-orange-500 font-outfit font-bold text-3xl">
           Annonces :
@@ -61,6 +61,7 @@ export default function Home() {
             ))}
         </div>
       </div>
+      <BrowseCategories />
       {cities.length > 0 && (
         <motion.div
           initial={{ y: 200, opacity: 0 }}
