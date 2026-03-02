@@ -11,7 +11,7 @@ import Hero from "../Hero"
 
 export default function Home() {
   const cities = useNearestCities()
-  const [name, setName] = useState(null)
+  const [name, setName] = useState([])
   const ajouter = useRef()
   const ajouterInView = useInView(ajouter)
   const dispatch = useDispatch()
@@ -22,8 +22,8 @@ export default function Home() {
   }, [ajouterInView])
   const getName = async () => {
     await axios
-      .get("http://localhost:8000/api/user")
-      .then((data) => setName(data.data))
+      .get("http://localhost:8000/api/annonces")
+      .then((res) => setName(res.data))
   }
 
   return (
@@ -51,7 +51,7 @@ export default function Home() {
         </motion.div>
       )}
       <button onClick={getName}>get</button>
-      {name && name.map((e, index) => <h1 key={index}>{e.name}</h1>)}
+      {name && name.map((e, index) => <h1 key={index}>{e.user_id}</h1>)}
     </main>
   )
 }

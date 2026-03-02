@@ -21,8 +21,8 @@ class AnnonceController extends Controller
     public function store(Request $request)
     {
         $data=$request->validate([
-            'titre'=>'required|string|min:12|max:50',
-            'description'=>'required|string|min:50|max:255',
+            'titre'=>'required|string|min:5|max:50',
+            'description'=>'required|string|min:10|max:255',
             'ville'=>'nullable|string',
             'photo'=>'required|image',
             'categorie'=>'required|string',
@@ -56,8 +56,8 @@ class AnnonceController extends Controller
     public function update(Request $request, Annonce $annonce)
     {
         $data=$request->validate([
-            'titre'=>'required|string|min:12|max:50',
-            'description'=>'required|string|min:50|max:255',
+            'titre'=>'required|string|min:5|max:50',
+            'description'=>'required|string|min:10|max:255',
             'ville'=>'nullable|string',
             'photo'=>'nullable|image',
             'categorie'=>'required|string',

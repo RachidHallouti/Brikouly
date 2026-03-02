@@ -8,11 +8,13 @@ import {
 import { useEffect, useRef } from "react"
 import { useDispatch } from "react-redux"
 import { setBar } from "../redux/sliceElements"
+import { useNavigate } from "react-router-dom"
 
 const Hero = () => {
   const hero = useRef()
   const heroInView = useInView(hero)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   useEffect(() => {
     dispatch(setBar(heroInView))
   }, [heroInView])
