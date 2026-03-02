@@ -39,7 +39,7 @@ class AnnonceController extends Controller
     }
     public function show(Annonce $annonce)
     {
-        //
+        return redirect()->json($annonce);
     }
 
     /**
@@ -88,5 +88,12 @@ class AnnonceController extends Controller
     public function userAnnonces(User $user){
         $userannonces=$user->annonces()->get();
         return response()->json($userannonces);
+    }
+    public function categorieAnnonces($categorie){
+        $categorieannonces=Annonce::where('categorie',$categorie)->get();
+        if ($categorieannonces->isEmpty()) {
+        return response()->json(['message' => 'Aucune annonce trouvée pour cette catégorie'], 404);
+    }
+        return response()->json($categorieannonces);
     }
 }
