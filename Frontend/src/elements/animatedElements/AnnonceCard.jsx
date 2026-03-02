@@ -2,7 +2,7 @@ import { Heart, MapPin } from "lucide-react"
 import { motion } from "motion/react"
 import { serviceCategories } from "../../assets/categorie"
 
-const AnnonceCard = ({ annonce }) => {
+const AnnonceCard = ({ annonce, setCategorie }) => {
   const categorie = serviceCategories.find((e) => e.name == annonce.categorie)
   return (
     <motion.div
@@ -35,17 +35,18 @@ const AnnonceCard = ({ annonce }) => {
           />
         </div>
         <div className="flex flex-col bg-linear-to-tr from-white to-gray-300/50 items-start p-4 h-1/2 w-full  gap-1 relative">
-          <motion.div
+          <motion.button
             whileTap={{
               scale: 0.95,
             }}
             whileHover={{
               scale: 1.05,
             }}
-            className={`p-1 px-1.5 ${categorie.color} rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
+            onClick={() => setCategorie(categorie.name)}
+            className={`p-1 px-1.5 ${categorie.color} cursor-pointer rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
           >
             {categorie.name}
-          </motion.div>
+          </motion.button>
           <h2 className="font-semibold text-md w-full line-clamp-2 leading-snug wrap-break-word">
             {annonce.titre}
           </h2>

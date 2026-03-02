@@ -15,6 +15,8 @@ export default function Home() {
   const cities = useNearestCities()
   const [annonces, setAnnonces] = useState([])
   const ajouter = useRef()
+  const categorySearch = useRef()
+  const [categorie, setCategorie] = useState("")
   const ajouterInView = useInView(ajouter)
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -33,10 +35,17 @@ export default function Home() {
     }
     fetchAnnonces()
   }, [])
+  const setCategorieSearch = (cat) => {
+    setCategorie(cat)
+    categorySearch.current?.scrollIntoView({
+      behavior: "smooth",
+    })
+  }
 
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
       <Hero />
+      <a href="#rochdi">dfdf</a>
 
       <div className=" flex flex-col w-9/10 min-h-100">
         <h1 className="text-orange-500 font-outfit font-bold text-3xl">
@@ -57,11 +66,19 @@ export default function Home() {
         <div className="flex flex-wrap gap-5 mt-5 w-full">
           {annonces.length > 0 &&
             annonces.map((annonce, index) => (
-              <AnnonceCard key={index} annonce={annonce} />
+              <AnnonceCard
+                key={index}
+                annonce={annonce}
+                setCategorie={setCategorieSearch}
+              />
             ))}
         </div>
       </div>
-      <BrowseCategories />
+      <BrowseCategories
+        setCategorie={setCategorieSearch}
+        categorie={categorie}
+        ref={categorySearch}
+      />
       {cities.length > 0 && (
         <motion.div
           initial={{ y: 200, opacity: 0 }}
