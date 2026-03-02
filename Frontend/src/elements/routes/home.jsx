@@ -8,10 +8,11 @@ import { SquarePlus } from "lucide-react"
 import { setBar } from "../../redux/sliceElements"
 import { useNavigate } from "react-router-dom"
 import Hero from "../Hero"
+import AnnonceCard from "../animatedElements/AnnonceCard"
 
 export default function Home() {
   const cities = useNearestCities()
-  const [name, setName] = useState([])
+  const [annonces, setAnnonces] = useState([])
   const ajouter = useRef()
   const ajouterInView = useInView(ajouter)
   const dispatch = useDispatch()
@@ -20,15 +21,26 @@ export default function Home() {
   useEffect(() => {
     dispatch(setBar(ajouterInView))
   }, [ajouterInView])
-  const getName = async () => {
-    await axios
+  useEffect(() => {
+    axios
       .get("http://localhost:8000/api/annonces")
-      .then((res) => setName(res.data))
-  }
+      .then((res) => setAnnonces(res.data))
+  }, [])
 
   return (
     <main className="flex flex-col gap-5 items-center justify-center p-7">
       <Hero />
+      <div className=" flex flex-col w-9/10">
+        <h1 className="text-orange-500 font-outfit font-bold text-3xl">
+          Annonces :
+        </h1>
+        <div className="flex flex-wrap gap-5 mt-5 w-full">
+          {annonces.length > 0 &&
+            annonces.map((annonce, index) => (
+              <AnnonceCard key={index} annonce={annonce} />
+            ))}
+        </div>
+      </div>
       {cities.length > 0 && (
         <motion.div
           initial={{ y: 200, opacity: 0 }}
@@ -50,8 +62,6 @@ export default function Home() {
           </div>
         </motion.div>
       )}
-      <button onClick={getName}>get</button>
-      {name && name.map((e, index) => <h1 key={index}>{e.user_id}</h1>)}
     </main>
   )
 }

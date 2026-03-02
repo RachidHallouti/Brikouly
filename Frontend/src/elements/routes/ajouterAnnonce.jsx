@@ -16,7 +16,7 @@ export default function AjouterAnnonce() {
   const user = useSelector((state) => state.auth.user)
   const { getValues, setValue, register, handleSubmit } = useForm()
   useEffect(() => {
-    cities.length &&
+    cities.length > 0 &&
       getValues("ville") == "" &&
       setValue("ville", cities[0].name)
   }, [cities])
@@ -123,7 +123,7 @@ export default function AjouterAnnonce() {
         >
           {categories.map((e, index) => (
             <option key={index} value={e}>
-              {e}
+              {e.name}
             </option>
           ))}
         </motion.select>
