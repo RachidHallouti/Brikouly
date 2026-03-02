@@ -17,3 +17,4 @@ Route::post('/logout', [AuthController::class,"logout"]
 );
 Route::resource("annonces",AnnonceController::class);
 Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
+Route::get('/categories/{categorie}',[AnnonceController::class,"categorieAnnonces"]);
