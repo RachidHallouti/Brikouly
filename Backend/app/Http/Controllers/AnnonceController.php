@@ -15,7 +15,7 @@ class AnnonceController extends Controller
      */
     public function index()
     {
-        $annonces=Annonce::all();
+        $annonces=Annonce::select()->latest()->get();
         return response()->json($annonces);
     }
     public function store(Request $request)
