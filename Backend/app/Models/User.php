@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use app\Models\Annonce;
+use app\Models\Favori;
 
 class User extends Authenticatable
 {
@@ -30,6 +31,10 @@ class User extends Authenticatable
     ];
     function annonces(){
         return $this->hasMany(Annonce::class);
+    }
+
+    public function favoris() {
+    return $this->hasMany(Favori::class);
     }
 
     /**
