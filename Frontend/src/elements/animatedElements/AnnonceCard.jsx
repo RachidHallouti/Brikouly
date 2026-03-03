@@ -43,7 +43,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               scale: 1.05,
             }}
             onClick={() => setCategorie(categorie.name)}
-            className={`p-1 px-1.5 ${categorie.color} cursor-pointer rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
+            className={`p-1 px-1.5 ${categorie.color ?? ""} cursor-pointer rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
           >
             {categorie.name}
           </motion.button>

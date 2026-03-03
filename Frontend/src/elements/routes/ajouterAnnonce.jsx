@@ -122,7 +122,7 @@ export default function AjouterAnnonce() {
           {...register("categorie")}
         >
           {categories.map((e, index) => (
-            <option key={index} value={e}>
+            <option key={index} value={e.name}>
               {e.name}
             </option>
           ))}
