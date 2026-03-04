@@ -20,3 +20,4 @@ Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
 Route::get('/categories/{categorie}',[AnnonceController::class,"categorieAnnonces"]);
 Route::get('/users/{user}/favoris', [FavoriController::class, 'index']);
 Route::post('/favori/toggle',[FavoriController::class,'toggle']);
+Route::get('/annonces/search/{search}', [AnnonceController::class, 'rechercher']);

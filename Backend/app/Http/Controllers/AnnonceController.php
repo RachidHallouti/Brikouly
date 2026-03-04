@@ -96,4 +96,28 @@ class AnnonceController extends Controller
     }
         return response()->json($categorieannonces);
     }
+
+    public function rechercher(Request $request){
+        $request->validate([
+            'search' => 'required|string|min:1'
+        ]);
+
+        $searchTerm = $request->search;
+
+        $annonces = Annonce::where('titre', 'LIKE', "%{$searchTerm}%")
+            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+            ->get();
+
+        if ($annonces->isEmpty()) {
+            return response()->json([
+                'message' => 'Aucune annonce ne correspond à votre recherche',
+                'success' => false
+            ], 404);
+        }
+
+        return response()->json([
+            'data' => $annonces,
+            'success' => true
+        ]);
+    }
 }
