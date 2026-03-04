@@ -1,5 +1,6 @@
 <?php
-
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\FavoriController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\AuthController;
 use App\Models\User;
@@ -18,3 +19,8 @@ Route::post('/logout', [AuthController::class,"logout"]
 Route::resource("annonces",AnnonceController::class);
 Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
 Route::get('/categories/{categorie}',[AnnonceController::class,"categorieAnnonces"]);
+Route::get('/users/{user}/favoris', [FavoriController::class, 'index']);
+Route::post('/favori/toggle',[FavoriController::class,'toggle']);
+Route::get('/annonces/search/{search}', [AnnonceController::class, 'rechercher']);
+Route::get('/users', [UserController::class, 'index']);
+Route::get('/users/{id}', [UserController::class, 'show']);
