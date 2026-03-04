@@ -10,9 +10,6 @@ use Illuminate\Support\Str;
 
 class AnnonceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $annonces=Annonce::select()->latest()->get();
@@ -39,20 +36,9 @@ class AnnonceController extends Controller
     }
     public function show(Annonce $annonce)
     {
-        return redirect()->json($annonce);
+        return response()->json($annonce);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Annonce $annonce)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Annonce $annonce)
     {
         $data=$request->validate([
@@ -76,9 +62,6 @@ class AnnonceController extends Controller
         return response()->json(["message"=>'Votre annonce a été modifiée']); 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Annonce $annonce)
     {
         $annonce->delete();

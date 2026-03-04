@@ -39,16 +39,9 @@ class AuthController extends Controller
         $imageName = Str::random().'.'.$request->photo->getClientOriginalExtension();
         Storage::disk("public")->putFileAS('users/photo',$request->photo,$imageName);
         $imagePath = 'users/photo/'.$imageName;
+        $data["photo"] = $imagePath;
          
-        $user = User::create([
-            "nom"=>$data["nom"],
-            "prenom"=>$data["prenom"],
-            "ville"=>$data["ville"] ?? null,
-            "photo"=>$imagePath,
-            "bio"=>$data["bio"] ?? null,
-            "email"=>$data["email"],
-            "password"=>Hash::make($data["password"]),
-        ]);
+        $user = User::create($data);//cheki l password
         if(!$user){
             return response()->json([
             "message"=>"Nous n'avons pas pu créer votre compte. Veuillez réessayer.",
