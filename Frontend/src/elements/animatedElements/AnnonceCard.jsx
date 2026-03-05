@@ -1,10 +1,42 @@
 import { Heart, MapPin } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { serviceCategories } from "../../assets/categorie"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
+import { set } from "zod"
+import axios from "axios"
 
 const AnnonceCard = ({ annonce, setCategorie }) => {
   const categorie = serviceCategories.find((e) => e.name == annonce.categorie)
+  const { user } = useSelector((state) => state.auth)
+  const [isFavored, setIsFavored] = useState(false)
+  const checkIfFavored = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/favori/check", {
+        annonce_id: annonce.id,
+        user_id: user.id,
+      })
+      setIsFavored(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    checkIfFavored()
+    console.log(isFavored)
+  }, [isFavored])
+
+  const favoritise = async () => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/favori/toggle", {
+        user_id: user.id,
+        annonce_id: annonce.id,
+      })
+      checkIfFavored()
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <div className="relative">
       <motion.div
@@ -19,9 +51,14 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
             scale: 0.95,
           }}
           onPointerDown={(e) => e.stopPropagation()}
+          onClick={favoritise}
           className="absolute z-20 cursor-pointer top-3 text-white right-3"
         >
-          <Heart size={28} fill="rgba(0,0,0,0.5)" strokeWidth={1.7} />
+          <Heart
+            size={isFavored ? 32 : 28}
+            fill={isFavored ? "red" : "rgba(0,0,0,0.5)"}
+            strokeWidth={isFavored ? 0 : 1.7}
+          />
         </motion.button>
         <motion.div
           className="shadow-[0_0_15px] hover:shadow-[0_0_30px] shadow-black/20 rounded-2xl cursor-pointer w-57 h-85 font-outfit overflow-hidden"
@@ -44,8 +81,8 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               whileHover={{
                 scale: 1.05,
               }}
-              onClick={() => setCategorie(categorie.name)}
-              className={`p-1 px-1.5 ${categorie.color ?? ""} cursor-pointer rounded-lg ${categorie.accent} shadow-sm hover:shadow-md text-[13px]`}
+              onClick={() => setCategorie && setCategorie(categorie.name)}
+              className={`p-1 px-1.5 ${categorie?.color ?? ""} cursor-pointer rounded-lg ${categorie?.accent} shadow-sm hover:shadow-md text-[13px]`}
             >
               {categorie.name}
             </motion.button>

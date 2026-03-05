@@ -21,6 +21,7 @@ Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
 Route::get('/categories/{categorie}',[AnnonceController::class,"categorieAnnonces"]);
 Route::get('/users/{user}/favoris', [FavoriController::class, 'index']);
 Route::post('/favori/toggle',[FavoriController::class,'toggle']);
+Route::post('/favori/check',[FavoriController::class,'check']);
 Route::get('/annonces/search/{search}', [AnnonceController::class, 'rechercher']);
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);

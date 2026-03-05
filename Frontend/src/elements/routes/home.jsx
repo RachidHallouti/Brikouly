@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 import Hero from "../Hero"
 import AnnonceCard from "../animatedElements/AnnonceCard"
 import BrowseCategories from "../animatedElements/browseCategorises"
+import AnnoncesShower from "../animatedElements/AnnoncesShower"
 
 export default function Home() {
   const cities = useNearestCities()
@@ -47,33 +48,15 @@ export default function Home() {
       <Hero />
       <a href="#rochdi">dfdf</a>
 
-      <div className=" flex flex-col w-9/10 min-h-100">
+      <AnnoncesShower
+        annonces={annonces}
+        setCategorieSearch={setCategorieSearch}
+        loadingAnnonces={loadingAnnonces}
+      >
         <h1 className="text-orange-500 font-outfit font-bold text-3xl">
           Annonces :
         </h1>
-        {loadingAnnonces && (
-          <div className="w-full my-auto flex text-black items-center justify-center">
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-                transition: { repeat: Infinity, ease: "linear" },
-              }}
-            >
-              <LoaderCircle size={50} />
-            </motion.div>
-          </div>
-        )}
-        <div className="flex flex-wrap gap-5 mt-5 w-full">
-          {annonces.length > 0 &&
-            annonces.map((annonce, index) => (
-              <AnnonceCard
-                key={index}
-                annonce={annonce}
-                setCategorie={setCategorieSearch}
-              />
-            ))}
-        </div>
-      </div>
+      </AnnoncesShower>
       <BrowseCategories
         setCategorie={setCategorieSearch}
         categorie={categorie}

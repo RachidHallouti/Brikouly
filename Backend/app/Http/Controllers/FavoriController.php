@@ -68,7 +68,7 @@ class FavoriController extends Controller
     public function toggle(Request $request){
         $data= $request->validate([
             'user_id' =>'required|exists:users,id',
-            'annonces_id' =>'required|exists:annonces,id',
+            'annonce_id' =>'required|exists:annonces,id',
 
         ]);
 
@@ -86,7 +86,7 @@ class FavoriController extends Controller
     public function check(Request $request){
         $data= $request->validate([
             'user_id' =>'required|exists:users,id',
-            'annonces_id' =>'required|exists:annonces,id',
+            'annonce_id' =>'required|exists:annonces,id',
 
         ]);
 

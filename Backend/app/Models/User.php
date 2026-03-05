@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use app\Models\Annonce;
-use app\Models\Favori;
+use App\Models\Annonce;
+use App\Models\Favori;
 
 class User extends Authenticatable
 {

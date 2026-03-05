@@ -10,6 +10,7 @@ import NotFoundLayout from "./elements/layouts/notFoundLayout"
 import GuestLayout from "./elements/layouts/guestLayout"
 import Register from "./elements/routes/register"
 import { AnimatePresence } from "motion/react"
+import Favoris from "./elements/routes/Favoris"
 const router = createBrowserRouter([
   {
     path: "/",
@@ -49,6 +50,7 @@ const router = createBrowserRouter([
           },
           {
             path: "/favoris",
+            element: <Favoris />,
           },
           {
             path: "/messages",
