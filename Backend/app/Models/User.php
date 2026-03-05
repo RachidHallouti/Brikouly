@@ -33,8 +33,9 @@ class User extends Authenticatable
         return $this->hasMany(Annonce::class);
     }
 
-    public function favoris() {
-    return $this->hasMany(Favori::class);
+    public function favoris(){
+        return $this->belongsToMany(Annonce::class, 'favoris', 'user_id', 'annonce_id')
+                    ->withTimestamps();
     }
 
     /**

@@ -11,10 +11,22 @@ class FavoriController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(User $user)
-    {
-        $favoris = $user->favoris()->with('annonce')->get();
-        return response()->json($favoris);
+
+    public function index(Request $request){
+        $user = $request->user(); 
+        $annoncesFavoris = $user->favoris()->get();
+
+        if ($annoncesFavoris->isEmpty()) {
+            return response()->json([
+                'message' => 'Votre liste de souhaits est vide',
+                'success' => false
+            ], 200);
+        }
+
+        return response()->json([
+            'data' => $annoncesFavoris,
+            'success' => true
+        ]);
     }
 
     /**
