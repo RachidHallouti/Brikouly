@@ -8,9 +8,5 @@ export default function GuestLayout() {
   const location = useLocation()
 
   if (token) return <Navigate to="/profile" />
-  return (
-    <AnimatePresence mode="wait">
-      <Outlet key={location.pathname} />
-    </AnimatePresence>
-  )
+  return <Outlet key={location.pathname} />
 }

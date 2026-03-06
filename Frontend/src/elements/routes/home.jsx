@@ -44,10 +44,8 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col gap-5 items-center justify-center p-7">
+    <main className="flex flex-col gap-5">
       <Hero />
-      <a href="#rochdi">dfdf</a>
-
       <AnnoncesShower
         annonces={annonces}
         setCategorieSearch={setCategorieSearch}

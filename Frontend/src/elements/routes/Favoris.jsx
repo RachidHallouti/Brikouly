@@ -23,7 +23,7 @@ export default function Favoris() {
   }, [])
 
   return (
-    <main className="flex flex-col gap-5 items-center justify-center p-7">
+    <main className="flex flex-col gap-5">
       {favoris && favoris.length > 0 && (
         <AnnoncesShower annonces={favoris}>
           <h2 className="text-orange-500 font-space font-bold text-3xl">

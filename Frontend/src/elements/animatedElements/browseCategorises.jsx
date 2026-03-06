@@ -17,7 +17,7 @@ const BrowseCategories = (props) => {
     setCatAnnonces([])
   }, [props.categorie])
   return (
-    <div ref={props.ref} className="w-9/10 my-10 ">
+    <div ref={props.ref} className="my-10 ">
       <h1 className="text-orange-500 font-space text-2xl font-extrabold mb-8">
         Recherche par categorie :
       </h1>

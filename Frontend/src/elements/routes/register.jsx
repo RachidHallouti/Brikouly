@@ -127,9 +127,9 @@ export default function Register() {
       exit={{
         opacity: 0,
       }}
-      className=" flex justify-center w-full min-h-200 items-center py-6"
+      className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
     >
-      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full sm:w-3/5 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full sm:w-4/6 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
         <motion.div
           initial={{
             opacity: 0,

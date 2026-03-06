@@ -24,7 +24,7 @@ const Hero = () => {
         initial={{ opacity: 0.3, scale: 0.65 }}
         animate={{ opacity: 1, scale: 1, transition: { duration: 0.25 } }}
         ref={hero}
-        className="to-orange-200/50 from-gray-300/50 bg-linear-to-tr min-w-lg py-10 shadow-md p-5 rounded-2xl flex-col w-2/5 gap-3 flex items-center  "
+        className="to-orange-200/50 mx-auto from-gray-300/50 bg-linear-to-tr min-w-lg py-10 shadow-md p-5 rounded-2xl flex-col w-2/5 gap-3 flex items-center  "
       >
         <h2 className="font-space text-4xl mb-2 text-gray-800 font-semibold">
           Avez-vous un besoin ?

@@ -10,7 +10,7 @@ export default function AnnoncesShower({
   loadingAnnonces,
 }) {
   return (
-    <div className=" flex flex-col w-9/10 min-h-100">
+    <div className=" flex flex-col w-full min-h-100">
       {children}
       {loadingAnnonces && (
         <div className="w-full my-auto flex text-black items-center justify-center">

@@ -75,7 +75,7 @@ export default function Login() {
       exit={{
         opacity: 0,
       }}
-      className=" flex justify-center min-h-200 w-full items-center py-6"
+      className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
     >
       <div className="flex justify-center sm:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)] rounded-2xl overflow-hidden">
         <motion.div
