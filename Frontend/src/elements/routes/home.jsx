@@ -53,7 +53,7 @@ export default function Home() {
         setCategorieSearch={setCategorieSearch}
         loadingAnnonces={loadingAnnonces}
       >
-        <h1 className="text-orange-500 font-outfit font-bold text-3xl">
+        <h1 className="text-orange-500 font-space text-2xl font-extrabold">
           Annonces :
         </h1>
       </AnnoncesShower>

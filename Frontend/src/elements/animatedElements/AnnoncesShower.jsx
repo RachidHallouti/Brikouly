@@ -25,7 +25,7 @@ export default function AnnoncesShower({
         </div>
       )}
       <div className="flex flex-wrap gap-5 mt-5 w-full">
-        {annonces.length > 0 &&
+        {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard
               key={index}

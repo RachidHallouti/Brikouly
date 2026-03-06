@@ -13,8 +13,8 @@ export default function Favoris() {
         const res = await axios.get(
           `http://localhost:8000/api/users/${user.id}/favoris`,
         )
-        setFavoris(res.data)
-        console.log(res.data)
+        setFavoris(res.data.data)
+        console.log(res.data.data)
       } catch (error) {
         console.log(error)
       }
@@ -23,8 +23,14 @@ export default function Favoris() {
   }, [])
 
   return (
-    <>
-      <AnnoncesShower annonces={favoris} />
-    </>
+    <main className="flex flex-col gap-5 items-center justify-center p-7">
+      {favoris && favoris.length > 0 && (
+        <AnnoncesShower annonces={favoris}>
+          <h2 className="text-orange-500 font-space font-bold text-3xl">
+            Mes favoris
+          </h2>
+        </AnnoncesShower>
+      )}
+    </main>
   )
 }
