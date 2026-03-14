@@ -1,16 +1,16 @@
 import { createBrowserRouter } from "react-router-dom"
-import Home from "./elements/routes/home"
-import Profile from "./elements/routes/profile"
-import AjouterAnnonce from "./elements/routes/ajouterAnnonce"
+import Home from "./elements/pages/home"
+import Profile from "./elements/pages/profile"
+import AjouterAnnonce from "./elements/pages/ajouterAnnonce"
 import PublicLayout from "./elements/layouts/publicLayout"
 import AuthLayout from "./elements/layouts/authLayout"
 import GlobalLayout from "./elements/layouts/globalLayout"
-import Login from "./elements/routes/login"
+import Login from "./elements/pages/login"
 import NotFoundLayout from "./elements/layouts/notFoundLayout"
 import GuestLayout from "./elements/layouts/guestLayout"
-import Register from "./elements/routes/register"
+import Register from "./elements/pages/register"
 import { AnimatePresence } from "motion/react"
-import Favoris from "./elements/routes/Favoris"
+import Favoris from "./elements/pages/Favoris"
 const router = createBrowserRouter([
   {
     path: "/",

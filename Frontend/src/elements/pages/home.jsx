@@ -29,10 +29,10 @@ export default function Home() {
   useEffect(() => {
     const fetchAnnonces = async () => {
       setLoading(true)
-      await axios
-        .get("http://localhost:8000/api/annonces")
-        .then((res) => setAnnonces(res.data))
+      const res = await axios.get("http://localhost:8000/api/annonces")
+
       setLoading(false)
+      setAnnonces(res.data)
     }
     fetchAnnonces()
   }, [])
@@ -44,7 +44,7 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col gap-5">
+    <main className="flex flex-col  gap-5">
       <Hero />
       <AnnoncesShower
         annonces={annonces}

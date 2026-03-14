@@ -3,11 +3,11 @@ import Header from "../header"
 
 export default function GlobalLayout() {
   return (
-    <>
+    <div className="bg-[#f8f7f5] ">
       <Header />
-      <main className="w-9/10 mx-auto p-7 pt-11 min-h-[calc(100vh-88px)] ">
+      <main className="w-9/10 mx-auto  p-7 pt-11 min-h-[calc(100vh-88px)] ">
         <Outlet />
       </main>
-    </>
+    </div>
   )
 }

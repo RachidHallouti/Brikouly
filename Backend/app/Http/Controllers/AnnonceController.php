@@ -10,9 +10,14 @@ use Illuminate\Support\Str;
 
 class AnnonceController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $annonces=Annonce::select()->latest()->get();
+        if($request['categorie']){
+            $annonces=Annonce::whereLike('categorie',$request['categorie'])->latest()->with('user')->get();
+            return response()->json($annonces);
+        }
+        $annonces=Annonce::select()->latest()->with('user')->get();
+        
         return response()->json($annonces);
     }
     public function store(Request $request)
@@ -80,23 +85,19 @@ class AnnonceController extends Controller
         return response()->json($categorieannonces);
     }
 
-    public function rechercher(Request $request){
-        $request->validate([
-            'search' => 'required|string|min:1'
-        ]);
+    public function rechercher($search){
+        
 
-        $searchTerm = $request->search;
-
-        $annonces = Annonce::where('titre', 'LIKE', "%{$searchTerm}%")
-            ->orWhere('description', 'LIKE', "%{$searchTerm}%")
+        $annonces = Annonce::where('titre', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
             ->get();
 
-        if ($annonces->isEmpty()) {
-            return response()->json([
-                'message' => 'Aucune annonce ne correspond à votre recherche',
-                'success' => false
-            ], 404);
-        }
+        // if ($annonces->isEmpty()) {
+        //     return response()->json([
+        //         'message' => 'Aucune annonce ne correspond à votre recherche',
+        //         'success' => false
+        //     ], 404);
+        // }
 
         return response()->json([
             'data' => $annonces,

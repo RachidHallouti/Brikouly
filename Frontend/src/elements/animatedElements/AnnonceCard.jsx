@@ -10,45 +10,37 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
   const categorie = serviceCategories.find((e) => e.name == annonce.categorie)
   const { user } = useSelector((state) => state.auth)
   const [isFavored, setIsFavored] = useState(false)
-  const [annonceUser, setAnnonceUser] = useState({})
   const checkIfFavored = async () => {
-    try {
-      const res = await axios.post("http://localhost:8000/api/favori/check", {
-        annonce_id: annonce.id,
-        user_id: user.id,
-      })
-      setIsFavored(res.data)
-    } catch (error) {
-      console.log(error)
+    if (user) {
+      try {
+        const res = await axios.post("http://localhost:8000/api/favori/check", {
+          annonce_id: annonce.id,
+          user_id: user.id,
+        })
+        setIsFavored(res.data)
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
-  const getUser = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:8000/api/users/${annonce.user_id}`,
-      )
-      setAnnonceUser(res.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getUser()
-  }, [])
   useEffect(() => {
     checkIfFavored()
-    console.log(isFavored)
   }, [isFavored])
 
   const favoritise = async () => {
-    try {
-      const res = await axios.post("http://localhost:8000/api/favori/toggle", {
-        user_id: user.id,
-        annonce_id: annonce.id,
-      })
-      checkIfFavored()
-    } catch (error) {
-      console.log(error)
+    if (user) {
+      try {
+        const res = await axios.post(
+          "http://localhost:8000/api/favori/toggle",
+          {
+            user_id: user.id,
+            annonce_id: annonce.id,
+          },
+        )
+        checkIfFavored()
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
   return (
@@ -115,11 +107,11 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               </div>
               <div className="flex gap-3 border-t mt-1 text-sm border-slate-700/30 w-full pt-2 items-center text-slate-700">
                 <img
-                  src={`http://localhost:8000/storage/${annonceUser.photo}`}
+                  src={`http://localhost:8000/storage/${annonce.user.photo}`}
                   className="h-7 w-7 object-cover rounded-full"
                 />
                 <h3>
-                  {annonceUser.nom} {annonceUser.prenom}
+                  {annonce.user.nom} {annonce.user.prenom}
                 </h3>
               </div>
             </div>
