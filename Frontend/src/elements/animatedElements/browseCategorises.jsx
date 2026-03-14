@@ -35,7 +35,7 @@ const BrowseCategories = (props) => {
       </h1>
       <div className="w-full  items-center gap-3 flex">
         <button
-          className="rounded-full cursor-pointer p-3 hover:bg-gray-300/50"
+          className="rounded-full sm:block hidden cursor-pointer p-3 hover:bg-gray-300/50"
           onClick={() => scroll("left")}
         >
           <ChevronLeft strokeWidth={3} />
@@ -43,7 +43,7 @@ const BrowseCategories = (props) => {
         <div className="overflow-hidden flex items-center w-full relative">
           <motion.div
             ref={categoriesScroll}
-            className="flex p-3 overflow-hidden gap-3 font-outfit"
+            className="flex p-3 overflow-scroll sm:overflow-hidden gap-3 font-outfit"
           >
             {categories.map((cat) => (
               <motion.button
@@ -59,16 +59,16 @@ const BrowseCategories = (props) => {
                 onClick={() => {
                   props.setCategorie(cat.name)
                 }}
-                className={`${cat.color} ${cat.accent} shrink-0 h-36 w-36 hover:shadow-lg cursor-pointer shadow-md flex flex-col p-6 rounded-xl gap-2 justify-center items-center`}
+                className={`${cat.color} ${cat.accent} shrink-0 h-24 w-24 sm:h-36 sm:w-36 hover:shadow-lg cursor-pointer shadow-md flex flex-col p-6 rounded-xl gap-2 justify-center items-center`}
               >
-                <cat.icon className="h-12 w-12" />
+                <cat.icon className="h-12 w-12 sm:block hidden" />
                 <p className="text-sm">{cat.name}</p>
               </motion.button>
             ))}
           </motion.div>
         </div>
         <button
-          className="rounded-full cursor-pointer p-3 hover:bg-gray-300/50"
+          className="rounded-full sm:block hidden cursor-pointer p-3 hover:bg-gray-300/50"
           onClick={() => scroll("right")}
         >
           <ChevronRight strokeWidth={3} />

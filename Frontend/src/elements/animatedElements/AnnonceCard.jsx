@@ -44,7 +44,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
     }
   }
   return (
-    <div className="relative">
+    <div className="relative w-full px-3 sm:p-0 sm:w-55 h-80">
       <motion.div
         whileHover={{
           scale: 1.05,
@@ -67,7 +67,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           />
         </motion.button>
         <motion.div
-          className="shadow-[0_0_15px] hover:shadow-[0_0_30px] shadow-black/20 rounded-2xl cursor-pointer w-55 h-80 font-outfit overflow-hidden relative"
+          className="shadow-[0_0_7px] hover:shadow-[0_0_15px] shadow-black/20 rounded-2xl cursor-pointer w-full h-80 font-outfit overflow-hidden relative"
           whileTap={{
             scale: 0.95,
           }}

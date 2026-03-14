@@ -91,16 +91,13 @@ class AnnonceController extends Controller
         $annonces = Annonce::where('titre', 'LIKE', "%{$search}%")
             ->orWhere('description', 'LIKE', "%{$search}%")
             ->get();
-
-        // if ($annonces->isEmpty()) {
-        //     return response()->json([
-        //         'message' => 'Aucune annonce ne correspond à votre recherche',
-        //         'success' => false
-        //     ], 404);
-        // }
+        $annoncesCount = Annonce::count() ;
+        $usersCount = User::count() ;
 
         return response()->json([
             'data' => $annonces,
+            'annoncesCount'=>$annoncesCount,
+            'usersCount'=>$usersCount,
             'success' => true
         ]);
     }

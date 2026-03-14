@@ -37,7 +37,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className="flex z-50 sticky h-22 justify-between text-white p-6 sm:px-10 bg-linear-to-tr from-orange-400/90 to-orange-600/90 items-center backdrop-blur-md shadow-xl shadow-orange-400/40"
+        className="flex z-50 sticky h-22 justify-between text-white p-6 sm:px-10 bg-linear-to-tr from-orange-500 to-orange-500 items-center backdrop-blur-md shadow-xl shadow-orange-400/40"
         variants={{
           scrolled: {
             marginLeft: 70,
