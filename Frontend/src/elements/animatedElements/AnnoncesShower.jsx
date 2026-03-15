@@ -13,7 +13,7 @@ export default function AnnoncesShower({
     <div className=" flex flex-col w-full min-h-100">
       {children}
       {loadingAnnonces && (
-        <div className="w-full my-auto flex text-black items-center justify-center">
+        <div className="w-full my-auto  flex text-black items-center justify-center">
           <motion.div
             animate={{
               rotate: [0, 360],
@@ -24,7 +24,7 @@ export default function AnnoncesShower({
           </motion.div>
         </div>
       )}
-      <div className="flex flex-wrap gap-5 mt-5 w-full">
+      <div className="flex gap-y-3 flex-wrap mt-5 w-full">
         {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard

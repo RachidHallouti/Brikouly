@@ -10,6 +10,11 @@ use Illuminate\Support\Str;
 
 class AnnonceController extends Controller
 {
+    function nearest(Request $request){
+        $cities = $request['cities'];
+        $annonces = Annonce::select()->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->with('user')->get();
+        return response()->json($annonces);
+    }
     public function index(Request $request)
     {
         if($request['categorie']){

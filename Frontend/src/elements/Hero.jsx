@@ -11,10 +11,12 @@ import { setBar } from "../redux/sliceElements"
 import { useNavigate } from "react-router-dom"
 import AnnoncesShower from "./animatedElements/AnnoncesShower"
 import axios from "axios"
+import { serviceCategories } from "../assets/categorie"
 
 const Hero = () => {
   const hero = useRef()
   const heroInView = useInView(hero)
+  const categories = serviceCategories
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [search, setSearch] = useState(null)
@@ -30,7 +32,6 @@ const Hero = () => {
       const res = await axios.get(
         `http://localhost:8000/api/annonces/search/${search}`,
       )
-      console.log(res)
       setUsersCount(res.data.usersCount)
       setAnnoncesCount(res.data.annoncesCount)
       // .then((res) => found && setAnnonces(res.data?.data))
@@ -43,25 +44,24 @@ const Hero = () => {
         initial={{ opacity: 0.3, scale: 0.65 }}
         animate={{ opacity: 1, scale: 1, transition: { duration: 0.25 } }}
         ref={hero}
-        className=" sm:px-15 py-2 w-full gap-10 flex items-center"
+        className="py-2 w-full gap-0 flex items-center"
       >
-        <div className="flex-col sm:p-10 p-3 w-full to-orange-100/0 via-orange-100/20 from-orange-400/50 bg-radial gap-2 flex items-center">
-          <h1 className="font-space text-6xl mb-2 text-gray-800 font-semibold">
-            Avez-vous besoin
-            <span className="text-orange-500"> d'un service ?</span>
+        <div className="flex-col sm:px-10 gap-4 p-3 xl:w-1/2 w-full to-orange-100/0 via-orange-100/20 from-orange-500/50 bg-radial flex items-center">
+          <h1 className=" text-6xl text-gray-800 font-semibold">
+            Besoin d’un service ?{" "}
+            <span className="text-orange-500">Brikouly</span> est là pour vous.
           </h1>
+
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
-            className="text-white my-2 shadow-md hover:shadow-xl text-xl p-3 rounded-xl h-12 bg-orange-500 font-outfit font-semibold flex gap-2 items-center cursor-pointer "
+            className="text-white  shadow-md hover:shadow-xl text-xl p-3 rounded-xl h-12 bg-orange-500 font-outfit font-semibold flex gap-2 items-center cursor-pointer "
             onClick={() => navigate("/ajouter-annonce")}
           >
             <SquarePlus />
             Publiez une annonce
           </motion.button>
-          <h2 className="font-space text-xl my-2 text-gray-800 font-semibold">
-            Ou
-          </h2>
+          <h2 className="font-space text-xl text-gray-800 font-semibold">Ou</h2>
           <div className="relative flex items-center justify-center max-w-full ">
             <motion.input
               onChange={(e) => setSearch(e.target.value)}
@@ -83,7 +83,7 @@ const Hero = () => {
             </motion.button>
           </div>
         </div>
-        <div className="xl:flex hidden w-full justify-center">
+        <div className="xl:flex hidden px-10 w-1/2 justify-center">
           <motion.div
             className="w-full shadow-lg hover:shadow-2xl  rotate-0 relative h-120  rounded-3xl overflow-hidden"
             animate={{ rotate: -3 }}

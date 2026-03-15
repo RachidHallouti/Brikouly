@@ -29,9 +29,9 @@ const BrowseCategories = (props) => {
     }
   }
   return (
-    <div ref={props.ref} className="my-10 ">
-      <h1 className="text-orange-500 font-space text-2xl font-extrabold mb-8">
-        Recherche par categorie :
+    <div ref={props.ref} className="my-5 bg-orange-100 p-8 py-12 rounded-2xl ">
+      <h1 className="text-slate-950 mb-3 text-4xl font-semibold">
+        Recherche par catégorie
       </h1>
       <div className="w-full  items-center gap-3 flex">
         <button

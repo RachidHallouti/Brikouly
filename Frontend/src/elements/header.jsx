@@ -26,6 +26,7 @@ export default function Header() {
   const { token } = useSelector((state) => state.auth)
   const barInview = useSelector((state) => state.elements.barInView)
   const navigate = useNavigate()
+  const isMobile = window.innerWidth < 770
   const location = useLocation().pathname
   const [menu, setMenu] = useState(false)
   const { scrollY } = useScroll()
@@ -37,7 +38,7 @@ export default function Header() {
   return (
     <>
       <motion.header
-        className="flex z-50 sticky h-22 justify-between text-white p-6 sm:px-10 bg-linear-to-tr from-orange-500 to-orange-500 items-center backdrop-blur-md shadow-xl shadow-orange-400/40"
+        className="flex z-50 sticky m-0 ml-auto h-22 justify-between text-white p-6 sm:px-10 bg-orange-500 items-center backdrop-blur-md shadow-lg shadow-orange-500/30"
         variants={{
           scrolled: {
             marginLeft: 70,
@@ -46,13 +47,11 @@ export default function Header() {
             top: 20,
           },
           unscrolled: {
-            marginLeft: 0,
-            marginRight: 0,
             borderRadius: 0,
             top: 0,
           },
         }}
-        animate={scrolled ? "scrolled" : "unscrolled"}
+        animate={scrolled && !isMobile ? "scrolled" : "unscrolled"}
       >
         <div className="flex gap-5 items-center">
           <Link
