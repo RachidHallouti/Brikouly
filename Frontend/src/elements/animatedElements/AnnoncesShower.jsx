@@ -10,7 +10,7 @@ export default function AnnoncesShower({
   loadingAnnonces,
 }) {
   return (
-    <div className=" flex flex-col w-full min-h-100">
+    <div className=" flex flex-col w-full">
       {children}
       {loadingAnnonces && (
         <div className="w-full my-auto  flex text-black items-center justify-center">
@@ -24,7 +24,7 @@ export default function AnnoncesShower({
           </motion.div>
         </div>
       )}
-      <div className="flex gap-y-3 flex-wrap mt-5 w-full">
+      <div className="flex gap-y-3 flex-wrap w-full">
         {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard

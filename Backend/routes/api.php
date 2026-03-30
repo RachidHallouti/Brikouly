@@ -24,5 +24,4 @@ Route::post('/favori/toggle',[FavoriController::class,'toggle']);
 Route::post('/favori/check',[FavoriController::class,'check']);
 Route::get('/annonces/search/{search}', [AnnonceController::class, 'rechercher']);
 Route::post('/nearest-annonces', [AnnonceController::class, 'nearest']);
-Route::get('/users', [UserController::class, 'index']);
-Route::get('/users/{id}', [UserController::class, 'show']);
+Route::resource("users", UserController::class);

@@ -39,7 +39,7 @@ const Hero = () => {
     searchAnnonces()
   }, [search])
   return (
-    <div className="w-full flex justify-center flex-col items-center">
+    <div className="w-full flex justify-center mb-7 flex-col items-center">
       <motion.div
         initial={{ opacity: 0.3, scale: 0.65 }}
         animate={{ opacity: 1, scale: 1, transition: { duration: 0.25 } }}

@@ -11,37 +11,25 @@ import Hero from "../Hero"
 import AnnonceCard from "../animatedElements/AnnonceCard"
 import BrowseCategories from "../animatedElements/browseCategorises"
 import AnnoncesShower from "../animatedElements/AnnoncesShower"
+import api from "../../assets/api"
+import NearestAnnonces from "../animatedElements/NearestAnnonces"
 
 export default function Home() {
+  const user = useSelector((state) => state.auth.user)
   const cities = useNearestCities().map((c) => c.name)
-  const [annonces, setAnnonces] = useState([])
+  const userCity = user?.ville && cities[0] !== user.ville ? user.ville : null
+  const citiesToProfile = useNearestCities(userCity).map((c) => c.name)
   const ajouter = useRef()
   const categorySearch = useRef()
   const [categorie, setCategorie] = useState("")
   const ajouterInView = useInView(ajouter)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [loadingAnnonces, setLoading] = useState(null)
 
   useEffect(() => {
     dispatch(setBar(ajouterInView))
   }, [ajouterInView])
-  useEffect(() => {
-    const fetchAnnonces = async () => {
-      setLoading(true)
-      const res = await axios.post(
-        "http://localhost:8000/api/nearest-annonces",
-        {
-          cities: cities,
-        },
-      )
-      console.log(res)
 
-      setLoading(false)
-      setAnnonces(res.data)
-    }
-    cities.length > 0 && fetchAnnonces()
-  }, [JSON.stringify(cities)])
   const setCategorieSearch = (cat) => {
     setCategorie(cat)
     categorySearch.current?.scrollIntoView({
@@ -53,37 +41,24 @@ export default function Home() {
     <main className="flex flex-col  gap-5">
       <Hero />
       {cities.length > 0 && (
-        <AnnoncesShower
-          annonces={annonces}
+        <NearestAnnonces
           setCategorieSearch={setCategorieSearch}
-          loadingAnnonces={loadingAnnonces}
+          cities={cities}
+        />
+      )}
+      {userCity && (
+        <NearestAnnonces
+          setCategorieSearch={setCategorieSearch}
+          cities={citiesToProfile}
         >
-          <h1 className="text-slate-950 text-4xl mt-10 mb-2.5 font-semibold">
-            Annonces près de vous
-          </h1>
-          <div className="w-full flex font-space text-[15.5px] mb-2 font-semibold justify-between">
-            <h2 className="text-gray-500 ">
-              les annonces les plus proches à {cities[0]}
-            </h2>
-            <Link>
-              <motion.div
-                whileHover={{
-                  gap: "16px",
-                  padding: "0px",
-                }}
-                className="flex gap-2 pr-2 items-center text-orange-500"
-              >
-                <h2 className=" font-bold">Voir plus</h2>
-                <ArrowRight size={20} />
-              </motion.div>
-            </Link>
-          </div>
-        </AnnoncesShower>
+          {user.ville}
+        </NearestAnnonces>
       )}
       <BrowseCategories
         setCategorie={setCategorieSearch}
         categorie={categorie}
         ref={categorySearch}
+        cities={cities}
       />
       {cities.length > 0 && (
         <motion.div

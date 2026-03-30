@@ -12,7 +12,10 @@ class AnnonceController extends Controller
 {
     function nearest(Request $request){
         $cities = $request['cities'];
-        $annonces = Annonce::select()->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->with('user')->get();
+        $user = $request['user_id'];
+        $annonces = Annonce::select()->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->with('user')->withExists(['favoris as isSaved' => function($q) use ($user){
+            $q->where('user_id',$user);
+        }])->get();
         return response()->json($annonces);
     }
     public function index(Request $request)

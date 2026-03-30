@@ -12,4 +12,8 @@ class Annonce extends Model
     function user(){
         return $this->belongsTo(User::class);
     }
+    public function favoris(){
+        return $this->belongsToMany(User::class, 'favoris')
+                    ->withTimestamps();
+    }
 }

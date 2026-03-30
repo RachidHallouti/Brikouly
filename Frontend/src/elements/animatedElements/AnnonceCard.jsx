@@ -5,30 +5,16 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import { set } from "zod"
 import axios from "axios"
+import storage from "../../assets/storage"
 
 const AnnonceCard = ({ annonce, setCategorie }) => {
   const categorie = serviceCategories.find((e) => e.name == annonce.categorie)
+  const [isSaved, setIsSaved] = useState(annonce.isSaved)
   const { user } = useSelector((state) => state.auth)
-  const [isFavored, setIsFavored] = useState(false)
-  const checkIfFavored = async () => {
-    if (user) {
-      try {
-        const res = await axios.post("http://localhost:8000/api/favori/check", {
-          annonce_id: annonce.id,
-          user_id: user.id,
-        })
-        setIsFavored(res.data)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-  useEffect(() => {
-    checkIfFavored()
-  }, [isFavored])
 
   const favoritise = async () => {
     if (user) {
+      setIsSaved(!isSaved)
       try {
         const res = await axios.post(
           "http://localhost:8000/api/favori/toggle",
@@ -37,7 +23,6 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
             annonce_id: annonce.id,
           },
         )
-        checkIfFavored()
       } catch (error) {
         console.log(error)
       }
@@ -61,9 +46,9 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           className="absolute z-20 cursor-pointer top-3 text-white right-3"
         >
           <Heart
-            size={isFavored ? 32 : 28}
-            fill={isFavored ? "red" : "rgba(0,0,0,0.5)"}
-            strokeWidth={isFavored ? 0 : 1.7}
+            size={30}
+            fill={isSaved ? "red" : "rgba(0,0,0,0.5)"}
+            strokeWidth={isSaved ? 0 : 1.7}
           />
         </motion.button>
         <motion.div
@@ -75,7 +60,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           <motion.div className="h-1/2 relative w-full bg-white ">
             <img
               className="w-full h-full object-cover"
-              src={`http://localhost:8000/storage/${annonce.photo}`}
+              src={`/storage/${annonce.photo}`}
               alt=""
             />
             <div className="absolute bottom-2.5 bg-orange-500 p-1 px-1.5 rounded-xl text-white right-2.5 flex gap-1 text-[13px]">
@@ -107,11 +92,14 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               </div>
               <div className="flex gap-2.5 border-t mt-1 text-sm border-slate-700/30 w-full pt-2 items-center text-slate-700">
                 <img
-                  src={`http://localhost:8000/storage/${annonce.user.photo}`}
+                  src={`/storage/${annonce.user.photo}`}
                   className="h-7 w-7 object-cover rounded-full"
                 />
                 <h3 className="text-gray-800 font-space font-semibold">
-                  Atoubi Ahmed
+                  {annonce.user.prenom[0].toUpperCase() +
+                    annonce.user.prenom.slice(1)}{" "}
+                  {annonce.user.nom[0].toUpperCase() +
+                    annonce.user.nom.slice(1)}
                 </h3>
               </div>
             </div>

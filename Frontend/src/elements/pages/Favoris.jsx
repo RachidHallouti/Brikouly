@@ -3,6 +3,7 @@ import AnnoncesShower from "../animatedElements/AnnoncesShower"
 import { set } from "zod"
 import axios from "axios"
 import { useSelector } from "react-redux"
+import api from "../../assets/api"
 
 export default function Favoris() {
   const [favoris, setFavoris] = useState([])
@@ -10,11 +11,8 @@ export default function Favoris() {
   useEffect(() => {
     const fetchFavoris = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8000/api/users/${user.id}/favoris`,
-        )
+        const res = await api.get(`api/users/${user.id}/favoris`)
         setFavoris(res.data.data)
-        console.log(res.data.data)
       } catch (error) {
         console.log(error)
       }
@@ -24,13 +22,18 @@ export default function Favoris() {
 
   return (
     <main className="flex flex-col gap-5">
-      {favoris && favoris.length > 0 && (
-        <AnnoncesShower annonces={favoris}>
-          <h2 className="text-orange-500 font-space font-bold text-3xl">
-            Mes favoris
+      <AnnoncesShower annonces={favoris}>
+        <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
+          Annonces enregistrées
+        </h1>
+        <div className="w-full flex font-space text-[15.5px] mb-2 font-semibold justify-between">
+          <h2 className="text-gray-500 ">
+            {favoris
+              ? `Vous avez ${favoris.length} annonces enregistrées`
+              : "Vous n'avez aucune annonce enregistrée"}
           </h2>
-        </AnnoncesShower>
-      )}
+        </div>
+      </AnnoncesShower>
     </main>
   )
 }

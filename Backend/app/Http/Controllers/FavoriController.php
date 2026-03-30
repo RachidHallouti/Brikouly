@@ -13,7 +13,7 @@ class FavoriController extends Controller
      */
 
     public function index(User $user){ 
-        $annoncesFavoris = $user->favoris()->get();
+        $annoncesFavoris = $user->favoris()->with('user')->get();
 
         if ($annoncesFavoris->isEmpty()) {
             return response()->json([
@@ -24,6 +24,7 @@ class FavoriController extends Controller
 
         return response()->json([
             'data' => $annoncesFavoris,
+            'count'=> $annoncesFavoris->count(),
             'success' => true
         ]);
     }

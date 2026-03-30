@@ -34,9 +34,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(User $user)
     {
-        $user = User::find($id);
+
 
         if (!$user) {
             return response()->json([
@@ -45,15 +45,9 @@ class UserController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'id'     => $user->id,
-            'nom'    => $user->nom,
-            'prenom' => $user->prenom,
-            'photo'  => $user->photo,
-            'ville'  => $user->ville,
-            'bio'    => $user->bio,
-            'success' => true
-        ]);
+        return response()->json($user->load(['annonces'=>function($q){
+            $q->with('user');
+        }])->loadCount('annonces'));
     }
     
 

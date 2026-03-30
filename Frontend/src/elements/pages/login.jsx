@@ -5,6 +5,7 @@ import { useState } from "react"
 import axios from "axios"
 import { useDispatch } from "react-redux"
 import { login } from "../../redux/slice"
+import api from "../../assets/api"
 export default function Login() {
   const navigate = useNavigate()
   const [userLogin, setUserLogin] = useState({})
@@ -53,10 +54,7 @@ export default function Login() {
   }
   const loginUser = async () => {
     try {
-      const reponse = await axios.post(
-        "http://localhost:8000/api/login",
-        userLogin,
-      )
+      const reponse = await api.post("api/login", userLogin)
       dispatch(login(reponse.data.userData))
     } catch {}
   }
@@ -77,12 +75,12 @@ export default function Login() {
       }}
       className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
     >
-      <div className="flex justify-center sm:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)] rounded-2xl overflow-hidden">
+      <div className="flex justify-center w-full lg:w-4/5 md:w-5/6 xl:w-3/4  2xl:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)] rounded-2xl overflow-hidden">
         <motion.div
           variants={parentVariant}
           initial="hidden"
           animate="visible"
-          className="flex xl:px-20  gap-4 flex-col items-center p-8 sm:p-16 border-orange-500 w-full md:w-4/5 lg:w-3/5"
+          className="flex xl:px-20  gap-4 flex-col items-center p-8 sm:p-16 border-orange-500 w-full xl:w-3/5"
         >
           <motion.div variants={childVariant}>
             <User className="h-28 w-28 text-zinc-800 " />

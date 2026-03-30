@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { login } from "../../redux/slice"
 import { moroccanCities } from "../../assets/cities"
 import useNearestCities from "../hooks/useNearestCities"
+import api from "../../assets/api"
 export default function Register() {
   const [form, setForm] = useState({})
   const [photo, setPhoto] = useState(null)
@@ -84,10 +85,7 @@ export default function Register() {
       form.ville && formData.append("ville", form.ville)
 
       try {
-        const reponse = await axios.post(
-          "http://127.0.0.1:8000/api/register",
-          formData,
-        )
+        const reponse = await api.post("api/register", formData)
         dispatch(login(reponse.data.userData))
       } catch (error) {
         if (error.response && error.response.status === 422) {
@@ -129,7 +127,7 @@ export default function Register() {
       }}
       className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
     >
-      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full sm:w-4/6 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full lg:w-4/5 md:w-5/6 xl:w-3/4  2xl:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
         <motion.div
           initial={{
             opacity: 0,
@@ -179,7 +177,7 @@ export default function Register() {
             </motion.p>
           </motion.div>
         </motion.div>
-        <div className="flex w-3/5 items-center justify-center">
+        <div className="flex w-full xl:w-3/5 items-center justify-center">
           <AnimatePresence mode="wait">
             {!conti ? (
               <motion.div
