@@ -26,7 +26,7 @@ export default function Favoris() {
         <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
           Annonces enregistrées
         </h1>
-        <div className="w-full flex font-space text-[15.5px] mb-2 font-semibold justify-between">
+        <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
           <h2 className="text-gray-500 ">
             {favoris
               ? `Vous avez ${favoris.length} annonces enregistrées`

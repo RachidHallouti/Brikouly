@@ -24,7 +24,7 @@ export default function AnnoncesShower({
           </motion.div>
         </div>
       )}
-      <div className="flex gap-y-3 flex-wrap w-full">
+      <div className="flex gap-y-3 @container flex-wrap w-full">
         {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard

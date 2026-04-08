@@ -6,6 +6,7 @@ import axios from "axios"
 import { useDispatch } from "react-redux"
 import { login } from "../../redux/slice"
 import api from "../../assets/api"
+import { setToaster } from "../../redux/sliceElements"
 export default function Login() {
   const navigate = useNavigate()
   const [userLogin, setUserLogin] = useState({})
@@ -54,9 +55,29 @@ export default function Login() {
   }
   const loginUser = async () => {
     try {
-      const reponse = await api.post("api/login", userLogin)
-      dispatch(login(reponse.data.userData))
-    } catch {}
+      const res = await api.post("api/login", userLogin)
+      dispatch(login(res.data.userData))
+      dispatch(
+        setToaster({
+          message: res.data.message,
+          sub: "Vous êtes maintenant connecté à Brikouly.",
+        }),
+      )
+    } catch (error) {
+      dispatch(
+        setToaster({
+          message:
+            error?.response?.status === 401
+              ? "erreur de connection"
+              : "un erreur est survenue",
+          sub:
+            error?.response?.status === 401
+              ? error?.response?.data?.message
+              : null,
+          type: "x",
+        }),
+      )
+    }
   }
   return (
     <motion.main

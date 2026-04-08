@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
   barInView: false,
+  toaster: {},
 }
 
 const elSilce = createSlice({
@@ -11,7 +12,10 @@ const elSilce = createSlice({
     setBar: (state, action) => {
       state.barInView = action.payload
     },
+    setToaster: (state, action) => {
+      state.toaster = action.payload
+    },
   },
 })
-export const { setBar } = elSilce.actions
+export const { setBar, setToaster } = elSilce.actions
 export default elSilce.reducer

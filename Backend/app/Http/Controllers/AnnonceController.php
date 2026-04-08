@@ -12,10 +12,26 @@ class AnnonceController extends Controller
 {
     function nearest(Request $request){
         $cities = $request['cities'];
+        $search = $request['search'];
         $user = $request['user_id'];
-        $annonces = Annonce::select()->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->with('user')->withExists(['favoris as isSaved' => function($q) use ($user){
+
+        $query = Annonce::select();
+        if($search){
+            $query->where('titre', 'LIKE', "%{$search}%")
+            ->orWhere('description', 'LIKE', "%{$search}%")
+            ;
+        }
+        if(!empty($cities)){
+            $query->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->latest();
+            }else{
+                $query->latest();
+            }
+        if($user){
+        $query->with('user')->withExists(['favoris as isSaved' => function($q) use ($user){
             $q->where('user_id',$user);
-        }])->get();
+        }]);
+        }
+        $annonces = $query->with('user')->get();
         return response()->json($annonces);
     }
     public function index(Request $request)
@@ -34,7 +50,7 @@ class AnnonceController extends Controller
             'titre'=>'required|string|min:5|max:50',
             'description'=>'required|string|min:10|max:255',
             'ville'=>'nullable|string',
-            'photo'=>'required|image',
+            'photo'=>'required|image|max:2048',
             'categorie'=>'required|string',
             'prix'=>'required|numeric|min:1|max:200000',
             'prix_par'=>'required|string',

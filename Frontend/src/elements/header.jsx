@@ -19,12 +19,14 @@ import {
 } from "motion/react"
 import NavButton from "./animatedElements/navbutton"
 import { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { setToaster } from "../redux/sliceElements"
 const color = "#ff6900"
 
 export default function Header() {
   const { token } = useSelector((state) => state.auth)
   const barInview = useSelector((state) => state.elements.barInView)
+  const disp = useDispatch()
   const navigate = useNavigate()
   const isMobile = window.innerWidth < 770
   const location = useLocation().pathname

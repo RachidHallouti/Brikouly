@@ -18,10 +18,10 @@ class AuthController extends Controller
     function login(LoginRequest $request){
         $loginData = $request->validated();
         if(!Auth::attempt($loginData)){
-           return response([
+           return response()->json([
             'message' => "L'email ou le mot de passe est incorrecte",
             "success" => false
-           ]);
+           ],401);
         }
         /** @var User $user */
         $user = Auth::user();

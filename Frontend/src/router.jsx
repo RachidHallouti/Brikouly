@@ -24,6 +24,10 @@ const router = createBrowserRouter([
             path: "/",
             element: <Home />,
           },
+          {
+            path: "/profile/:id",
+            element: <Profile />,
+          },
         ],
       },
       {
@@ -55,6 +59,7 @@ const router = createBrowserRouter([
           {
             path: "/messages",
           },
+
           {
             path: "/profile",
             element: <Profile />,

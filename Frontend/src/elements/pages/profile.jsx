@@ -1,24 +1,40 @@
 import { motion } from "motion/react"
-import { Calendar, MapPin, Pin, User } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import {
+  ArrowRight,
+  Calendar,
+  LogOut,
+  MapPin,
+  Package,
+  Pen,
+  Pencil,
+  Pin,
+  Send,
+  Star,
+  User,
+  UserRoundPen,
+} from "lucide-react"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../redux/slice"
 import { useEffect, useState } from "react"
 import api from "../../assets/api"
 import AnnoncesShower from "../animatedElements/AnnoncesShower"
 import Loader from "../animatedElements/Loader"
+import { setToaster } from "../../redux/sliceElements"
 export default function Profile() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { id } = useSelector((state) => state.auth.user)
+  const disp = useDispatch()
+  const { id } = useParams()
+  const userId = useSelector((state) => state?.auth?.user?.id)
   const [user, setUser] = useState()
+  const userProfile = userId == id || !id ? true : false
   const [selection, setSelection] = useState("annonces")
   const [loading, setLoading] = useState(true)
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       try {
-        const res = await api.get(`api/users/${id}`)
+        const res = await api.get(`api/users/${id || userId}`)
         console.log(res.data)
         setUser(res.data)
         setLoading(false)
@@ -63,127 +79,111 @@ export default function Profile() {
       },
     },
   }
+  const seDeconnecter = () => {
+    disp(logout())
+    disp(
+      setToaster({
+        message: "Vouz avez ete deconnecter",
+      }),
+    )
+  }
   return (
-    <main className="">
-      {!loading ? (
-        <main>
-          <div className="flex gap-10 py-7 mt-5 p-4 shadow-[0_0_2px_rgba(0,0,0,0.25)] rounded-4xl w-full border-gray-400 ">
-            <div className="p-0.75 shrink-0 h-32 w-32 rounded-full bg-linear-to-tr from-orange-400 to-orange-500">
-              <div className="p-0.5 shrink-0 h-full w-full rounded-full bg-white">
-                <img
-                  src={"/storage/" + user?.photo}
-                  alt=""
-                  className="h-full w-full object-cover rounded-full"
-                />
-              </div>
-            </div>
-            <div className=" w-fit h-full flex flex-col my-auto max-w-220">
-              <h1 className="text-3xl font-semibold">
-                {user?.prenom[0]?.toUpperCase() + user?.prenom?.slice(1)}{" "}
-                {user?.nom[0]?.toUpperCase() + user?.nom?.slice(1)}
+    <main className="flex gap-4">
+      <section className="w-1/3 flex flex-col h-fit items-center bg-white rounded-[40px] p-8 shadow-[0_0_5px_rgba(0,0,0,0.07)]">
+        <div className="drop-shadow-md bg-white rounded-full p-3">
+          <img
+            src={`/storage/${user?.photo}`}
+            alt=""
+            className="h-28 w-28 object-cover rounded-full"
+          />
+        </div>
+        <h1 className="font-semibold text-4xl mt-5">
+          {user?.prenom[0].toUpperCase() + user?.prenom.slice(1)}{" "}
+          {user?.nom[0].toUpperCase() + user?.nom.slice(1)}
+        </h1>
+        <h2 className="text-gray-600  flex gap-1.5 items-center mt-0.25">
+          <MapPin size={16} strokeWidth={2.5} className="text-orange-500" />
+          {user?.ville}
+        </h2>
+        <p className="mt-3 font-light text-gray-600">{user?.bio}</p>
+        <div className="flex justify-between p-5 font-medium mt-6 bg-orange-100/60 w-full rounded-2xl">
+          <h1 className="flex gap-3">
+            <Calendar className="text-orange-500" strokeWidth={2.5} />
+            Membre depuis
+          </h1>
+          <h1>{user?.created_at.slice(0, 4)}</h1>
+        </div>
+        <div className="flex justify-between p-5 font-medium mt-4 bg-orange-100/60 w-full rounded-2xl">
+          <h1 className="flex gap-3">
+            <Star className="text-orange-500" strokeWidth={2.5} />
+            Notation
+          </h1>
+          <h1>4.9</h1>
+        </div>
+        <div className="flex justify-between p-5 font-medium mt-4 bg-orange-100/60 w-full rounded-2xl">
+          <h1 className="flex gap-3">
+            <Package className="text-orange-500" strokeWidth={2.5} />
+            Annonces
+          </h1>
+          <h1>{user?.annonces.length}</h1>
+        </div>
+        {userProfile ? (
+          <>
+            <motion.button
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95, y: 3 }}
+              className="text-white cursor-pointer flex gap-2 justify-center text-lg shadow-xl shadow-orange-500/20 bg-orange-500 p-4 items-center rounded-3xl mt-5 w-full"
+            >
+              <UserRoundPen />
+              <h1>Modifier profile </h1>
+            </motion.button>
+            <motion.button
+              onClick={seDeconnecter}
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95, y: 3 }}
+              className="cursor-pointer flex gap-2 justify-center text-lg  bg-white border-2 border-gray-400/30  p-4 items-center rounded-3xl mt-3 w-full"
+            >
+              <LogOut fill="white" />
+              <h1>Se deconnecter</h1>
+            </motion.button>
+          </>
+        ) : (
+          <>
+            <motion.button
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95, y: 3 }}
+              className="text-white cursor-pointer flex gap-2 justify-center text-lg shadow-xl shadow-orange-500/20 bg-orange-500 p-4 items-center rounded-3xl mt-5 w-full"
+            >
+              <Star fill="white" />
+              <h1>
+                Noter {user?.prenom[0].toUpperCase() + user?.prenom.slice(1)}
               </h1>
-              <div className="my-2 flex flex-col gap-px">
-                <div className="flex gap-1 text-sm w-full items-center text-gray-800">
-                  <MapPin size={13} />
-                  {user?.ville}
-                </div>
-                <div className="flex  gap-1 text-sm w-full items-center text-gray-800">
-                  <Calendar size={13} />
-                  <h1>Membre depuis {user?.created_at?.slice(0, 4)}</h1>
-                </div>
-              </div>
-
-              <p className="text-gray-800">{user?.bio}</p>
-              <div className="flex gap-5 py-4">
-                <button
-                  onClick={() => direct("avis")}
-                  className="bg-gray-100 border-2 flex flex-col cursor-pointer items-center border-gray-200 text-gray-500 p-2.5 px-4.5 rounded-2xl"
-                >
-                  <h1 className="text-slate-800 text-xl font-bold">4.9</h1>
-                  <h2 className="text-sm">Ratings</h2>
-                </button>
-                <button
-                  onClick={() => direct("annonces")}
-                  className="bg-gray-100 border-2 cursor-pointer flex flex-col items-center border-gray-200 text-gray-500 p-2.5 px-4.5 rounded-2xl"
-                >
-                  <h1 className="text-slate-800 text-xl font-bold">500</h1>
-                  <h2 className="text-sm">Services completés</h2>
-                </button>
-              </div>
-            </div>
-
-            {/* <motion.button
-          onClick={() => dispatch(logout())}
-          variants={childVariant}
-          className="h-11 w-full cursor-pointer text-red-500 border-3 rounded-2xl text-lg font-inter font-semibold"
-          whileHover={{ scale: 1.05, y: -3 }}
-          whileTap={{ scale: 0.97, y: 1 }}
-          transition={{ duration: 0.15, type: "spring", stiffness: 200 }}
-        >
-          Se deconnecter
-        </motion.button> */}
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05, y: -3 }}
+              whileTap={{ scale: 0.95, y: 3 }}
+              className="cursor-pointer flex gap-2 justify-center text-lg  bg-white border-2 border-gray-400/30  p-4 items-center rounded-3xl mt-3 w-full"
+            >
+              <Send fill="white" />
+              <h1>Envoyer un message</h1>
+            </motion.button>
+          </>
+        )}
+      </section>
+      <section className="w-2/3 flex flex-col items-center py-5 p-10 ">
+        <AnnoncesShower annonces={user?.annonces}>
+          <h1 className="text-slate-950 text-4xl mb-2.5 font-semibold">
+            {userProfile
+              ? "Mes annonces"
+              : "Annonces de " +
+                user?.prenom[0].toUpperCase() +
+                user?.prenom.slice(1)}
+          </h1>
+          <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
+            <h2 className="text-gray-500 ">les annonces les plus proches à</h2>
           </div>
-
-          <div className="flex mt-5 flex-col shadow-[0_0_2px_rgba(0,0,0,0.25)] rounded-4xl w-full border-gray-400 ">
-            <div className="flex flex-col relative pt-1 w-full">
-              <div className="flex w-full">
-                <button
-                  onClick={() => setSelection("annonces")}
-                  className="w-1/2 text-center flex flex-col text-lg cursor-pointer"
-                >
-                  <motion.h1
-                    whileHover={{
-                      fontWeight: 700,
-                    }}
-                    animate={
-                      selection === "annonces"
-                        ? { fontWeight: 700 }
-                        : { fontWeight: 300 }
-                    }
-                    className="p-2"
-                  >
-                    Annonces ({user.annonces_count})
-                  </motion.h1>
-                </button>
-                <button
-                  onClick={() => setSelection("avis")}
-                  className="w-1/2 text-center flex flex-col text-lg cursor-pointer"
-                >
-                  <motion.h1
-                    whileHover={{
-                      fontWeight: 700,
-                    }}
-                    animate={
-                      selection === "avis"
-                        ? { fontWeight: 700 }
-                        : { fontWeight: 300 }
-                    }
-                    className="p-2"
-                  >
-                    Avis
-                  </motion.h1>
-                </button>
-              </div>
-              <motion.div
-                animate={{ x: selection === "annonces" ? "0%" : "100%" }}
-                transition={{ type: "tween" }}
-                className="w-1/2 flex justify-center"
-              >
-                <div className="bg-black bottom-0 rounded-full h-1 w-3/4" />
-              </motion.div>
-            </div>
-
-            <div className="px-5 py-6">
-              {selection === "annonces"
-                ? user &&
-                  user.annonces && <AnnoncesShower annonces={user?.annonces} />
-                : "not found"}
-            </div>
-          </div>
-        </main>
-      ) : (
-        <Loader />
-      )}
+        </AnnoncesShower>
+      </section>
     </main>
   )
 }
