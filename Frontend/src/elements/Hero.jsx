@@ -1,5 +1,6 @@
 import { ClipboardList, Search, SquarePlus, Users } from "lucide-react"
 import {
+  AnimatePresence,
   MotionValue,
   motion,
   useInView,
@@ -12,6 +13,8 @@ import { useNavigate } from "react-router-dom"
 import AnnoncesShower from "./animatedElements/AnnoncesShower"
 import axios from "axios"
 import { serviceCategories } from "../assets/categorie"
+import api from "../assets/api"
+import Loader from "./animatedElements/Loader"
 
 const Hero = () => {
   const hero = useRef()
@@ -20,33 +23,55 @@ const Hero = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [search, setSearch] = useState(null)
+  const [loading, setLoading] = useState(false)
   const [annonces, setAnnonces] = useState([])
   const [found, setFound] = useState(false)
   const [annoncesCount, setAnnoncesCount] = useState(0)
   const [usersCount, setUsersCount] = useState(0)
+  const [inFocus, setInFocus] = useState(false)
   useEffect(() => {
     dispatch(setBar(heroInView))
   }, [heroInView])
   useEffect(() => {
     const searchAnnonces = async () => {
-      const res = await axios.get(
-        `http://localhost:8000/api/annonces/search/${search}`,
-      )
+      const res = await api.get("api/data/")
       setUsersCount(res.data.usersCount)
       setAnnoncesCount(res.data.annoncesCount)
-      // .then((res) => found && setAnnonces(res.data?.data))
     }
     searchAnnonces()
+  }, [])
+  useEffect(() => {
+    const fetchAnnonces = async () => {
+      setLoading(true)
+      try {
+        const res = await api.get("api/annonces", {
+          params: {
+            search,
+            limit: 6,
+          },
+        })
+        setAnnonces(res.data)
+      } catch (error) {
+      } finally {
+        setLoading(false)
+      }
+    }
+    search && fetchAnnonces()
   }, [search])
+  const searchHandle = () => {
+    const params = new URLSearchParams()
+    params.append("search", search)
+    navigate(`/search?${params.toString()}`)
+  }
   return (
-    <div className="w-full flex justify-center mb-7 flex-col items-center">
+    <div className="relative w-full flex justify-center mb-7 flex-col items-center">
       <motion.div
         initial={{ opacity: 0.3, scale: 0.65 }}
         animate={{ opacity: 1, scale: 1, transition: { duration: 0.25 } }}
         ref={hero}
         className="py-2 w-full gap-0 flex items-center"
       >
-        <div className="flex-col sm:px-10 gap-4 p-3 xl:w-1/2 w-full to-orange-100/0 via-orange-100/20 from-orange-500/50 bg-radial flex items-center">
+        <div className=" flex-col sm:px-10 gap-4 p-3 xl:w-1/2 w-full to-orange-100/0 via-orange-100/20 from-orange-500/50 bg-radial flex items-center">
           <h1 className=" text-6xl text-gray-800 font-semibold">
             Besoin d’un service ?{" "}
             <span className="text-orange-500">Brikouly</span> est là pour vous.
@@ -65,6 +90,8 @@ const Hero = () => {
           <div className="relative flex items-center justify-center max-w-full ">
             <motion.input
               onChange={(e) => setSearch(e.target.value)}
+              onFocus={() => setInFocus(true)}
+              onBlur={() => setTimeout(() => setInFocus(false), 200)}
               type="text"
               className="bg-gray-50 font-outfit focus:shadow-lg pl-3 text-2xl w-120 h-15 rounded-xl shadow-sm"
               placeholder=" Rechercher des annonces"
@@ -78,8 +105,9 @@ const Hero = () => {
                 scale: 1.1,
               }}
               whileTap={{ scale: 0.95 }}
+              onClick={searchHandle}
             >
-              <Search />
+              <Search size={30} />
             </motion.button>
           </div>
         </div>
@@ -120,9 +148,30 @@ const Hero = () => {
           </motion.div>
         </div>
       </motion.div>
-      {annonces.length > 0 && found && (
-        <AnnoncesShower annonces={annonces}></AnnoncesShower>
-      )}
+      <AnimatePresence>
+        {inFocus && search && (
+          <motion.div
+            initial={{ y: -15, opacity: 0 }}
+            exit={{ y: -15, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            className="absolute top-full xl:-mt-10  z-50 bg-white   w-full  shadow-[0_0_6px_rgba(0,0,0,0.10)] rounded-2xl p-7 "
+          >
+            {loading ? (
+              <Loader />
+            ) : annonces.length ? (
+              <AnnoncesShower annonces={annonces}>
+                <h1 className="font-medium text-2xl mb-4">
+                  Annonces de "{search}"
+                </h1>
+              </AnnoncesShower>
+            ) : (
+              <h1 className=" text-xl text-center">
+                aucune annonce trouvée pour "{search}"
+              </h1>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

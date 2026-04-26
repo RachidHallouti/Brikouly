@@ -18,10 +18,8 @@ Route::post('/logout', [AuthController::class,"logout"]
 );
 Route::resource("annonces",AnnonceController::class);
 Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
-Route::get('/categories/{categorie}',[AnnonceController::class,"categorieAnnonces"]);
 Route::get('/users/{user}/favoris', [FavoriController::class, 'index']);
 Route::post('/favori/toggle',[FavoriController::class,'toggle']);
 Route::post('/favori/check',[FavoriController::class,'check']);
-Route::get('/annonces/search/{search}', [AnnonceController::class, 'rechercher']);
-Route::post('/nearest-annonces', [AnnonceController::class, 'nearest']);
+Route::get('/data', [AnnonceController::class, 'data']);
 Route::resource("users", UserController::class);

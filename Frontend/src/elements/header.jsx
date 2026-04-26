@@ -67,16 +67,15 @@ export default function Header() {
           <AnimatePresence>
             {location != "/ajouter-annonce" && !barInview && token && (
               <motion.button
+                whileHover={{ scale: 1.05 }}
                 initial={{ scale: 0.5, opacity: 0 }}
-                exit={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-white text-xl p-2 rounded-xl text-orange-500 font-changa flex gap-2 items-center cursor-pointer"
+                className="bg-white  shadow-sm hover:shadow-md text-xl p-3 rounded-xl h-12 text-orange-500 font-outfit font-bold flex gap-2 items-center cursor-pointer "
                 onClick={() => navigate("/ajouter-annonce")}
               >
-                <SquarePlus />
-                Ajouter Annonce
+                <SquarePlus strokeWidth={2.3} />
+                Publiez une annonce
               </motion.button>
             )}
           </AnimatePresence>

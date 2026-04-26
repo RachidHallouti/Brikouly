@@ -10,8 +10,16 @@
   --font-momo: "Momo Signature", sans-serif;
   --font-play: "Playwrite NZ Basic", sans-serif;
   --font-space: "Space Grotesk", sans-serif;
+
+  --color-orange: #f97415;
+  --color-brown: #fee0c1;
+  --color-brown-light: #ffedd5;
+  --color-brown-dark: #803318;
+  --color-gray: #646464;
+  --color-gray-light: #a7a7a7;
+  --color-gray-dark: #333333;
+  --color-brand-white: #f9f9f9;
 }
-/* Chrome, Edge, Safari */
 ::-webkit-scrollbar {
   width: 8px;
   position: absolute;

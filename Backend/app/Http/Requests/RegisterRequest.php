@@ -22,10 +22,10 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "nom"=> 'required|string|max:50',
-            "prenom"=> 'required|string|max:50',
+            "nom"=> 'required|string|max:20|min:2',
+            "prenom"=> 'required|string|max:20|min:2',
             "email" => "required|email|unique:users,email",
-            "password" => "required|confirmed|min:8",
+            "password" => "required|confirmed|min:8|max:16",
             "ville" => "nullable|string|min:2|max:22",
             "photo" => "required|image|max:2048",
             "bio" => "nullable|string|max:550"

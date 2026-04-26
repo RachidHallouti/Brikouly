@@ -7,6 +7,7 @@ import {
   FileText,
   HandHelping,
   ImagePlus,
+  Loader,
   MapPin,
   Pen,
   Search,
@@ -23,12 +24,14 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
+import api from "../../assets/api"
 
 export default function AjouterAnnonce() {
   const categories = serviceCategories
   const cities = useNearestCities()
   const navigate = useNavigate()
   const disp = useDispatch()
+  const [loading, setLoading] = useState(false)
   const user = useSelector((state) => state.auth.user)
   const annonceSchema = Yup.object().shape({
     titre: Yup.string()
@@ -49,10 +52,17 @@ export default function AjouterAnnonce() {
     prix_par: Yup.string().required("L'unité de prix est obligatoire"),
     photo: Yup.mixed().required("La photo principale est obligatoire"),
   })
-  const { watch, setValue, register, handleSubmit } = useForm({
+  const {
+    watch,
+    setValue,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(annonceSchema),
     defaultValues: {
       type: "offre",
+      status: "active",
       enligne: "non",
     },
   })
@@ -90,24 +100,30 @@ export default function AjouterAnnonce() {
     },
   }
   const onSubmit = async (data) => {
+    setLoading(true)
+
     try {
       const formData = new FormData()
-      formData.append("titre", data.titre)
-      formData.append("description", data.description)
-      data.categorie && formData.append("categorie", data.categorie)
-      formData.append("ville", data.ville)
-      formData.append("prix", data.prix)
-      formData.append("prix_par", data.prix_par)
-      formData.append("photo", data.photo)
+      const appendKeys = [
+        "titre",
+        "description",
+        "photo",
+        "categorie",
+        "ville",
+        "type",
+        "prix",
+        "prix_par",
+      ]
+      appendKeys.forEach((k) => data[k] && formData.append(k, data[k]))
+      formData.append("enligne", data.enligne === "non" ? 0 : 1)
       formData.append("user_id", user.id)
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/annonces",
-        formData,
-      )
+      const response = await api.post("api/annonces", formData)
       navigate("/")
     } catch (error) {
       disp(setToaster({ message: error.response.data.message }))
       console.log(error)
+    } finally {
+      setLoading(false)
     }
   }
   const onError = (errors) => {
@@ -147,9 +163,9 @@ export default function AjouterAnnonce() {
       <motion.section className="flex flex-col xl:flex-row w-full gap-4">
         <motion.div
           variants={childVariant}
-          className="bg-white p-7 rounded-[40px] w-full xl:w-2/3 shadow-[0_0_2px_rgba(0,0,0,0.07)]"
+          className="bg-white px-4 py-7 sm:p-7 rounded-[40px] w-full xl:w-2/3 shadow-[0_0_2px_rgba(0,0,0,0.07)]"
         >
-          <h1 className="flex font-semibold items-center gap-3 mb-4">
+          <h1 className="flex px-2 sm:p-0 font-semibold items-center gap-3 mb-4">
             <div className="p-2 bg-orange-200/50 text-orange-500 rounded-full">
               <Camera strokeWidth={2.5} />
             </div>
@@ -160,7 +176,7 @@ export default function AjouterAnnonce() {
               whileHover={{ scale: 1.03, y: -3 }}
               whileTap={{ scale: 0.97, y: 3 }}
               htmlFor="photo"
-              className="md:w-1/2 relative overflow-hidden w-full border-dashed border-gray-300 text-gray-500 border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-100"
+              className={`md:w-1/2 relative overflow-hidden w-full border-dashed ${errors.photo ? "border-red-500 text-red-500" : "border-gray-300 text-gray-500"}  border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-100`}
             >
               <input
                 type="file"
@@ -351,11 +367,11 @@ export default function AjouterAnnonce() {
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95, y: 3 }}
                 htmlFor="besoin"
-                className={`w-1/2 flex-col gap-2  rounded-2xl items-center justify-center text-2xl flex p-5 h-full ${type == "besoin" ? "bg-green-500 text-green-100" : "bg-gray-200/80  text-gray-700"} cursor-pointer font-semibold`}
+                className={`w-1/2 flex-col gap-2  rounded-2xl items-center justify-center text-2xl flex p-5 h-full ${type == "demande" ? "bg-green-500 text-green-100" : "bg-gray-200/80  text-gray-700"} cursor-pointer font-semibold`}
               >
                 <input
                   type="radio"
-                  value="besoin"
+                  value="demande"
                   id="besoin"
                   {...register("type")}
                   className="hidden"
@@ -399,7 +415,7 @@ export default function AjouterAnnonce() {
             </label>
             <select
               name="ville"
-              className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
+              className="bg-gray-100 border-2 h-12 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
               {...register("ville")}
             >
               <option value="">Pas spécifique</option>
@@ -421,7 +437,7 @@ export default function AjouterAnnonce() {
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95, y: 3 }}
                 htmlFor="oui"
-                className={`flex p-2 cursor-pointer ${enligne == "oui" ? "bg-orange-500 w-1/2 text-orange-100" : "bg-gray-200 text-gray-500"}  w-1/2 items-center justify-center  rounded-2xl gap-2 text-2xl font-semibold`}
+                className={`flex p-2 cursor-pointer ${enligne === "oui" ? "bg-orange-500 w-1/2 text-orange-100" : "bg-gray-200 text-gray-500"}  w-1/2 items-center justify-center  rounded-2xl gap-2 text-2xl font-semibold`}
               >
                 <input
                   type="radio"
@@ -436,7 +452,7 @@ export default function AjouterAnnonce() {
                 whileHover={{ scale: 1.05, y: -3 }}
                 whileTap={{ scale: 0.95, y: 3 }}
                 htmlFor="non"
-                className={`flex p-2 cursor-pointer ${enligne == "non" ? "bg-orange-500 w-1/2 text-orange-100" : "bg-gray-200 text-gray-500"}  w-1/2 items-center justify-center  rounded-2xl gap-2 text-2xl font-semibold`}
+                className={`flex p-2 cursor-pointer ${enligne === "non" ? "bg-orange-500 w-1/2 text-orange-100" : "bg-gray-200 text-gray-500"}  w-1/2 items-center justify-center  rounded-2xl gap-2 text-2xl font-semibold`}
               >
                 <input
                   type="radio"
@@ -464,7 +480,7 @@ export default function AjouterAnnonce() {
           </h1>
           <label
             htmlFor=""
-            className="font-semibold block text-sm text-gray-600"
+            className={`font-semibold text-sm ${errors.titre ? "text-red-500" : "text-gray-600"}`}
           >
             TITRE
           </label>
@@ -472,11 +488,11 @@ export default function AjouterAnnonce() {
             type="text"
             placeholder="Titre de l'annonce"
             {...register("titre")}
-            className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
+            className={`bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 ${errors.titre ? "border-red-500" : "border-gray-300"} pl-3`}
           />
           <label
             htmlFor=""
-            className="font-semibold block mt-5 mb-3 text-sm text-gray-600"
+            className={`font-semibold block mt-5 mb-3 text-sm ${errors.categorie ? "text-red-500" : "text-gray-600"}`}
           >
             CATEGORIE
           </label>
@@ -504,14 +520,17 @@ export default function AjouterAnnonce() {
               )
             })}
           </div>
-          <label htmlFor="" className="font-semibold text-sm text-gray-600">
+          <label
+            htmlFor=""
+            className={`font-semibold text-sm ${errors.description ? "text-red-500" : "text-gray-600"}`}
+          >
             DESCRIPTION
           </label>
           <textarea
             type="text"
             {...register("description")}
             placeholder="Description de l'annonce"
-            className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-3 min-h-50 max-h-100 h-50 border-gray-300 pl-3"
+            className={`bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-3 min-h-50 max-h-100 h-50 ${errors.description ? "border-red-500" : "border-gray-300"} pl-3`}
           />
         </motion.div>
         <div className="md:w-1/3">
@@ -529,7 +548,7 @@ export default function AjouterAnnonce() {
               <div className="w-2/3 md:w-full xl:w-2/3">
                 <label
                   htmlFor=""
-                  className="font-semibold block text-sm text-gray-600"
+                  className={`font-semibold text-sm ${errors.prix ? "text-red-500" : "text-gray-600"}`}
                 >
                   PRIX
                 </label>
@@ -537,21 +556,24 @@ export default function AjouterAnnonce() {
                   type="number"
                   placeholder="Prix"
                   {...register("prix")}
-                  className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
+                  className={`bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 ${errors.prix ? "border-red-500" : "border-gray-300"} pl-3`}
                 />
               </div>
-              <div className="w-1/3 md:w-full xl:w-1/3">
+              <div className="w-1/3 md:w-full  xl:w-1/3">
                 <label
                   htmlFor=""
-                  className="font-semibold block text-sm text-gray-600"
+                  className="font-semibold text-sm text-gray-600"
                 >
                   PRIX PAR
                 </label>
                 <select
                   {...register("prix_par")}
-                  className="bg-gray-100  border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
+                  className="bg-gray-100 h-12  border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
                 >
-                  <option value="Dh">rochdi</option>
+                  <option value="Dh">Dh</option>
+                  <option value="Dh/Heur">Dh/Heur</option>
+                  <option value="Dh/Jour">Dh/Jour</option>
+                  <option value="Dh/Mois">Dh/Mois</option>
                 </select>
               </div>
             </div>
@@ -559,11 +581,16 @@ export default function AjouterAnnonce() {
           <motion.button
             type="submit"
             variants={childVariant}
+            disabled={loading}
             whileHover={{ scale: 1.05, y: -3 }}
             whileTap={{ scale: 0.95, y: 3 }}
             className="text-white cursor-pointer mb-10 sm:mb-0 font-semibold flex gap-2 justify-center text-lg shadow-xl shadow-orange-500/20 bg-orange-500 p-4 items-center rounded-3xl mt-5 w-19/20 mx-auto "
           >
-            <Upload strokeWidth={2.5} />
+            {!loading ? (
+              <Upload strokeWidth={2.5} size={23} />
+            ) : (
+              <Loader strokeWidth={2.5} size={23} />
+            )}
             <h1>Publier l'annonce </h1>
           </motion.button>
         </div>

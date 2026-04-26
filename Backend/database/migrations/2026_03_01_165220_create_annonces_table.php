@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('photo');
             $table->string('ville')->nullable();
             $table->string('categorie');
+            $table->boolean('enligne')->default(false);
+            $table->enum('status', ['active', 'completed', 'inactive','draft'])->default('active');
+            $table->enum('type', ['offre', 'demande'])->default('offre');
             $table->integer('prix');
             $table->string('prix_par');
             $table->foreignId('user_id')->constrained();

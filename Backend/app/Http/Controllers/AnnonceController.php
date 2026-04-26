@@ -7,40 +7,45 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AnnonceController extends Controller
 {
-    function nearest(Request $request){
-        $cities = $request['cities'];
-        $search = $request['search'];
-        $user = $request['user_id'];
-
-        $query = Annonce::select();
-        if($search){
-            $query->where('titre', 'LIKE', "%{$search}%")
-            ->orWhere('description', 'LIKE', "%{$search}%")
-            ;
-        }
-        if(!empty($cities)){
-            $query->orderByRaw("FIELD(ville,'".implode("','",$cities)."')")->latest();
-            }else{
-                $query->latest();
-            }
-        if($user){
-        $query->with('user')->withExists(['favoris as isSaved' => function($q) use ($user){
-            $q->where('user_id',$user);
-        }]);
-        }
-        $annonces = $query->with('user')->get();
-        return response()->json($annonces);
-    }
     public function index(Request $request)
     {
+        $query = Annonce::with('user');
+        if($request['search']){
+        $query->where(function ($q) use ($request) {
+            $q->where('titre', 'LIKE', "%{$request['search']}%")
+            ->orWhere('description', 'LIKE', "%{$request['search']}%");
+        } );}
+
         if($request['categorie']){
-            $annonces=Annonce::whereLike('categorie',$request['categorie'])->latest()->with('user')->get();
-            return response()->json($annonces);
+            $query->where('categorie',$request['categorie']);
         }
-        $annonces=Annonce::select()->latest()->with('user')->get();
+        if($request['cities']){
+            $query->orderByRaw("FIELD(ville,'".implode("','",$request['cities'])."')");
+        }
+        if($request->enligne == "oui"){
+            $query->where("enligne",true);
+        }
+        if($request->enligne == "non"){
+            $query->where("enligne",false);
+        }
+        if($request['type']){
+            $query->where("type",$request['type']);
+        }
+        if($request['max']){
+            $query->where("prix","<",$request['max']);
+        }
+        if($request['min']){
+            $query->where("prix",">",$request['min']);
+        }
+        $query->latest();
+        if($request['limit']){
+            $query->limit($request['limit']);
+        }
+        $annonces = $query->get();
         
         return response()->json($annonces);
     }
@@ -48,6 +53,9 @@ class AnnonceController extends Controller
     {
         $data=$request->validate([
             'titre'=>'required|string|min:5|max:50',
+            'enligne'=>'nullable|boolean',
+            'type'=>['nullable',Rule::in(['offre','demande'])],
+            'status'=>['nullable',Rule::in(['active','draft','cancelled','completed'])],
             'description'=>'required|string|min:10|max:255',
             'ville'=>'nullable|string',
             'photo'=>'required|image|max:2048',
@@ -61,7 +69,7 @@ class AnnonceController extends Controller
         $imagePath = 'annonces/photo/'.$imageName;
         $data["photo"]= $imagePath;
         Annonce::create($data);
-        return response()->json(["message"=>'Votre annonce a été publiée avec succé']);
+        return response()->json(["message"=>'Votre annonce a été publiée avec succée']);
     }
     public function show(Annonce $annonce)
     {
@@ -101,28 +109,10 @@ class AnnonceController extends Controller
         $userannonces=$user->annonces()->get();
         return response()->json($userannonces);
     }
-    public function categorieAnnonces($categorie){
-        $categorieannonces=Annonce::where('categorie',$categorie)->get();
-        if ($categorieannonces->isEmpty()) {
-        return response()->json(['message' => 'Aucune annonce trouvée pour cette catégorie'], 404);
-    }
-        return response()->json($categorieannonces);
-    }
-
-    public function rechercher($search){
-        
-
-        $annonces = Annonce::where('titre', 'LIKE', "%{$search}%")
-            ->orWhere('description', 'LIKE', "%{$search}%")
-            ->get();
+    function data(){
         $annoncesCount = Annonce::count() ;
         $usersCount = User::count() ;
+        return response()->json(["annoncesCount"=>$annoncesCount,"usersCount"=>$usersCount,]);
 
-        return response()->json([
-            'data' => $annonces,
-            'annoncesCount'=>$annoncesCount,
-            'usersCount'=>$usersCount,
-            'success' => true
-        ]);
     }
 }

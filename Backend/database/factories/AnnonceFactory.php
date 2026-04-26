@@ -2,17 +2,20 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class AnnonceFactory extends Factory
 {
-    protected static ?string $password;
-
     public function definition(): array
     {
-        // Define the Moroccan cities list within the factory
+        $categories = [
+            "Maison & Bricolage", "Transport & Véhicules", "Nettoyage & Entretien",
+            "Digital & Technologie", "Déménagement & Livraison", "Éducation & Formation",
+            "Services à la personne", "Événementiel", "Restauration & Cuisine",
+            "Services professionnels", "Animaux", "Santé & Bien-être", "Autres"
+        ];
+
         $moroccanCities = [
             "Tangier", "Tétouan", "Fnideq", "Mdiq", "Martil", "Chefchaouen", 
             "Al Hoceima", "Nador", "Berkane", "Oujda", "Saïdia", "Larache", 
@@ -30,16 +33,18 @@ class UserFactory extends Factory
         ];
 
         return [
-            'nom' => fake()->lastName(),
-            'prenom' => fake()->firstName(),
-            'photo' => 'https://i.pravatar.cc/300?u=' . fake()->unique()->safeEmail(),
-            'bio' => fake()->paragraph(),
-            // Randomly select one city from the custom array
+            'titre' => fake()->sentence(4),
+            'description' => fake()->paragraphs(2, true),
+            'photo' => 'https://picsum.photos/seed/' . fake()->uuid() . '/800/600',
             'ville' => fake()->randomElement($moroccanCities),
-            'email' => fake()->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'categorie' => fake()->randomElement($categories),
+            'enligne' => fake()->boolean(30),
+            'status' => fake()->randomElement(['active', 'completed', 'inactive', 'draft']),
+            'type' => fake()->randomElement(['offre', 'demande']),
+            'prix' => fake()->numberBetween(50, 20000),
+            'prix_par' => fake()->randomElement(['Dh/Jour', 'Dh/Heure', 'Dh/Mois', 'Dh']),
+            'user_id' => fake()->numberBetween(1,50),
+            'created_at' => fake()->dateTimeBetween('-2 month', 'now'),
         ];
     }
 }

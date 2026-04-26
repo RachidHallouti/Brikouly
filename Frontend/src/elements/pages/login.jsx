@@ -14,32 +14,30 @@ export default function Login() {
   const parentVariant = {
     hidden: {
       opacity: 0,
-      y: -150,
     },
     visible: {
       opacity: 1,
-      y: 0,
+
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.15,
-        type: "spring",
-        stiffness: 150,
+        delayChildren: 0.1,
       },
     },
   }
   const childVariant = {
     hidden: {
       opacity: 0,
-      y: 10,
-      scale: 0.95,
+      y: 70,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        scale: { type: "spring", stiffness: 230 },
-        y: { type: "spring", stiffness: 230 },
+        type: "spring",
+        stiffness: 70,
+        damping: 12,
       },
     },
   }
@@ -51,6 +49,11 @@ export default function Login() {
     visible: {
       opacity: 1,
       x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 150,
+        damping: 12,
+      },
     },
   }
   const loginUser = async () => {
@@ -112,24 +115,26 @@ export default function Login() {
           >
             Se connecter
           </motion.h1>
+
           <motion.input
             variants={childVariant}
-            className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl shadow-sm"
             type="text"
-            placeholder=" Email"
+            placeholder="Email"
             onChange={(e) =>
               setUserLogin({ ...userLogin, email: e.target.value })
             }
+            className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2  border-gray-300 pl-3"
           />
           <motion.input
             variants={childVariant}
-            className="h-11 w-full pl-4 bg-gray-300/60 rounded-xl shadow-sm"
             type="password"
             placeholder=" Mot de passe"
             onChange={(e) =>
               setUserLogin({ ...userLogin, password: e.target.value })
             }
+            className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2  border-gray-300 pl-3"
           />
+
           <motion.button
             variants={childVariant}
             className="h-11 w-full cursor-pointer bg-orange-500 text-white text-xl rounded-xl font-inter font-semibold shadow-md hover:shadow-xl"

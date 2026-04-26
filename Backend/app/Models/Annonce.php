@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Annonce extends Model
 {
-    protected $fillable=['titre','description','ville','photo','categorie','prix','prix_par','user_id'];
+    use HasFactory;
+    protected $fillable=['titre','description','ville','photo','categorie','prix','prix_par','user_id','enligne','status','type'];
     function user(){
         return $this->belongsTo(User::class);
     }

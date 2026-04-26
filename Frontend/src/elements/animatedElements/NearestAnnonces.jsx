@@ -18,9 +18,8 @@ export default function NearestAnnonces({
   useEffect(() => {
     const fetchAnnonces = async () => {
       setLoading(true)
-      const res = await api.post("api/nearest-annonces", {
-        cities: cities,
-        user_id: user?.id,
+      const res = await api.get("api/annonces", {
+        params: { cities: cities, limit: 6, user_id: user?.id },
       })
       setLoading(false)
       setAnnonces(res.data)

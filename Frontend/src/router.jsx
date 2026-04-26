@@ -11,6 +11,7 @@ import GuestLayout from "./elements/layouts/guestLayout"
 import Register from "./elements/pages/register"
 import { AnimatePresence } from "motion/react"
 import Favoris from "./elements/pages/Favoris"
+import SearchPage from "./elements/pages/SearchPage"
 const router = createBrowserRouter([
   {
     path: "/",
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
           {
             path: "/",
             element: <Home />,
+          },
+          {
+            path: "/search",
+            element: <SearchPage />,
           },
           {
             path: "/profile/:id",

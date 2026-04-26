@@ -9,11 +9,9 @@ export default defineConfig({
   server: {
     allowedHosts: ["uninterrogatory-goldie-subnaturally.ngrok-free.dev"],
     proxy: {
-      // This creates a shortcut: /storage -> https://your-ngrok-url/storage
       "/storage": {
         target: url,
         changeOrigin: true,
-        // This is the magic header that tells ngrok to skip the warning
         headers: {
           "ngrok-skip-browser-warning": "true",
         },
