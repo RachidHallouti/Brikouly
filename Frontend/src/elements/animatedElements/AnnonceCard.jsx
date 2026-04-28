@@ -101,10 +101,10 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
                   className="h-7 w-7 object-cover rounded-full"
                 />
                 <h3 className="text-gray-800 font-space font-semibold">
-                  {annonce.user.prenom[0].toUpperCase() +
-                    annonce.user.prenom.slice(1)}{" "}
-                  {annonce.user.nom[0].toUpperCase() +
-                    annonce.user.nom.slice(1)}
+                  {annonce?.user?.prenom[0]?.toUpperCase() +
+                    annonce?.user?.prenom?.slice(1)}{" "}
+                  {annonce?.user?.nom[0]?.toUpperCase() +
+                    annonce?.user?.nom?.slice(1)}
                 </h3>
               </div>
             </div>
@@ -168,9 +168,10 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               className="h-7 w-7 object-cover rounded-full"
             />
             <h3 className="text-gray-800 font-space font-semibold">
-              {annonce.user.prenom[0].toUpperCase() +
-                annonce.user.prenom.slice(1)}{" "}
-              {annonce.user.nom[0].toUpperCase() + annonce.user.nom.slice(1)}
+              {annonce?.user?.prenom[0]?.toUpperCase() +
+                annonce?.user?.prenom?.slice(1)}{" "}
+              {annonce?.user?.nom[0]?.toUpperCase() +
+                annonce?.user?.nom?.slice(1)}
             </h3>
           </div>
         </div>

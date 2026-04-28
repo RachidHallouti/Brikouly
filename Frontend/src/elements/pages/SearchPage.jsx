@@ -1,13 +1,16 @@
 import { useForm } from "react-hook-form"
 import { serviceCategories } from "../../assets/categorie"
 import useNearestCities from "../hooks/useNearestCities"
-import { motion } from "motion/react"
-import { useEffect, useState } from "react"
+import { motion, useInView } from "motion/react"
+import { useEffect, useRef, useState } from "react"
 import api from "../../assets/api"
 import AnnoncesShower from "../animatedElements/AnnoncesShower"
 import { useSearchParams } from "react-router-dom"
-import { ChevronDown, SlidersHorizontal } from "lucide-react"
+import { ChevronDown, SlidersHorizontal, X } from "lucide-react"
 import Loader from "../animatedElements/Loader"
+import getNearestCities from "../hooks/nearestCities"
+import { moroccanCities } from "../../assets/cities"
+import { current } from "@reduxjs/toolkit"
 
 export default function SearchPage() {
   const categories = serviceCategories
@@ -15,8 +18,8 @@ export default function SearchPage() {
   const [loading, setLoading] = useState(false)
   const [params] = useSearchParams()
   const urlData = Object.fromEntries(params.entries())
-  const cities = useNearestCities()
-  const { register, watch } = useForm({
+  const cities = useNearestCities() || moroccanCities.map((c) => c.name)
+  const { register, watch, setValue } = useForm({
     defaultValues: {
       ...urlData,
       type: urlData.type || "",
@@ -27,28 +30,49 @@ export default function SearchPage() {
   const type = watch("type")
   const enligne = watch("enligne")
   const search = watch()
-  const citiess = useNearestCities(search.ville).map((c) => c.name)
-  const filters = watch("type", "enligne", "categorie", "min", "max", "ville")
+  const citiess = useNearestCities(search.ville)
+  const filtersStr = JSON.stringify(search)
+  const citiesStr = JSON.stringify(citiess)
+  const lod = useRef()
+  const [curPage, setCurPage] = useState(1)
+  const loadMore = useInView(lod)
+  const paginate = 20
+  const [hasMore, setHasMore] = useState(true)
   useEffect(() => {
-    console.log(search.enligne)
+    setCurPage(1)
+    setAnnonces([])
+    setHasMore(true)
+  }, [filtersStr, citiesStr])
+  useEffect(() => {
     const fetch = async () => {
+      if (curPage !== 1 && !hasMore) return
       setLoading(true)
       try {
         const res = await api.get("api/annonces", {
           params: {
             ...search,
             cities: search.ville ? citiess : null,
-            limit: 12,
+            paginate,
+            page: curPage,
           },
         })
-        setAnnonces(res.data)
+        setAnnonces((prev) => {
+          return curPage === 1 ? res.data.data : [...prev, ...res.data.data]
+        })
+        setHasMore(res.data.current_page < res.data.last_page)
       } catch (error) {
       } finally {
         setLoading(false)
       }
     }
+
     fetch()
-  }, [JSON.stringify(search), JSON.stringify(citiess)])
+  }, [filtersStr, citiesStr, curPage])
+  useEffect(() => {
+    if (hasMore && loadMore && !loading && annonces.length > 0) {
+      setCurPage((prev) => prev + 1)
+    }
+  }, [loadMore, hasMore, loading, annonces.length])
   return (
     <div className="-mx-10 mt-5 gap-10">
       <motion.section className="grid grid-cols-12 gap-3  w-full bg-white p-6 rounded-2xl  shadow-[0_0_2px_rgba(0,0,0,0.07)]">
@@ -93,8 +117,8 @@ export default function SearchPage() {
             <option value="">Toutes</option>
 
             {cities.map((c) => (
-              <option key={c?.name} value={c?.name}>
-                {c?.name}
+              <option key={c} value={c}>
+                {c}
               </option>
             ))}
           </select>
@@ -150,7 +174,7 @@ export default function SearchPage() {
                 {[
                   { type: "Tous", value: "" },
                   { type: "Offres", value: "offre" },
-                  { type: "Besoins", value: "besoin" },
+                  { type: "Demandes", value: "demande" },
                 ].map((t) => (
                   <label
                     htmlFor={t.type}
@@ -167,14 +191,11 @@ export default function SearchPage() {
                   </label>
                 ))}
                 <motion.div
+                  initial={{
+                    x: type === "" ? "0%" : type === "offre" ? "100%" : "200%",
+                  }}
                   animate={{
                     x: type === "" ? "0%" : type === "offre" ? "100%" : "200%",
-                    scale:
-                      type === ""
-                        ? [1, 0, 1]
-                        : type === "offre"
-                          ? [1, 0, 1]
-                          : [1, 0, 1],
                   }}
                   transition={{ stiffness: 200, damping: 21.5, type: "spring" }}
                   className="absolute  w-1/3 h-full p-1"
@@ -208,6 +229,14 @@ export default function SearchPage() {
                   </label>
                 ))}
                 <motion.div
+                  initial={{
+                    x:
+                      enligne === ""
+                        ? "0%"
+                        : enligne === "oui"
+                          ? "100%"
+                          : "200%",
+                  }}
                   animate={{
                     x:
                       enligne === ""
@@ -227,14 +256,98 @@ export default function SearchPage() {
         )}
       </motion.section>
       <section className=" w-full">
-        <h1 className="mb-10 text-lg text-gray-400 mt-5 font-semibold">
-          Filters :
-        </h1>
-        {loading ? (
-          <Loader />
-        ) : (
+        <div className="flex mb-10 mt-5 items-center gap-5">
+          <h1 className="text-lg text-orange-500  font-medium">Filters :</h1>
+          <div className="flex gap-2">
+            {search.search && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                {search.search}
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("search", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.ville && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                {search.ville}
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("ville", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.categorie && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                {search.categorie}
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("categorie", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.type && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                {search.type}
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("type", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.min && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                Min : {search.min} Dh
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("min", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.max && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                Max : {search.max} Dh
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("max", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+            {search.enligne && (
+              <div className="flex items-center gap-1 bg-orange-500/90 p-1.5 px-2.5 text-white rounded-full">
+                {search.enligne === "oui" ? "enligne" : "non enligne"}
+                <button
+                  className="cursor-pointer"
+                  onClick={() => setValue("enligne", "")}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+        {annonces.length > 0 && (
           <AnnoncesShower annonces={annonces}></AnnoncesShower>
         )}
+        {loading && (
+          <div className="mt-10">
+            <Loader />
+          </div>
+        )}
+
+        <div className=" w-full h-12" ref={lod} />
       </section>
     </div>
   )

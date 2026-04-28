@@ -16,7 +16,7 @@ export default async function getNearestCities(city = null) {
     if (userLocation) cords = userLocation
   }
   if (!cords) {
-    return cities
+    return null
   }
   const nearestCities = []
   for (const city of cities) {
@@ -26,5 +26,6 @@ export default async function getNearestCities(city = null) {
     nearestCities.push({ name: city.name, distance })
   }
   nearestCities.sort((a, b) => a.distance - b.distance)
-  return nearestCities
+  const citiiiies = nearestCities.map((c) => c.name)
+  return citiiiies
 }

@@ -1,4 +1,10 @@
-import { ClipboardList, Search, SquarePlus, Users } from "lucide-react"
+import {
+  ArrowRight,
+  ClipboardList,
+  Search,
+  SquarePlus,
+  Users,
+} from "lucide-react"
 import {
   AnimatePresence,
   MotionValue,
@@ -9,20 +15,25 @@ import {
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
 import { setBar } from "../redux/sliceElements"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import AnnoncesShower from "./animatedElements/AnnoncesShower"
 import axios from "axios"
 import { serviceCategories } from "../assets/categorie"
 import api from "../assets/api"
 import Loader from "./animatedElements/Loader"
+import useNearestCities from "./hooks/useNearestCities"
 
-const Hero = () => {
+const Hero = (props) => {
   const hero = useRef()
+  const photo =
+    "https://lh3.googleusercontent.com/aida-public/AB6AXuAxq_qySTeGTuomdBzLZTUO-z-4RkA2B7pBtrsGSIBl6PZukB6PY7FRBBqBOnXI5HbH53Hgy7Tit0K3VYfLQf2ernDHHBsGxCsyygTzwZv6-qsshUV6F2Q3iL0UezFBdq2NnMcOQ7xDJCqn9dipbTgSKGerhy_1dLdAKNrjYRWJ6To04-ziuMTyP0gIrsFA_urhzzJGNOiN3ceVw0hXIn5ierC0NeJjpthTiH06lXR8OPduTdQopwAXUJc1nssNg6I1r31t8ZC9Llji"
+
+  const cities = useNearestCities()
   const heroInView = useInView(hero)
   const categories = serviceCategories
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [search, setSearch] = useState(null)
+  const [search, setSearch] = useState("")
   const [loading, setLoading] = useState(false)
   const [annonces, setAnnonces] = useState([])
   const [found, setFound] = useState(false)
@@ -48,6 +59,7 @@ const Hero = () => {
           params: {
             search,
             limit: 6,
+            cities,
           },
         })
         setAnnonces(res.data)
@@ -60,7 +72,7 @@ const Hero = () => {
   }, [search])
   const searchHandle = () => {
     const params = new URLSearchParams()
-    params.append("search", search)
+    params.set("search", search)
     navigate(`/search?${params.toString()}`)
   }
   return (
@@ -120,8 +132,8 @@ const Hero = () => {
           >
             <img
               className="object-cover -z-20 absolute w-full h-full"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxq_qySTeGTuomdBzLZTUO-z-4RkA2B7pBtrsGSIBl6PZukB6PY7FRBBqBOnXI5HbH53Hgy7Tit0K3VYfLQf2ernDHHBsGxCsyygTzwZv6-qsshUV6F2Q3iL0UezFBdq2NnMcOQ7xDJCqn9dipbTgSKGerhy_1dLdAKNrjYRWJ6To04-ziuMTyP0gIrsFA_urhzzJGNOiN3ceVw0hXIn5ierC0NeJjpthTiH06lXR8OPduTdQopwAXUJc1nssNg6I1r31t8ZC9Llji"
-              alt=""
+              src={`heroPhotos/${props.photo}.jpg` || photo}
+              alt={photo}
             />
             <div className="p-5 bottom-0 absolute w-full gap-5 flex">
               <motion.div
@@ -160,9 +172,20 @@ const Hero = () => {
               <Loader />
             ) : annonces.length ? (
               <AnnoncesShower annonces={annonces}>
-                <h1 className="font-medium text-2xl mb-4">
-                  Annonces de "{search}"
-                </h1>
+                <div className="w-full flex font-space mb-4 font-semibold justify-between">
+                  <h2 className="text-lg">Annonces de "{search}"</h2>
+                  <motion.button
+                    onClick={searchHandle}
+                    whileHover={{
+                      gap: "16px",
+                      padding: "0px",
+                    }}
+                    className="flex gap-2 pr-2 items-center text-orange-500"
+                  >
+                    <h2 className=" font-bold">Voir tous</h2>
+                    <ArrowRight size={20} />
+                  </motion.button>
+                </div>
               </AnnoncesShower>
             ) : (
               <h1 className=" text-xl text-center">

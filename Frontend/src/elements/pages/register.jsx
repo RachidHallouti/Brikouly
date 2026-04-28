@@ -23,7 +23,7 @@ import { setToaster } from "../../redux/sliceElements"
 export default function Register() {
   const navigate = useNavigate()
   const disp = useDispatch()
-  const cities = useNearestCities()
+  const cities = useNearestCities() || moroccanCities
   const [conti, setConti] = useState(false)
   const [preview, setPreview] = useState(null)
   const registerSchema = Yup.object().shape({
@@ -61,7 +61,7 @@ export default function Register() {
   })
   useEffect(() => {
     const ville = watch("ville")
-    cities.length > 0 && !ville && setValue("ville", cities[0].name)
+    cities.length > 0 && !ville && setValue("ville", cities[0])
   }, [cities])
   const parentVariant = {
     hidden: {
@@ -352,8 +352,8 @@ export default function Register() {
                 >
                   <option value="">Pas spécifique</option>
                   {cities.map((c) => (
-                    <option key={c?.name} value={c?.name}>
-                      {c?.name}
+                    <option key={c} value={c}>
+                      {c}
                     </option>
                   ))}
                 </motion.select>

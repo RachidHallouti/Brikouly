@@ -45,7 +45,11 @@ class AnnonceController extends Controller
         if($request['limit']){
             $query->limit($request['limit']);
         }
-        $annonces = $query->get();
+        if($request['paginate']){
+            $annonces = $query->paginate($request['paginate']);
+        }else{
+            $annonces = $query->get();
+        }
         
         return response()->json($annonces);
     }

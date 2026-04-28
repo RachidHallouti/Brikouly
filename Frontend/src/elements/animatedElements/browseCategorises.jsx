@@ -11,19 +11,24 @@ import {
   StepForward,
 } from "lucide-react"
 import AnnoncesShower from "./AnnoncesShower"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const BrowseCategories = (props) => {
+  const navigate = useNavigate()
   const categories = serviceCategories
+  const [randomCat] = useState(
+    () => serviceCategories[Math.floor(Math.random() * categories.length)].name,
+  )
+  const categorie = props.categorie || randomCat
   const [catAnnonces, setCatAnnonces] = useState([])
   useEffect(() => {
     const fetchAnnonces = async () => {
       const res = await axios.get(`http://localhost:8000/api/annonces`, {
-        params: { categorie: props.categorie },
+        params: { categorie, limit: 5, cities: props.cities },
       })
       setCatAnnonces(res.data)
     }
-    props.categorie && fetchAnnonces()
+    fetchAnnonces()
     setCatAnnonces([])
   }, [props.categorie])
   const categoriesScroll = useRef()
@@ -35,6 +40,11 @@ const BrowseCategories = (props) => {
         behavior: "smooth",
       })
     }
+  }
+  const searchHandle = () => {
+    const params = new URLSearchParams()
+    params.set("categorie", categorie)
+    navigate(`/search?${params.toString()}`)
   }
   return (
     <>
@@ -93,24 +103,25 @@ const BrowseCategories = (props) => {
       {catAnnonces.length > 0 && (
         <AnnoncesShower annonces={catAnnonces}>
           <h1 className="text-slate-950 text-4xl  my-2.5 font-semibold">
-            {props.categorie}
+            {categorie}
           </h1>
-          <div className="w-full flex font-space text-[15.5px] mb-2 font-semibold justify-between">
+          <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
             <h2 className="text-gray-500 ">
-              les annonces les plus proches à {props.cities[0]}
+              {props.cities
+                ? `les annonces les plus proches à  ${props?.cities[0]}`
+                : `les derniers annonces de ${categorie}`}
             </h2>
-            <Link>
-              <motion.div
-                whileHover={{
-                  gap: "16px",
-                  padding: "0px",
-                }}
-                className="flex gap-2 pr-2 items-center text-orange-500"
-              >
-                <h2 className=" font-bold">Voir plus</h2>
-                <ArrowRight size={20} />
-              </motion.div>
-            </Link>
+            <motion.button
+              onClick={searchHandle}
+              whileHover={{
+                gap: "16px",
+                padding: "0px",
+              }}
+              className="flex cursor-pointer gap-2 pr-2 items-center text-orange-500"
+            >
+              <h2 className=" font-bold">Voir plus</h2>
+              <ArrowRight size={20} />
+            </motion.button>
           </div>
         </AnnoncesShower>
       )}

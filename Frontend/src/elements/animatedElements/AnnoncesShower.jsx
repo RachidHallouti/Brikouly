@@ -24,7 +24,7 @@ export default function AnnoncesShower({
           </motion.div>
         </div>
       )}
-      <div className="grid gap-2.5 @container grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-3 @4xl:grid-cols-4 @6xl:grid-cols-5 @7xl:grid-cols-6 w-full">
+      <div className="grid gap-3 @container grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4 @7xl:grid-cols-5 w-full">
         {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard

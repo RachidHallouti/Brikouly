@@ -6,11 +6,7 @@ import { motion, useInView, useMotionValueEvent } from "motion/react"
 import { ArrowRight } from "lucide-react"
 import { useSelector } from "react-redux"
 
-export default function NearestAnnonces({
-  cities,
-  setCategorieSearch,
-  children,
-}) {
+export default function AnnoncesEnligne({ setCategorieSearch, children }) {
   const [annonces, setAnnonces] = useState([])
   const [loadingAnnonces, setLoading] = useState(null)
   const user = useSelector((state) => state.auth.user)
@@ -20,16 +16,16 @@ export default function NearestAnnonces({
     const fetchAnnonces = async () => {
       setLoading(true)
       const res = await api.get("api/annonces", {
-        params: { cities: cities, limit: 5, user_id: user?.id },
+        params: { limit: 5, enligne: "oui", user_id: user?.id },
       })
       setLoading(false)
       setAnnonces(res.data)
     }
-    cities.length > 0 && fetchAnnonces()
-  }, [JSON.stringify(cities)])
+    fetchAnnonces()
+  }, [])
   const searchHandle = () => {
     const params = new URLSearchParams()
-    params.set("ville", cities[0])
+    params.set("enligne", "oui")
     navigate(`/search?${params.toString()}`)
   }
   return (
@@ -39,13 +35,11 @@ export default function NearestAnnonces({
       loadingAnnonces={loadingAnnonces}
     >
       <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
-        Annonces près de {children ? children : "vous"}
+        Annonces enlignes
       </h1>
       <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
-        <h2 className="text-gray-500 ">
-          les annonces les plus proches à {cities[0]}
-        </h2>
-        <motion.div
+        <h2 className="text-gray-500 ">les dernieres annonces enlignes</h2>
+        <motion.button
           onClick={searchHandle}
           whileHover={{
             gap: "16px",
@@ -55,7 +49,7 @@ export default function NearestAnnonces({
         >
           <h2 className=" font-bold">Voir plus</h2>
           <ArrowRight size={20} />
-        </motion.div>
+        </motion.button>
       </div>
     </AnnoncesShower>
   )
