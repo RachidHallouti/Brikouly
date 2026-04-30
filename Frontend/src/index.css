@@ -37,7 +37,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #a3a3a3;
 }
-html {
-  scrollbar-gutter: stable;
-  overflow-y: scroll;
-}

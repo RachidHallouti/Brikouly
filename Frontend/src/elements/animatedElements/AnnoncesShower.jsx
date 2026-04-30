@@ -2,29 +2,20 @@ import React from "react"
 import { motion } from "motion/react"
 import { LoaderCircle } from "lucide-react"
 import AnnonceCard from "./AnnonceCard"
+import SkeletonCard from "./SkeletonCard"
 
 export default function AnnoncesShower({
   children,
   annonces,
   setCategorieSearch,
-  loadingAnnonces,
+  loading,
+  nbr = 5,
 }) {
   return (
-    <div className=" @container flex flex-col w-full">
+    <div className=" @container flex flex-col gap-2 w-full">
       {children}
-      {loadingAnnonces && (
-        <div className="w-full my-auto  flex text-black items-center justify-center">
-          <motion.div
-            animate={{
-              rotate: [0, 360],
-              transition: { repeat: Infinity, ease: "linear" },
-            }}
-          >
-            <LoaderCircle size={50} />
-          </motion.div>
-        </div>
-      )}
-      <div className="grid gap-3 @container grid-cols-1 @lg:grid-cols-2 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4 @7xl:grid-cols-5 w-full">
+
+      <div className="grid gap-2 @lg:gap-3 @container grid-cols-2 @lg:grid-cols-2 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4 @7xl:grid-cols-5 w-full">
         {annonces?.length > 0 &&
           annonces.map((annonce, index) => (
             <AnnonceCard
@@ -34,6 +25,13 @@ export default function AnnoncesShower({
             />
           ))}
       </div>
+      {loading && (
+        <div className="grid gap-2 @lg:gap-3 @container grid-cols-2 @lg:grid-cols-2 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4 @7xl:grid-cols-5 w-full">
+          {[...Array(nbr)].map((_, i) => (
+            <SkeletonCard key={i} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

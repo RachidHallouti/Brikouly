@@ -3,8 +3,9 @@ import AnnoncesShower from "./AnnoncesShower"
 import api from "../../assets/api"
 import { Link, useNavigate } from "react-router-dom"
 import { motion, useInView, useMotionValueEvent } from "motion/react"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, LoaderCircle } from "lucide-react"
 import { useSelector } from "react-redux"
+import Loader from "./Loader"
 
 export default function NearestAnnonces({
   cities,
@@ -12,7 +13,7 @@ export default function NearestAnnonces({
   children,
 }) {
   const [annonces, setAnnonces] = useState([])
-  const [loadingAnnonces, setLoading] = useState(null)
+  const [loading, setLoading] = useState(null)
   const user = useSelector((state) => state.auth.user)
   const navigate = useNavigate()
 
@@ -36,10 +37,21 @@ export default function NearestAnnonces({
     <AnnoncesShower
       annonces={annonces}
       setCategorieSearch={setCategorieSearch}
-      loadingAnnonces={loadingAnnonces}
+      loading={loading}
     >
-      <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
+      <h1 className="text-slate-950 flex gap-2 items-center text-4xl my-2.5 font-semibold">
         Annonces près de {children ? children : "vous"}
+        {loading && (
+          <motion.div
+            animate={{
+              rotate: [0, 360],
+              transition: { repeat: Infinity, ease: "linear" },
+            }}
+            className="mt-1"
+          >
+            <LoaderCircle size={30} />
+          </motion.div>
+        )}
       </h1>
       <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
         <h2 className="text-gray-500 ">

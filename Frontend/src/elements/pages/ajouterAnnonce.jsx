@@ -25,10 +25,12 @@ import { useNavigate } from "react-router-dom"
 import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import api from "../../assets/api"
+import { moroccanCities } from "../../assets/cities"
 
 export default function AjouterAnnonce() {
   const categories = serviceCategories
-  const cities = useNearestCities()
+  const localCities = moroccanCities.map((c) => c.name)
+  const cities = useNearestCities() || localCities
   const navigate = useNavigate()
   const disp = useDispatch()
   const [loading, setLoading] = useState(false)
@@ -71,8 +73,8 @@ export default function AjouterAnnonce() {
   const enligne = watch("enligne")
   useEffect(() => {
     const ville = watch("ville")
-    cities.length > 0 && !ville && setValue("ville", cities[0].name)
-  }, [cities])
+    cities.length > 0 && !ville && setValue("ville", cities[0])
+  }, [JSON.stringify(cities)])
   const parentVariant = {
     hidden: {
       opacity: 0,
@@ -421,8 +423,8 @@ export default function AjouterAnnonce() {
               <option value="">Pas spécifique</option>
 
               {cities.map((c) => (
-                <option key={c?.name} value={c?.name}>
-                  {c?.name}
+                <option key={c} value={c}>
+                  {c}
                 </option>
               ))}
             </select>

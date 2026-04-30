@@ -84,7 +84,7 @@ const Hero = (props) => {
         className="py-2 w-full gap-0 flex items-center"
       >
         <div className=" flex-col sm:px-10 gap-4 p-3 xl:w-1/2 w-full to-orange-100/0 via-orange-100/20 from-orange-500/50 bg-radial flex items-center">
-          <h1 className=" text-6xl text-gray-800 font-semibold">
+          <h1 className=" text-5xl sm:text-6xl text-gray-800 font-semibold">
             Besoin d’un service ?{" "}
             <span className="text-orange-500">Brikouly</span> est là pour vous.
           </h1>
@@ -125,7 +125,7 @@ const Hero = (props) => {
         </div>
         <div className="xl:flex hidden px-10 w-1/2 justify-center">
           <motion.div
-            className="w-full shadow-lg hover:shadow-2xl  rotate-0 relative h-120  rounded-3xl overflow-hidden"
+            className="w-full shadow-md hover:shadow-xl  rotate-0 relative h-120  rounded-3xl overflow-hidden"
             animate={{ rotate: -3 }}
             initial={{ rotate: 0 }}
             whileHover={{ rotate: 0 }}

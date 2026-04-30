@@ -17,4 +17,14 @@ class Annonce extends Model
         return $this->belongsToMany(User::class, 'favoris')
                     ->withTimestamps();
     }
+    function isSavedUser(){
+        return $this->hasOne(Favori::class)->where('user_id',auth('sanctum')->id());
+    }
+    protected $appends = ['isSaved'];
+    function getIsSavedAttribute(){
+        if(!auth()){
+            return false;
+        }
+       return $this->isSavedUser()->exists();
+    }
 }

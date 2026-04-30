@@ -44,10 +44,7 @@ class UserController extends Controller
                 'success' => false
             ], 404);
         }
-
-        return response()->json($user->load(['annonces'=>function($q){
-            $q->with('user');
-        }])->loadCount('annonces'));
+        return response()->json($user->load(['annonces.user','evaluations.reviewer'])->loadCount('annonces'));
     }
     
 

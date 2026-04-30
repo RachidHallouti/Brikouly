@@ -12,7 +12,8 @@ class FavoriController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index(User $user){ 
+    public function index(){ 
+        $user = auth()->user();
         $annoncesFavoris = $user->favoris()->with('user')->get();
 
         if ($annoncesFavoris->isEmpty()) {

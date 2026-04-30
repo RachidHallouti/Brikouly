@@ -23,181 +23,106 @@ import { useDispatch, useSelector } from "react-redux"
 import { setToaster } from "../redux/sliceElements"
 const color = "#ff6900"
 
-export default function Header() {
+export default function Header(props) {
   const { token } = useSelector((state) => state.auth)
   const barInview = useSelector((state) => state.elements.barInView)
   const disp = useDispatch()
   const navigate = useNavigate()
   const isMobile = window.innerWidth < 770
   const location = useLocation().pathname
-  const [menu, setMenu] = useState(false)
-  const { scrollY } = useScroll()
-  const [scrolled, setScrolled] = useState(false)
-  useMotionValueEvent(scrollY, "change", (e) => {
-    e > 0 ? setScrolled(true) : setScrolled(false)
-  })
+  const scrolled = props.scrolled
 
   return (
-    <>
-      <motion.header
-        className="flex z-50 sticky m-0 ml-auto h-22 justify-between text-white p-6 sm:px-10 bg-orange-500 items-center backdrop-blur-md shadow-lg shadow-orange-500/30"
-        variants={{
-          scrolled: {
-            marginLeft: 70,
-            marginRight: 70,
-            borderRadius: 20,
-            top: 20,
-          },
-          unscrolled: {
-            borderRadius: 0,
-            top: 0,
-          },
-        }}
-        animate={scrolled && !isMobile ? "scrolled" : "unscrolled"}
-      >
-        <div className="flex gap-5 items-center">
-          <Link
-            to="/"
-            className=" text-2xl sm:text-4xl font-outfit font-extrabold"
-          >
-            <motion.div whileHover={{ skewX: 10, rotateY: 30, scale: 0.95 }}>
-              BRIKOULY
-            </motion.div>
-          </Link>
-          <AnimatePresence>
-            {location != "/ajouter-annonce" && !barInview && token && (
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                initial={{ scale: 0.5, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white  shadow-sm hover:shadow-md text-xl p-3 rounded-xl h-12 text-orange-500 font-outfit font-bold flex gap-2 items-center cursor-pointer "
-                onClick={() => navigate("/ajouter-annonce")}
-              >
-                <SquarePlus strokeWidth={2.3} />
-                Publiez une annonce
-              </motion.button>
-            )}
-          </AnimatePresence>
-        </div>
-        <div className="flex gap-10 h-full">
-          <AnimatePresence>
-            {!barInview && (
-              <motion.div
-                initial={{ opacity: 0, width: "200px" }}
-                exit={{ opacity: 0, width: "200px" }}
-                animate={{ opacity: 1, width: "100%" }}
-                className="relative hidden md:flex items-center text-black justify-center max-w-full "
-              >
-                <motion.input
-                  type="text"
-                  className="bg-gray-50 font-outfit focus:shadow-lg pl-3 text-lg w-70 lg:w-100 h-12 rounded-xl shadow-sm"
-                  placeholder=" Rechercher des annonces"
-                  whileFocus={{
-                    width: "550px",
-                  }}
-                />
-                <motion.button
-                  className="absolute hover:shadow-md cursor-pointer right-2 rounded-xl bg-orange-500 p-1.5 text-white"
-                  whileHover={{
-                    scale: 1.1,
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Search />
-                </motion.button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-
-          <nav className="hidden sm:h-9 sm:flex h-full gap-3 pb-10">
-            <NavButton color={color} pages={["/"]}>
-              <Home size={27} />
-            </NavButton>
-            {token && (
-              <NavButton color={color} pages={["/favoris"]}>
-                <Heart size={27} />
-              </NavButton>
-            )}
-            {token && (
-              <NavButton color={color} pages={["/messages"]}>
-                <MessageCircle size={27} />
-              </NavButton>
-            )}
-            <NavButton
-              color={color}
-              drop={true}
-              pages={["/profile", "/login", "/register"]}
+    <motion.header
+      className="flex z-50  w-full  m-0 ml-auto h-22 justify-between text-white p-6 sm:px-10 bg-orange-500 items-center backdrop-blur-md shadow-lg shadow-orange-500/30"
+      variants={{
+        scrolled: {
+          borderRadius: 20,
+        },
+        unscrolled: {
+          borderRadius: 0,
+        },
+      }}
+      animate={scrolled ? "scrolled" : "unscrolled"}
+    >
+      <div className="flex gap-5 items-center">
+        <Link
+          to="/"
+          className=" text-2xl sm:text-4xl font-outfit font-extrabold"
+        >
+          <motion.div whileHover={{ skewX: 10, rotateY: 30, scale: 0.95 }}>
+            BRIKOULY
+          </motion.div>
+        </Link>
+        <AnimatePresence>
+          {location != "/ajouter-annonce" && !barInview && token && (
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              initial={{ scale: 0.5, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-white hidden md:flex  shadow-sm hover:shadow-md text-xl p-3 rounded-xl h-12 text-orange-500 font-outfit font-bold gap-2 items-center cursor-pointer "
+              onClick={() => navigate("/ajouter-annonce")}
             >
-              <CircleUser size={27} />
+              <SquarePlus strokeWidth={2.3} />
+              Publiez une annonce
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </div>
+      <div className="flex gap-10 h-full">
+        <AnimatePresence>
+          {(!barInview || isMobile || location != "/") && (
+            <motion.div
+              initial={{ opacity: 0, width: "200px" }}
+              exit={{ opacity: 0, width: "200px" }}
+              animate={{ opacity: 1, width: "100%" }}
+              className="relative flex items-center text-black justify-center max-w-full "
+            >
+              <motion.input
+                type="text"
+                className="bg-gray-50 font-outfit pr-13 focus:shadow-lg pl-3 text-lg  w-74 lg:w-100 h-12 rounded-xl shadow-sm"
+                placeholder="Rechercher des annonces"
+                whileFocus={{
+                  width: isMobile ? "" : "550px",
+                }}
+              />
+              <motion.button
+                className="absolute hover:shadow-md cursor-pointer right-2 rounded-xl bg-orange-500 p-1.5 text-white"
+                whileHover={{
+                  scale: 1.1,
+                }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Search />
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        <nav className="hidden sm:h-9 sm:flex h-full gap-3 pb-10">
+          <NavButton color={color} pages={["/"]}>
+            <Home size={27} />
+          </NavButton>
+          {token && (
+            <NavButton color={color} pages={["/favoris"]}>
+              <Heart size={27} />
             </NavButton>
-          </nav>
-        </div>
-        <nav className="flex sm:hidden gap-3">
-          <button
-            className="text-white cursor-pointer"
-            onClick={() => setMenu(!menu)}
+          )}
+          {token && (
+            <NavButton color={color} pages={["/messages"]}>
+              <MessageCircle size={27} />
+            </NavButton>
+          )}
+          <NavButton
+            color={color}
+            drop={true}
+            pages={["/profile", "/login", "/register"]}
           >
-            {!menu ? (
-              <Ellipsis className="h-6 w-6" />
-            ) : (
-              <X className="h-6 w-6" />
-            )}
-          </button>
+            <CircleUser size={27} />
+          </NavButton>
         </nav>
-      </motion.header>
-      {menu && (
-        <div className="h-screen flex sm:hidden flex-col w-full absolute top-0 pt-20 bg-orange-500/80">
-          <motion.button
-            className="flex gap-3 p-4 w-full items-center text-white"
-            whileHover={{ backgroundColor: color }}
-            whileTap={{ backgroundColor: color }}
-            onClick={() => {
-              navigate("/")
-              setMenu(false)
-            }}
-          >
-            <Home className="h-14 w-14" />
-            <h1 className="font-bebas text-2xl">Home</h1>
-          </motion.button>
-          <motion.button
-            className="flex gap-3 p-4 w-full items-center text-white"
-            whileHover={{ backgroundColor: color }}
-            whileTap={{ backgroundColor: color }}
-            onClick={() => {
-              navigate("/favoris")
-              setMenu(false)
-            }}
-          >
-            <Heart className="h-14 w-14" />
-            <h1 className="font-bebas text-2xl">Favoris</h1>
-          </motion.button>
-          <motion.button
-            className="flex gap-3 p-4 w-full items-center text-white"
-            whileHover={{ backgroundColor: color }}
-            whileTap={{ backgroundColor: color }}
-            onClick={() => {
-              navigate("/messages")
-              setMenu(false)
-            }}
-          >
-            <MessageCircle className="h-14 w-14" />
-            <h1 className="font-bebas text-2xl">Messages</h1>
-          </motion.button>
-          <motion.button
-            className="flex gap-3 p-4 w-full items-center text-white"
-            whileHover={{ backgroundColor: color }}
-            whileTap={{ backgroundColor: color }}
-            onClick={() => {
-              navigate("/profile")
-              setMenu(false)
-            }}
-          >
-            <CircleUser className="h-14 w-14" />
-            <h1 className="font-bebas text-2xl">Profile</h1>
-          </motion.button>
-        </div>
-      )}
-    </>
+      </div>
+    </motion.header>
   )
 }

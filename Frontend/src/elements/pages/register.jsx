@@ -176,9 +176,9 @@ export default function Register() {
       exit={{
         opacity: 0,
       }}
-      className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
+      className=" flex justify-center md:h-full w-full md:items-center"
     >
-      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full lg:w-4/5 md:w-5/6 xl:w-3/4  2xl:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)]">
+      <motion.div className="flex items-center  rounded-2xl overflow-hidden  w-full lg:w-4/5 md:w-5/6 xl:w-3/4  2xl:w-2/3 md:bg-white md:shadow-[0_0_20px_rgba(0,0,0,0.15)]">
         <motion.div
           initial={{
             opacity: 0,
@@ -189,7 +189,7 @@ export default function Register() {
             x: 0,
             transition: { duration: 0.2 },
           }}
-          className="min-h-155 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-r-4xl from-orange-400/70 to-orange-600/70 shadow-[5px_0_30px_rgba(0,0,0,0.25)]"
+          className="min-h-155 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-r-4xl from-orange-400/70 to-orange-600/70 shadow-[5px_0_15px_rgba(0,0,0,0.15)]"
         >
           <h1 className="font-space font-bold text-3xl">
             Rejoignez Brikouly !
@@ -347,7 +347,7 @@ export default function Register() {
                 <motion.select
                   name="ville"
                   variants={childVariant}
-                  className="bg-gray-100 border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 border-gray-300 pl-3"
+                  className="bg-gray-100 border-2 h-12 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 border-gray-300 pl-3"
                   {...register("ville")}
                 >
                   <option value="">Pas spécifique</option>

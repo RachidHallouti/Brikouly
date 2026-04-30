@@ -30,7 +30,7 @@ export default function LatestAnnonces({ setCategorieSearch, children }) {
     <AnnoncesShower
       annonces={annonces}
       setCategorieSearch={setCategorieSearch}
-      loadingAnnonces={loadingAnnonces}
+      loading={loadingAnnonces}
     >
       <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
         Annonces récentes

@@ -40,8 +40,8 @@ class AuthController extends Controller
         Storage::disk("public")->putFileAS('users/photo',$request->photo,$imageName);
         $imagePath = 'users/photo/'.$imageName;
         $data["photo"] = $imagePath;
-         
-        $user = User::create($data);//cheki l password
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create($data);
         if(!$user){
             return response()->json([
             "message"=>"Nous n'avons pas pu créer votre compte. Veuillez réessayer.",
@@ -49,7 +49,6 @@ class AuthController extends Controller
             ],500);
         };
         $token = $user->createToken("main")->plainTextToken;
-
         return response()->json([
             "message"=>"Bienvenue sur Brikouly,{$user['prenom']} {$user['nom']} !",
             "userData"=>compact("user","token"),

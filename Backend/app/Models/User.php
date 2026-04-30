@@ -32,12 +32,19 @@ class User extends Authenticatable
     function annonces(){
         return $this->hasMany(Annonce::class);
     }
-
+    function evaluations(){
+        return $this->hasMany(Evaluation::class);
+    }
+    
     public function favoris(){
         return $this->belongsToMany(Annonce::class, 'favoris')
                     ->withTimestamps();
     }
-
+    protected $appends = ['avgNote'];
+    public function getAvgNoteAttribute() {
+    $average = $this->evaluations()->avg('note');
+    return $average ? round($average, 1) : 0;
+}
     /**
      * The attributes that should be hidden for serialization.
      *

@@ -16,13 +16,19 @@ import NearestAnnonces from "../animatedElements/NearestAnnonces"
 import AnnoncesEnligne from "../animatedElements/onlineAnnonces"
 import LatestAnnonces from "../animatedElements/LatestAnnonces"
 import { serviceCategories } from "../../assets/categorie"
+import SkeletonCard from "../animatedElements/SkeletonCard"
 
 export default function Home() {
   const user = useSelector((state) => state.auth.user)
   const cities = useNearestCities()
   const [randomPhotoUrl] = useState(() => Math.floor(Math.random() * 10) + 1)
-  const userCity = user?.ville && cities[0] !== user.ville ? user.ville : null
-  const citiesToProfile = useNearestCities(userCity)?.map((c) => c.name)
+  const userCity =
+    !cities || cities.length === 0
+      ? user?.ville
+      : user?.ville && cities[0] !== user.ville
+        ? user.ville
+        : null
+  const citiesToProfile = useNearestCities(userCity)
   const ajouter = useRef()
   const categorySearch = useRef()
   const [categorie, setCategorie] = useState("")
@@ -52,7 +58,7 @@ export default function Home() {
       ) : (
         <LatestAnnonces setCategorieSearch={setCategorieSearch} />
       )}
-      {userCity && (
+      {userCity && citiesToProfile && (
         <NearestAnnonces
           setCategorieSearch={setCategorieSearch}
           cities={citiesToProfile}

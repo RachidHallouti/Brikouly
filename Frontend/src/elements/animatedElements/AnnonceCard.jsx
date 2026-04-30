@@ -31,7 +31,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
         whileHover={{
           scale: 1.04,
         }}
-        className="relative hidden @lg:block h-80"
+        className="relative  h-60 @lg:h-80"
       >
         <motion.button
           whileHover={{ scale: 1.07 }}
@@ -49,7 +49,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           />
         </motion.button>
         <motion.div
-          className="shadow-[0_0_4px]  hover:shadow-[0_0_10px] shadow-black/5 hover:shadow-black/10 rounded-2xl cursor-pointer w-full h-80 font-outfit overflow-hidden relative"
+          className="shadow-[0_0_4px]  hover:shadow-[0_0_10px] shadow-black/5 hover:shadow-black/10 rounded-2xl cursor-pointer w-full h-full font-outfit overflow-hidden relative"
           whileTap={{
             scale: 0.96,
           }}
@@ -64,7 +64,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               }
               alt=""
             />
-            <div className="absolute bottom-2.5 bg-orange-500 p-1 px-1.5 rounded-xl text-white right-2.5 flex gap-1 text-[13px]">
+            <div className="absolute bottom-2.5 bg-orange-500 p-1 px-1.5 rounded-xl text-white right-2.5 flex gap-1 text-xs @lg:text-[13px]">
               <h3>{annonce?.prix} </h3>
               <h3>{annonce?.prix_par}</h3>
             </div>
@@ -78,27 +78,27 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
                 scale: 1.05,
               }}
               onClick={() => setCategorie && setCategorie(categorie.name)}
-              className={`p-1 px-1.5 ${categorie?.color ?? ""} cursor-pointer rounded-lg ${categorie?.accent} shadow-[0_0_4px] shadow-black/10 hover:shadow-[0_0_10px] text-xs font-semibold`}
+              className={`@lg:p-1 @lg:px-1.5 p-0.75 px-1 ${categorie?.color ?? ""} cursor-pointer rounded-lg ${categorie?.accent} shadow-[0_0_4px] shadow-black/10 hover:shadow-[0_0_10px] text-[11px] @lg:text-xs font-semibold`}
             >
               {categorie?.name}
             </motion.button>
-            <h2 className="font-medium text-md w-full line-clamp-2 leading-snug wrap-break-word">
+            <h2 className="font-medium pb-4 @lg:text-md text-sm w-full line-clamp-1 @lg:line-clamp-2 @lg:leading-snug leading-none wrap-break-word">
               {annonce?.titre}
             </h2>
 
             <div className="mt-auto w-full">
-              <div className="flex  gap-1.5 text-[13px] w-full pt-1.5 items-center text-slate-700">
+              <div className="flex  gap-1.5 text-xs @lg:text-[13px] w-full items-center text-slate-700">
                 <MapPin size={13} />
                 {annonce?.ville}
               </div>
-              <div className="flex gap-2.5 border-t mt-1 text-sm border-slate-700/30 w-full pt-2 items-center text-slate-700">
+              <div className="flex gap-1.5  @lg:gap-2.5 border-t @lg:mt-1 mt-0.5 text-xs @lg:text-sm border-slate-700/30 w-full @lg:pt-2 pt-1.25 items-center text-slate-700">
                 <img
                   src={
                     annonce?.user?.photo?.includes("http")
                       ? annonce?.user?.photo
                       : `/storage/${annonce?.user?.photo}`
                   }
-                  className="h-7 w-7 object-cover rounded-full"
+                  className="@lg:h-7 h-6  aspect-square object-cover rounded-full"
                 />
                 <h3 className="text-gray-800 font-space font-semibold">
                   {annonce?.user?.prenom[0]?.toUpperCase() +
@@ -111,7 +111,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           </div>
         </motion.div>
       </motion.div>
-      <motion.div className="shadow-[0_0_4px] @lg:hidden  p-3 gap-4 flex  hover:shadow-[0_0_10px] shadow-black/5 bg-white hover:shadow-black/10 rounded-2xl cursor-pointer w-full h-40 font-outfit overflow-hidden relative">
+      <motion.div className="shadow-[0_0_4px] hidden  p-3 gap-4   hover:shadow-[0_0_10px] shadow-black/5 bg-white hover:shadow-black/10 rounded-2xl cursor-pointer w-full h-40 font-outfit overflow-hidden relative">
         <motion.button
           whileHover={{ scale: 1.07 }}
           whileTap={{

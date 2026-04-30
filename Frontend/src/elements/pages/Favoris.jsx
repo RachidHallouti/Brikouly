@@ -11,7 +11,7 @@ export default function Favoris() {
   useEffect(() => {
     const fetchFavoris = async () => {
       try {
-        const res = await api.get(`api/users/${user.id}/favoris`)
+        const res = await api.get(`api/my-favoris`)
         setFavoris(res.data.data)
       } catch (error) {
         console.log(error)

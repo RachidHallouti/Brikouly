@@ -73,8 +73,11 @@ export default function SearchPage() {
       setCurPage((prev) => prev + 1)
     }
   }, [loadMore, hasMore, loading, annonces.length])
+  const setCategorieSearch = (cat) => {
+    setValue("categorie", cat)
+  }
   return (
-    <div className="-mx-10 mt-5 gap-10">
+    <div className="w-full  mt-5 gap-10">
       <motion.section className="grid grid-cols-12 gap-3  w-full bg-white p-6 rounded-2xl  shadow-[0_0_2px_rgba(0,0,0,0.07)]">
         <div className="col-span-6">
           <label htmlFor="" className={`font-semibold text-orange-500`}>
@@ -338,14 +341,13 @@ export default function SearchPage() {
             )}
           </div>
         </div>
-        {annonces.length > 0 && (
-          <AnnoncesShower annonces={annonces}></AnnoncesShower>
-        )}
-        {loading && (
-          <div className="mt-10">
-            <Loader />
-          </div>
-        )}
+
+        <AnnoncesShower
+          setCategorieSearch={setCategorieSearch}
+          annonces={annonces}
+          loading={loading}
+          nbr={10}
+        />
 
         <div className=" w-full h-12" ref={lod} />
       </section>

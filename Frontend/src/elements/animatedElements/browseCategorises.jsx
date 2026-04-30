@@ -12,10 +12,13 @@ import {
 } from "lucide-react"
 import AnnoncesShower from "./AnnoncesShower"
 import { Link, useNavigate } from "react-router-dom"
+import Loader from "./Loader"
+import api from "../../assets/api"
 
 const BrowseCategories = (props) => {
   const navigate = useNavigate()
   const categories = serviceCategories
+  const [loading, setLoading] = useState(false)
   const [randomCat] = useState(
     () => serviceCategories[Math.floor(Math.random() * categories.length)].name,
   )
@@ -23,14 +26,20 @@ const BrowseCategories = (props) => {
   const [catAnnonces, setCatAnnonces] = useState([])
   useEffect(() => {
     const fetchAnnonces = async () => {
-      const res = await axios.get(`http://localhost:8000/api/annonces`, {
-        params: { categorie, limit: 5, cities: props.cities },
-      })
-      setCatAnnonces(res.data)
+      setCatAnnonces([])
+      setLoading(true)
+      try {
+        const res = await api.get(`api/annonces`, {
+          params: { categorie, limit: 5, cities: props.cities },
+        })
+        setCatAnnonces(res.data)
+      } catch (error) {
+      } finally {
+        setLoading(false)
+      }
     }
     fetchAnnonces()
-    setCatAnnonces([])
-  }, [props.categorie])
+  }, [categorie])
   const categoriesScroll = useRef()
   const scroll = (d) => {
     if (categoriesScroll.current) {
@@ -100,11 +109,12 @@ const BrowseCategories = (props) => {
           </button>
         </div>
       </div>
-      {catAnnonces.length > 0 && (
-        <AnnoncesShower annonces={catAnnonces}>
-          <h1 className="text-slate-950 text-4xl  my-2.5 font-semibold">
-            {categorie}
-          </h1>
+      <div>
+        <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
+          {categorie}
+        </h1>
+
+        <AnnoncesShower annonces={catAnnonces} loading={loading}>
           <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
             <h2 className="text-gray-500 ">
               {props.cities
@@ -124,7 +134,7 @@ const BrowseCategories = (props) => {
             </motion.button>
           </div>
         </AnnoncesShower>
-      )}
+      </div>
     </>
   )
 }

@@ -97,14 +97,14 @@ export default function Login() {
       exit={{
         opacity: 0,
       }}
-      className=" flex justify-center h-[calc(100vh-88*2px-(14*4px))] w-full items-center"
+      className=" flex justify-center md:h-full w-full items-center"
     >
-      <div className="flex justify-center w-full lg:w-4/5 md:w-5/6 xl:w-3/4  2xl:w-2/3 shadow-[0_0_40px_rgba(0,0,0,0.25)] rounded-2xl overflow-hidden">
+      <div className="flex justify-center w-full lg:w-4/5  xl:w-3/4 md:bg-white  2xl:w-2/3 md:shadow-[0_0_20px_rgba(0,0,0,0.15)] rounded-2xl overflow-hidden">
         <motion.div
           variants={parentVariant}
           initial="hidden"
           animate="visible"
-          className="flex xl:px-20  gap-4 flex-col items-center p-8 sm:p-16 border-orange-500 w-full xl:w-3/5"
+          className="flex xl:px-20  gap-4 flex-col items-center p-4 sm:p-16 border-orange-500 w-full xl:w-3/5"
         >
           <motion.div variants={childVariant}>
             <User className="h-28 w-28 text-zinc-800 " />
@@ -165,7 +165,7 @@ export default function Login() {
             x: 0,
             transition: { duration: 0.2 },
           }}
-          className="h-145 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-l-4xl from-orange-400/70 to-orange-600/70 shadow-[-5px_0_30px_rgba(0,0,0,0.25)]"
+          className="h-145 text-white w-2/5 items-center justify-center hidden p-10 xl:flex flex-col bg-linear-to-tr rounded-l-4xl from-orange-400/70 to-orange-600/70 shadow-[-5px_0_15px_rgba(0,0,0,0.15)]"
         >
           <h1 className="font-space font-bold text-3xl">
             Bienvenue sur Brikouly !
