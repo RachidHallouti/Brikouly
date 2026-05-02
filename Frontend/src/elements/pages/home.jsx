@@ -7,16 +7,17 @@ import axios, { Axios } from "axios"
 import { ArrowRight, Loader, LoaderCircle, SquarePlus } from "lucide-react"
 import { setBar } from "../../redux/sliceElements"
 import { Link, useNavigate } from "react-router-dom"
-import Hero from "../Hero"
+import Hero from "../homeElements/Hero"
 import AnnonceCard from "../animatedElements/AnnonceCard"
-import BrowseCategories from "../animatedElements/browseCategorises"
+import BrowseCategories from "../homeElements/browseCategorises"
 import AnnoncesShower from "../animatedElements/AnnoncesShower"
 import api from "../../assets/api"
-import NearestAnnonces from "../animatedElements/NearestAnnonces"
-import AnnoncesEnligne from "../animatedElements/onlineAnnonces"
-import LatestAnnonces from "../animatedElements/LatestAnnonces"
+import NearestAnnonces from "../homeElements/NearestAnnonces"
+import AnnoncesEnligne from "../homeElements/onlineAnnonces"
+import LatestAnnonces from "../homeElements/LatestAnnonces"
 import { serviceCategories } from "../../assets/categorie"
 import SkeletonCard from "../animatedElements/SkeletonCard"
+import PourquoiBrikouly from "../homeElements/PourquoiBrikouly"
 
 export default function Home() {
   const user = useSelector((state) => state.auth.user)
@@ -73,6 +74,7 @@ export default function Home() {
         ref={categorySearch}
         cities={cities}
       />
+      <PourquoiBrikouly />
     </main>
   )
 }

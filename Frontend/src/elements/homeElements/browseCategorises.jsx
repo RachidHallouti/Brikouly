@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { serviceCategories } from "../../assets/categorie"
 import { motion } from "motion/react"
 import axios from "axios"
-import AnnonceCard from "./AnnonceCard"
+import AnnonceCard from "../animatedElements/AnnonceCard"
 import {
   ArrowRight,
   ChevronLeft,
@@ -10,9 +10,10 @@ import {
   StepBack,
   StepForward,
 } from "lucide-react"
-import AnnoncesShower from "./AnnoncesShower"
+import AnnoncesShower from "../animatedElements/AnnoncesShower"
+
 import { Link, useNavigate } from "react-router-dom"
-import Loader from "./Loader"
+import Loader from "../animatedElements/Loader"
 import api from "../../assets/api"
 
 const BrowseCategories = (props) => {
@@ -56,7 +57,7 @@ const BrowseCategories = (props) => {
     navigate(`/search?${params.toString()}`)
   }
   return (
-    <>
+    <section>
       <div
         ref={props.ref}
         className="my-5 bg-orange-100 p-8 py-12 rounded-2xl "
@@ -109,33 +110,18 @@ const BrowseCategories = (props) => {
           </button>
         </div>
       </div>
-      <div>
-        <h1 className="text-slate-950 text-4xl my-2.5 font-semibold">
-          {categorie}
-        </h1>
-
-        <AnnoncesShower annonces={catAnnonces} loading={loading}>
-          <div className="w-full flex font-space text-[15.5px] mb-7 font-semibold justify-between">
-            <h2 className="text-gray-500 ">
-              {props.cities
-                ? `les annonces les plus proches à  ${props?.cities[0]}`
-                : `les derniers annonces de ${categorie}`}
-            </h2>
-            <motion.button
-              onClick={searchHandle}
-              whileHover={{
-                gap: "16px",
-                padding: "0px",
-              }}
-              className="flex cursor-pointer gap-2 pr-2 items-center text-orange-500"
-            >
-              <h2 className=" font-bold">Voir plus</h2>
-              <ArrowRight size={20} />
-            </motion.button>
-          </div>
-        </AnnoncesShower>
-      </div>
-    </>
+      <AnnoncesShower
+        annonces={catAnnonces}
+        loading={loading}
+        title={categorie}
+        searchHandle={searchHandle}
+        subTitle={
+          props.cities
+            ? `les annonces les plus proches à  ${props?.cities[0]}`
+            : `les derniers annonces de ${categorie}`
+        }
+      />
+    </section>
   )
 }
 export default BrowseCategories

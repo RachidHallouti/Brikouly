@@ -31,23 +31,25 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
         whileHover={{
           scale: 1.04,
         }}
-        className="relative  h-60 @lg:h-80"
+        className="relative  h-64 @lg:h-84"
       >
-        <motion.button
-          whileHover={{ scale: 1.07 }}
-          whileTap={{
-            scale: 0.95,
-          }}
-          onPointerDown={(e) => e.stopPropagation()}
-          onClick={favoritise}
-          className="absolute z-20 cursor-pointer top-3 text-white right-3"
-        >
-          <Heart
-            size={30}
-            fill={isSaved ? "red" : "rgba(0,0,0,0.5)"}
-            strokeWidth={isSaved ? 0 : 1.7}
-          />
-        </motion.button>
+        {user && (
+          <motion.button
+            whileHover={{ scale: 1.07 }}
+            whileTap={{
+              scale: 0.95,
+            }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={favoritise}
+            className="absolute z-20 cursor-pointer top-3 text-white right-3"
+          >
+            <Heart
+              size={30}
+              fill={isSaved ? "red" : "rgba(0,0,0,0.5)"}
+              strokeWidth={isSaved ? 0 : 1.7}
+            />
+          </motion.button>
+        )}
         <motion.div
           className="shadow-[0_0_4px]  hover:shadow-[0_0_10px] shadow-black/5 hover:shadow-black/10 rounded-2xl cursor-pointer w-full h-full font-outfit overflow-hidden relative"
           whileTap={{
@@ -69,7 +71,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
               <h3>{annonce?.prix_par}</h3>
             </div>
           </motion.div>
-          <div className="flex flex-col bg-white items-start p-3.5 pb-3 h-1/2 w-full  gap-1 relative">
+          <div className="flex flex-col bg-white/50 items-start p-3.5 pb-3 h-1/2 w-full  gap-1 relative">
             <motion.button
               whileTap={{
                 scale: 0.95,
@@ -82,7 +84,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
             >
               {categorie?.name}
             </motion.button>
-            <h2 className="font-medium pb-4 @lg:text-md text-sm w-full line-clamp-1 @lg:line-clamp-2 @lg:leading-snug leading-none wrap-break-word">
+            <h2 className="font-medium pb-4 @lg:text-base text-sm w-full line-clamp-1 @lg:line-clamp-2 @lg:leading-snug leading-none wrap-break-word">
               {annonce?.titre}
             </h2>
 

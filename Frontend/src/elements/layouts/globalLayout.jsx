@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import Header from "../header"
 import Toaster from "../animatedElements/Toaster"
 import Footer from "../Footer"
@@ -28,6 +28,13 @@ export default function GlobalLayout() {
       }, 300)
     }
   })
+  const { pathname } = useLocation()
+
+  useEffect(() => {
+    if (target.current) {
+      target.current.scrollTop = 0
+    }
+  }, [pathname])
 
   return (
     <div className="bg-[#f8f7f5] items-center flex flex-col overflow-hidden h-screen font-outfit relative w-full">
@@ -52,7 +59,7 @@ export default function GlobalLayout() {
       <main
         ref={target}
         id="container-scroll"
-        className=" w-full  mx-auto overflow-y-auto p-2 sm:px-28 py-30 flex-1  "
+        className=" w-full  mx-auto overflow-y-auto p-2 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-30 flex-1  "
       >
         <Outlet />
       </main>

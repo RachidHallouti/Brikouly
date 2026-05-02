@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'),"w31hx6zf-3000.uks1.devtunnels.ms"],
+    'allowed_origins' => [env('FRONTEND_URL', 'http://localhost:3000'),"http://localhost:5000"],
 
     'allowed_origins_patterns' => [],
 

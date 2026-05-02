@@ -14,14 +14,14 @@ import {
 } from "motion/react"
 import { useEffect, useRef, useState } from "react"
 import { useDispatch } from "react-redux"
-import { setBar } from "../redux/sliceElements"
+import { setBar } from "../../redux/sliceElements"
 import { Link, useNavigate } from "react-router-dom"
-import AnnoncesShower from "./animatedElements/AnnoncesShower"
+import AnnoncesShower from "../animatedElements/AnnoncesShower"
 import axios from "axios"
-import { serviceCategories } from "../assets/categorie"
-import api from "../assets/api"
-import Loader from "./animatedElements/Loader"
-import useNearestCities from "./hooks/useNearestCities"
+import { serviceCategories } from "../../assets/categorie"
+import api from "../../assets/api"
+import Loader from "../animatedElements/Loader"
+import useNearestCities from "../hooks/useNearestCities"
 
 const Hero = (props) => {
   const hero = useRef()

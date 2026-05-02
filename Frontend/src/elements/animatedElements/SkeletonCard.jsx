@@ -9,15 +9,15 @@ const SkeletonCard = () => {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0.2 }}
-        animate={{ opacity: 0.6 }}
+        initial={{ opacity: 0.4 }}
+        animate={{ opacity: 0.9 }}
         transition={{
           duration: 1.5,
           repeat: Infinity,
           repeatType: "reverse",
           delay: Math.random(),
         }}
-        className="relative cursor-wait  h-60 @lg:h-80"
+        className="relative cursor-default  h-64 @lg:h-84"
       >
         <motion.button className="absolute z-20 top-3 text-white right-3">
           <Heart size={30} strokeWidth={0} fill="#666" />
@@ -36,7 +36,7 @@ const SkeletonCard = () => {
             >
               Maison et bricolage
             </motion.button>
-            <h2 className="font-medium bg-gray-light text-gray-light rounded-lg pb-4 @lg:text-md text-sm w-full line-clamp-1 @lg:line-clamp-2 @lg:leading-snug leading-none wrap-break-word">
+            <h2 className="font-medium bg-gray-light text-gray-light rounded-lg pb-4 @lg:text-base text-sm w-full line-clamp-1 @lg:line-clamp-2 @lg:leading-snug leading-none wrap-break-word">
               khasni hada o hada o hada
               sdfsdfsdfsdfsdfsdfsdsdfsdfdfdsfdsfsdfdssdfdsfsdfsdsdfsdfsdf
             </h2>

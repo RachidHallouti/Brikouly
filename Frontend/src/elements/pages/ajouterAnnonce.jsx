@@ -156,10 +156,10 @@ export default function AjouterAnnonce() {
       animate="visible"
       initial="hidden"
     >
-      <h1 className="text-5xl w-full text-center font-medium mt-5">
+      <h1 className="md:text-5xl sm:text-4xl text-3xl w-full text-center font-medium sm:mt-2 md:mt-5">
         Publier une annonce
       </h1>
-      <h2 className="text-center mt-2 text-gray-500 mb-10">
+      <h2 className="text-center mt-2 text-gray-500 mb-4 sm:mb-6 md:mb-10">
         Brikouly vous permet de partager votre besoin ou votre services
       </h2>
       <motion.section className="flex flex-col xl:flex-row w-full gap-4">
