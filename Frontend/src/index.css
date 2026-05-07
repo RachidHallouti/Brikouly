@@ -19,6 +19,8 @@
   --color-gray-light: #a7a7a7;
   --color-gray-dark: #333333;
   --color-brand-white: #f9f9f9;
+
+  --breakpoint-3xl: 1600px;
 }
 ::-webkit-scrollbar {
   width: 8px;

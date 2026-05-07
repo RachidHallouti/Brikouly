@@ -64,21 +64,30 @@ class AnnonceController extends Controller
             'description'=>'required|string|min:10|max:255',
             'ville'=>'nullable|string',
             'photo'=>'required|image|max:2048',
+            'photo_2'=>'nullable|image|max:2048',
+            'photo_3'=>'nullable|image|max:2048',
+            'photo_4'=>'nullable|image|max:2048',
+            'photo_5'=>'nullable|image|max:2048',
             'categorie'=>'required|string',
             'prix'=>'required|numeric|min:1|max:200000',
             'prix_par'=>'required|string',
-            'user_id'=>'required|exists:users,id',
         ]);
-        $imageName = Str::random().'.'.$request->photo->getClientOriginalExtension();
-        Storage::disk("public")->putFileAS('annonces/photo',$request->photo,$imageName);
-        $imagePath = 'annonces/photo/'.$imageName;
-        $data["photo"]= $imagePath;
+        $data['user_id'] = auth('sanctum')->id();
+        $photos = ['photo', 'photo_2', 'photo_3', 'photo_4', 'photo_5'];
+        foreach ($photos as $p) {
+        if ($request->hasFile($p)) {
+            $file = $request->file($p);
+        $imageName = Str::random().'.'.$file->getClientOriginalExtension();
+        Storage::disk("public")->putFileAS('annonces/photos',$file,$imageName);
+        $imagePath = 'annonces/photos/'.$imageName;
+        $data[$p]= $imagePath;
+        }}
         Annonce::create($data);
         return response()->json(["message"=>'Votre annonce a été publiée avec succée']);
     }
     public function show(Annonce $annonce)
     {
-        return response()->json($annonce);
+        return response()->json($annonce->load('user'));
     }
 
     public function update(Request $request, Annonce $annonce)

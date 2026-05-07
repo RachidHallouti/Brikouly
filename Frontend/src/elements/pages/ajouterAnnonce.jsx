@@ -34,7 +34,6 @@ export default function AjouterAnnonce() {
   const navigate = useNavigate()
   const disp = useDispatch()
   const [loading, setLoading] = useState(false)
-  const user = useSelector((state) => state.auth.user)
   const annonceSchema = Yup.object().shape({
     titre: Yup.string()
       .required("Le titre est obligatoire")
@@ -110,6 +109,10 @@ export default function AjouterAnnonce() {
         "titre",
         "description",
         "photo",
+        "photo_2",
+        "photo_3",
+        "photo_4",
+        "photo_5",
         "categorie",
         "ville",
         "type",
@@ -118,7 +121,6 @@ export default function AjouterAnnonce() {
       ]
       appendKeys.forEach((k) => data[k] && formData.append(k, data[k]))
       formData.append("enligne", data.enligne === "non" ? 0 : 1)
-      formData.append("user_id", user.id)
       const response = await api.post("api/annonces", formData)
       navigate("/")
     } catch (error) {
@@ -210,19 +212,19 @@ export default function AjouterAnnonce() {
                 <motion.label
                   whileHover={{ scale: 1.03, y: -3 }}
                   whileTap={{ scale: 0.97, y: 3 }}
-                  htmlFor="photo2"
+                  htmlFor="photo_2"
                   className="w-1/2 border-dashed overflow-hidden relative border-gray-300 text-gray-500 border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-full"
                 >
                   <input
                     type="file"
-                    id="photo2"
+                    id="photo_2"
                     className="hidden"
-                    onChange={(e) => handlePhotoChange(e, "photo2")}
+                    onChange={(e) => handlePhotoChange(e, "photo_2")}
                   />
-                  {previews.photo2 ? (
+                  {previews.photo_2 ? (
                     <>
                       <img
-                        src={previews.photo2}
+                        src={previews.photo_2}
                         className="w-full h-full object-cover"
                         alt=""
                       />
@@ -230,7 +232,7 @@ export default function AjouterAnnonce() {
                         <Pen size={32} />
                       </div>
                       <button
-                        onClick={() => photoRemove("photo2")}
+                        onClick={() => photoRemove("photo_2")}
                         className="absolute z-2 cursor-pointer bg-gray-100/80 text-gray-500 rounded-full p-0.5 top-3 right-3"
                       >
                         <X strokeWidth={2.5} />
@@ -245,19 +247,19 @@ export default function AjouterAnnonce() {
                 <motion.label
                   whileHover={{ scale: 1.03, y: -3 }}
                   whileTap={{ scale: 0.97, y: 3 }}
-                  htmlFor="photo3"
+                  htmlFor="photo_3"
                   className="w-1/2 border-dashed overflow-hidden relative border-gray-300 text-gray-500 border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-full"
                 >
                   <input
                     type="file"
-                    id="photo3"
+                    id="photo_3"
                     className="hidden"
-                    onChange={(e) => handlePhotoChange(e, "photo3")}
+                    onChange={(e) => handlePhotoChange(e, "photo_3")}
                   />
-                  {previews.photo3 ? (
+                  {previews.photo_3 ? (
                     <>
                       <img
-                        src={previews.photo3}
+                        src={previews.photo_3}
                         className="w-full h-full object-cover"
                         alt=""
                       />
@@ -265,7 +267,7 @@ export default function AjouterAnnonce() {
                         <Pen size={32} />
                       </div>
                       <button
-                        onClick={() => photoRemove("photo3")}
+                        onClick={() => photoRemove("photo_3")}
                         className="absolute z-2 cursor-pointer bg-gray-100/80 text-gray-500 rounded-full p-0.5 top-3 right-3"
                       >
                         <X strokeWidth={2.5} />
@@ -282,19 +284,19 @@ export default function AjouterAnnonce() {
                 <motion.label
                   whileHover={{ scale: 1.03, y: -3 }}
                   whileTap={{ scale: 0.97, y: 3 }}
-                  htmlFor="photo4"
+                  htmlFor="photo_4"
                   className="w-1/2 border-dashed overflow-hidden relative border-gray-300 text-gray-500 border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-full"
                 >
                   <input
                     type="file"
-                    id="photo4"
+                    id="photo_4"
                     className="hidden"
-                    onChange={(e) => handlePhotoChange(e, "photo4")}
+                    onChange={(e) => handlePhotoChange(e, "photo_4")}
                   />
-                  {previews.photo4 ? (
+                  {previews.photo_4 ? (
                     <>
                       <img
-                        src={previews.photo4}
+                        src={previews.photo_4}
                         className="w-full h-full object-cover"
                         alt=""
                       />
@@ -302,7 +304,7 @@ export default function AjouterAnnonce() {
                         <Pen size={32} />
                       </div>
                       <button
-                        onClick={() => photoRemove("photo4")}
+                        onClick={() => photoRemove("photo_4")}
                         className="absolute z-2 cursor-pointer bg-gray-100/80 text-gray-500 rounded-full p-0.5 top-3 right-3"
                       >
                         <X strokeWidth={2.5} />
@@ -317,19 +319,19 @@ export default function AjouterAnnonce() {
                 <motion.label
                   whileHover={{ scale: 1.03, y: -3 }}
                   whileTap={{ scale: 0.97, y: 3 }}
-                  htmlFor="photo5"
+                  htmlFor="photo_5"
                   className="w-1/2 border-dashed overflow-hidden relative border-gray-300 text-gray-500 border-3 rounded-4xl cursor-pointer borderd flex justify-center items-center bg-gray-100/80 h-full"
                 >
                   <input
                     type="file"
-                    id="photo5"
+                    id="photo_5"
                     className="hidden"
-                    onChange={(e) => handlePhotoChange(e, "photo5")}
+                    onChange={(e) => handlePhotoChange(e, "photo_5")}
                   />
-                  {previews.photo5 ? (
+                  {previews.photo_5 ? (
                     <>
                       <img
-                        src={previews.photo5}
+                        src={previews.photo_5}
                         className="w-full h-full object-cover"
                         alt=""
                       />
@@ -337,7 +339,7 @@ export default function AjouterAnnonce() {
                         <Pen size={32} />
                       </div>
                       <button
-                        onClick={() => photoRemove("photo5")}
+                        onClick={() => photoRemove("photo_5")}
                         className="absolute z-2 cursor-pointer bg-gray-100/80 text-gray-500 rounded-full p-0.5 top-3 right-3"
                       >
                         <X strokeWidth={2.5} />
@@ -573,7 +575,7 @@ export default function AjouterAnnonce() {
                   className="bg-gray-100 h-12  border-2 text-gray-800 font-medium text-lg rounded-2xl w-full p-2 mt-2 border-gray-300 pl-3"
                 >
                   <option value="Dh">Dh</option>
-                  <option value="Dh/Heur">Dh/Heur</option>
+                  <option value="Dh/Heure">Dh/Heure</option>
                   <option value="Dh/Jour">Dh/Jour</option>
                   <option value="Dh/Mois">Dh/Mois</option>
                 </select>

@@ -4,11 +4,13 @@ import { serviceCategories } from "../../assets/categorie"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 import api from "../../assets/api"
+import { useNavigate } from "react-router-dom"
 
 const AnnonceCard = ({ annonce, setCategorie }) => {
   const categorie = serviceCategories.find((e) => e.name == annonce.categorie)
   const [isSaved, setIsSaved] = useState(annonce.isSaved)
   const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
 
   const favoritise = async () => {
     if (user) {
@@ -55,6 +57,7 @@ const AnnonceCard = ({ annonce, setCategorie }) => {
           whileTap={{
             scale: 0.96,
           }}
+          onClick={() => navigate(`/annonce/${annonce.id}`)}
         >
           <motion.div className="h-1/2 relative w-full bg-white ">
             <img

@@ -6,7 +6,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FavoriController;
 use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\EvaluationController;
+use App\Http\Controllers\MessageController;
 use App\Models\Evaluation;
 use App\Models\User;
 
@@ -18,7 +20,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/logout', [AuthController::class,"logout"]);
 Route::resource("evaluations", EvaluationController::class);
-Route::get('/my-favoris', [FavoriController::class, 'index']);
+Route::resource("favoris", FavoriController::class);
+Route::resource("conversations",ConversationController::class);
+Route::resource("messages",MessageController::class);
+
 
 
 
@@ -30,6 +35,5 @@ Route::resource("annonces",AnnonceController::class);
 
 Route::get('/users/{user}/annonces',[AnnonceController::class,"userAnnonces"]);
 Route::post('/favori/toggle',[FavoriController::class,'toggle']);
-Route::post('/favori/check',[FavoriController::class,'check']);
 Route::get('/data', [AnnonceController::class, 'data']);
 Route::resource("users", UserController::class);

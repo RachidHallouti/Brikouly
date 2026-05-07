@@ -12,6 +12,8 @@ import Register from "./elements/pages/register"
 import { AnimatePresence } from "motion/react"
 import Favoris from "./elements/pages/Favoris"
 import SearchPage from "./elements/pages/SearchPage"
+import AnnonceDetails from "./elements/pages/AnnonceDetails"
+import Chat from "./elements/pages/Chat"
 const router = createBrowserRouter([
   {
     path: "/",
@@ -32,6 +34,10 @@ const router = createBrowserRouter([
           {
             path: "/profile/:id",
             element: <Profile />,
+          },
+          {
+            path: "/annonce/:id",
+            element: <AnnonceDetails />,
           },
         ],
       },
@@ -56,6 +62,10 @@ const router = createBrowserRouter([
           {
             path: "/ajouter-annonce",
             element: <AjouterAnnonce />,
+          },
+          {
+            path: "/messages",
+            element: <Chat />,
           },
           {
             path: "/favoris",

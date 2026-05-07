@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Annonce extends Model
 {
     use HasFactory;
-    protected $fillable=['titre','description','ville','photo','categorie','prix','prix_par','user_id','enligne','status','type'];
+    protected $fillable=['titre','description','ville','photo','photo_2','photo_3','photo_4','photo_5','categorie','prix','prix_par','user_id','enligne','status','type'];
     function user(){
         return $this->belongsTo(User::class);
     }
