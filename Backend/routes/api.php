@@ -11,6 +11,9 @@ use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\MessageController;
 use App\Models\Evaluation;
 use App\Models\User;
+use Illuminate\Support\Facades\Broadcast;
+
+Broadcast::routes(['middleware' => ['auth:sanctum']]);
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();

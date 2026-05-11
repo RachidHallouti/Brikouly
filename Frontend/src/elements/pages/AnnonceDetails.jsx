@@ -67,7 +67,7 @@ export default function AnnonceDetails() {
     } catch (error) {}
   }
   return (
-    <main className="xl:px-10 grid  xl:grid-cols-10 gap-10  ">
+    <main className="xl:px-10 xl:pt-4 grid  xl:grid-cols-10 gap-10  ">
       <section className="xl:col-span-7">
         <div className="flex flex-col gap-4">
           <div className="w-full relative xl:aspect-[2] aspect-[1.7] bg-gray-300 shadow-[0_0_3px_rgba(0,0,0,0.15)] overflow-hidden rounded-4xl">

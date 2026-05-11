@@ -15,8 +15,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('conversation_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->text('content');
-            $table->enum('type',['text','offre','photo'])->default('text');
+            $table->foreignId('reponse_a')->nullable()->constrained('messages');
+            $table->decimal('prix', 10, 2)->nullable();
+            $table->string('prix_par')->nullable();
+            $table->text('content')->nullable();
+            $table->enum('type',['text','offre','photo','reponse_offre'])->default('text');
+            $table->enum('status',['accepté','refusé'])->nullable();
             $table->timestamps();
         });
     }

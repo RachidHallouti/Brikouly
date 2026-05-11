@@ -12,7 +12,7 @@ class ConversationController extends Controller
      */
     public function index()
     {
-        $conversations = Conversation::where('user1_id',auth('sanctum')->id())->orWhere('user2_id',auth('sanctum')->id())->with(['annonce','latestMessage','user1','user2','latestMessage'])->latest()->get();
+        $conversations = Conversation::where('user1_id',auth('sanctum')->id())->orWhere('user2_id',auth('sanctum')->id())->with(['annonce','latestMessage','user1','user2'])->latest()->get();
         return response()->json($conversations);
     }
 
@@ -37,7 +37,9 @@ class ConversationController extends Controller
      */
     public function show(Conversation $conversation)
     {
-        
+        return response()->json($conversation->load(['messages.reponse_a' => function ($q) {
+    $q->orderBy('created_at', 'asc');
+},'annonce','user1','user2']));
     }
 
     /**

@@ -13,7 +13,7 @@ export default function Favoris() {
     const fetchFavoris = async () => {
       setLoading(true)
       try {
-        const res = await api.get(`api/my-favoris`)
+        const res = await api.get(`api/favoris`)
         setFavoris(res.data.data)
       } catch (error) {
         console.log(error)

@@ -17,6 +17,7 @@ export default function GlobalLayout() {
   const { scrollY } = useScroll({ container: target })
   const [scrolled, setScrolled] = useState(false)
   const [scrolling, setIsScrolling] = useState(false)
+
   useMotionValueEvent(scrollY, "change", (e) => {
     setScrolled(e > 50 && !isMobile)
     if (e > 0) {
@@ -59,7 +60,7 @@ export default function GlobalLayout() {
       <main
         ref={target}
         id="container-scroll"
-        className=" w-full  mx-auto overflow-y-auto p-2 sm:px-10 md:px-15 lg:px-20 xl:px-25 py-30 flex-1  "
+        className={` w-full  mx-auto overflow-y-auto ${pathname === "/messages" ? "pt-22 pb-20 sm:pb-0" : "p-2 sm:px-10 md:px-15 lg:px-20 xl:px-25 pb-30 sm:pb-10 pt-30"}  flex-1  `}
       >
         <Outlet />
       </main>

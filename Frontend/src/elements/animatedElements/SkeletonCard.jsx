@@ -9,8 +9,8 @@ const SkeletonCard = () => {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0.4 }}
-        animate={{ opacity: 0.9 }}
+        initial={{ opacity: 0.3 }}
+        animate={{ opacity: 0.8 }}
         transition={{
           duration: 1.5,
           repeat: Infinity,
